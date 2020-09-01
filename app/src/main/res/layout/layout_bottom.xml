@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_55sdp"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/_5sdp"
+    tools:context=".ui.MainActivity">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_24sdp"
+        android:background="@color/border_color" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/imgHome"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onHome"
+            android:src="@mipmap/ic_home_unselect" />
+
+        <ImageView
+            android:id="@+id/imgSearch"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toStartOf="@+id/tempImgPost"
+            android:layout_toEndOf="@+id/imgHome"
+            android:contentDescription="@string/app_name"
+            android:onClick="onSearch"
+            android:src="@mipmap/ic_search_unselect" />
+
+        <ImageView
+            android:id="@+id/tempImgPost"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/ic_gmail"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/imgNotification"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toStartOf="@+id/imgProfile"
+            android:layout_toEndOf="@+id/tempImgPost"
+            android:contentDescription="@string/app_name"
+            android:onClick="onNotification"
+            android:src="@mipmap/ic_notification_unselect" />
+
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onProfile"
+            android:src="@mipmap/ic_notification_unselect" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgPost"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:onClick="onAddPost"
+        android:src="@drawable/add_post" />
+</RelativeLayout>
