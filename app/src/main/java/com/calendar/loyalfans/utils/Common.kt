@@ -18,11 +18,10 @@ import com.calendar.loyalfans.R
 import com.calendar.loyalfans.fragments.home.HomeFragment
 import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
 import com.calendar.loyalfans.fragments.post.AddPostFragment
-import com.calendar.loyalfans.fragments.profile.FansFragment
-import com.calendar.loyalfans.fragments.profile.FavoritesFragment
-import com.calendar.loyalfans.fragments.profile.FollowingFragment
-import com.calendar.loyalfans.fragments.profile.MyProfileFragment
+import com.calendar.loyalfans.fragments.profile.*
 import com.calendar.loyalfans.fragments.searchFragment.SearchFragment
+import com.calendar.loyalfans.fragments.setting.NotificationSettingFragment
+import com.calendar.loyalfans.fragments.setting.SecuritySettingFragment
 import com.calendar.loyalfans.ui.BaseActivity
 import java.io.File
 import java.io.IOException
@@ -71,6 +70,15 @@ class Common {
                 9 -> {
                     "ChangePasswordFragment"
                 }
+                10 -> {
+                    "EditProfileFragment"
+                }
+                11 -> {
+                    "NotificationSettingFragment"
+                }
+                12 -> {
+                    "SecuritySettingFragment"
+                }
                 else -> ""
             }
         }
@@ -103,6 +111,15 @@ class Common {
                 }
                 9 -> {
                     ChangePasswordFragment.newInstance()
+                }
+                10 -> {
+                    EditProfileFragment.newInstance()
+                }
+                11 -> {
+                    NotificationSettingFragment.newInstance()
+                }
+                12 -> {
+                    SecuritySettingFragment.newInstance()
                 }
                 else -> null
             }

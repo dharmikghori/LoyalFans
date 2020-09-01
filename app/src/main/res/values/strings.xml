@@ -64,5 +64,25 @@
     <string name="new_password">New password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="change_password">Change Password</string>
+    <string name="user_name">User Name</string>
+    <string name="display_name">Display Name</string>
+    <string name="subscription_duration">Subscription Duration</string>
+    <string name="about">About</string>
+    <string name="website_url">Website Url</string>
+    <string name="location">Location</string>
+    <string name="save_change">Save Change</string>
+    <string name="upload_profile_image">upload profile image</string>
+    <string name="upload_cover_image">Upload cover image</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="email_notifications">Email Notifications</string>
+    <string name="push_notifications">Push Notifications</string>
+    <string name="receive_site_notifications_about">Receive Site Notifications About</string>
+    <string name="new_comment">New Comment</string>
+    <string name="show_activity_status">Show Activity Status</string>
+    <string name="show_subscriptions_offers">Show Subscriptions Offers</string>
+    <string name="profile_privacy">Profile Privacy</string>
+    <string name="nobody">Nobody</string>
+    <string name="mutual_friends">Mutual Friends</string>
+    <string name="subscribe">Subscribe</string>
 
 </resources>

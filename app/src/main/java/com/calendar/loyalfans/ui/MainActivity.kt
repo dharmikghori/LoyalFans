@@ -79,4 +79,16 @@ class MainActivity : BaseActivity() {
         loadFragment(9)
     }
 
+    fun onEditProfile(view: View) {
+        loadFragment(10)
+    }
+
+    fun onNotificationSetting(view: View) {
+        loadFragment(11)
+    }
+
+    fun onSecurity(view: View) {
+        loadFragment(12)
+    }
+
 }

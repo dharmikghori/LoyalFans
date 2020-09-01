@@ -45,6 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/viewTop"
+                android:onClick="onEditProfile"
                 android:text="@string/profile" />
 
             <TextView
@@ -53,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvProfileMenu"
+                android:onClick="onNotificationSetting"
                 android:text="@string/notifications" />
 
             <TextView
@@ -61,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvNotification"
+                android:onClick="onSecurity"
                 android:text="@string/security" />
 
             <TextView
