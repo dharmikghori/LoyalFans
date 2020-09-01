@@ -80,6 +80,7 @@
                 style="@style/SideMenuBaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onAddCard"
                 android:layout_below="@+id/tvPassword"
                 android:text="@string/your_cards_to_subscribe" />
 

@@ -1,6 +1,8 @@
 package com.calendar.loyalfans.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.core.view.GravityCompat
 import com.calendar.loyalfans.R
@@ -35,18 +37,43 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    var doubleBackToExitPressedOnce = false
 
     override fun onBackPressed() {
-//        val backStackEntryCount = supportFragmentManager.backStackEntryCount
-//        if (backStackEntryCount < 5) {
-//            if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-        closeDrawer()
-        //            } else {
-//                finish()
-//            }
-//        } else {
-        super.onBackPressed()
-//        }
+        val isMainFragment = checkMainLastFragmentOrNot()
+        if (isMainFragment) {
+            if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+                closeDrawer()
+            } else if (doubleBackToExitPressedOnce) {
+                finish()
+            }
+            doubleBackToExitPressedOnce = true
+            Common.showToast(this, getString(R.string.back_press_message))
+            Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false },
+                2000)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    private fun checkMainLastFragmentOrNot(): Boolean {
+        val fragmentHome = supportFragmentManager.findFragmentByTag(Common.getTagBasedOnType(1))
+        val fragmentSearch = supportFragmentManager.findFragmentByTag(Common.getTagBasedOnType(2))
+        val fragmentAddPost = supportFragmentManager.findFragmentByTag(Common.getTagBasedOnType(3))
+        val fragmentNotification =
+            supportFragmentManager.findFragmentByTag(Common.getTagBasedOnType(4))
+        val fragmentMyProfile =
+            supportFragmentManager.findFragmentByTag(Common.getTagBasedOnType(5))
+
+        return if (fragmentHome != null && fragmentHome.isVisible) {
+            true
+        } else if (fragmentSearch != null && fragmentSearch.isVisible) {
+            true
+        } else if (fragmentAddPost != null && fragmentAddPost.isVisible) {
+            true
+        } else if (fragmentNotification != null && fragmentNotification.isVisible) {
+            true
+        } else fragmentMyProfile != null && fragmentMyProfile.isVisible
     }
 
     private fun closeDrawer() {
@@ -89,6 +116,10 @@ class MainActivity : BaseActivity() {
 
     fun onSecurity(view: View) {
         loadFragment(12)
+    }
+
+    fun onAddCard(view: View) {
+        loadFragment(13)
     }
 
 }

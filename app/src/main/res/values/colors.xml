@@ -5,7 +5,8 @@
     <color name="colorAccent">#792bed</color>
     <color name="white">#ffffff</color>
     <color name="transparent">#00ffffff</color>
-    <color name="black">#494949</color>
+    <color name="theme_black">#494949</color>
+    <color name="black">#000000</color>
     <color name="border_color">#dbdbdb</color>
     <color name="add_preview">#fafafa</color>
     <color name="full_border_edittext_bg">#fafafa</color>

@@ -31,7 +31,7 @@
             android:layout_marginBottom="@dimen/_3sdp"
             android:text="@string/henry_mark_name"
             android:textAllCaps="true"
-            android:textColor="@color/black"
+            android:textColor="@color/theme_black"
             android:textSize="@dimen/_10sdp" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_marginBottom="@dimen/_3sdp"
             android:text="@string/henry_mark"
             android:textAllCaps="true"
-            android:textColor="@color/black"
+            android:textColor="@color/theme_black"
             android:textSize="@dimen/_10sdp" />
     </LinearLayout>
 

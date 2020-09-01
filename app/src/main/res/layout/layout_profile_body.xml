@@ -17,7 +17,7 @@
         android:layout_marginEnd="@dimen/_15sdp"
         app:tabMaxWidth="@dimen/_100sdp"
         app:tabSelectedTextColor="@color/colorAccent"
-        app:tabTextColor="@color/black" />
+        app:tabTextColor="@color/theme_black" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_privacy"
             android:textAllCaps="true"
-            android:textColor="@color/black" />
+            android:textColor="@color/theme_black" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,11 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/show_activity_status"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
+                style="@style/SwitchStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -55,9 +56,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/show_subscriptions_offers"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
+                style="@style/SwitchStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -70,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_11sdp"
             android:text="@string/receive_site_notifications_about"
-            android:textColor="@color/black" />
+            android:textColor="@color/theme_black" />
 
         <RadioButton
             style="@style/RadioButtonStyle"

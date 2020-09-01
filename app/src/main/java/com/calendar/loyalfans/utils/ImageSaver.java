@@ -30,13 +30,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ImageSaver {
 
-    private String directoryName = "KidsXapKiosk";
-    private String fileName = "kidsXap.png";
-    private static final String TAG = "SaveFileInPrivateStorage";
+    private String directoryName = "LoyalFans";
+    private String fileName = "LoyalFans.png";
     private Context context;
     private boolean external;
     public static final int IMAGE_MAX_EXPECTED_SIZE = 1024;
-    public static final int STYLED_LAYOUT_ID = 1220;
     public static final int VIDEO_MAX_SIZE_ALLOWED = 10;//MB
     public static final int THUMB_SIZE = 320;
 

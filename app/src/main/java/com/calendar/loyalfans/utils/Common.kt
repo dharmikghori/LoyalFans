@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.fragments.home.HomeFragment
 import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
+import com.calendar.loyalfans.fragments.payment.AddCardFragment
 import com.calendar.loyalfans.fragments.post.AddPostFragment
 import com.calendar.loyalfans.fragments.profile.*
 import com.calendar.loyalfans.fragments.searchFragment.SearchFragment
@@ -79,6 +80,9 @@ class Common {
                 12 -> {
                     "SecuritySettingFragment"
                 }
+                13 -> {
+                    "AddCardFragment"
+                }
                 else -> ""
             }
         }
@@ -121,6 +125,9 @@ class Common {
                 12 -> {
                     SecuritySettingFragment.newInstance()
                 }
+                13 -> {
+                    AddCardFragment.newInstance()
+                }
                 else -> null
             }
         }
@@ -157,13 +164,13 @@ class Common {
                             theme
                         )
                     )
-                    imgProfile.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.mipmap.ic_notification_unselect,
-                            theme
-                        )
-                    )
+//                    imgProfile.setImageDrawable(
+//                        ResourcesCompat.getDrawable(
+//                            resources,
+//                            R.mipmap.ic_notification_unselect,
+//                            theme
+//                        )
+//                    )
                 }
                 2 -> {
                     imgHome.setImageDrawable(
@@ -187,13 +194,13 @@ class Common {
                             theme
                         )
                     )
-                    imgProfile.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.mipmap.ic_notification_unselect,
-                            theme
-                        )
-                    )
+//                    imgProfile.setImageDrawable(
+//                        ResourcesCompat.getDrawable(
+//                            resources,
+//                            R.mipmap.ic_notification_unselect,
+//                            theme
+//                        )
+//                    )
                 }
                 3 -> {
                     imgHome.setImageDrawable(
@@ -217,13 +224,13 @@ class Common {
                             theme
                         )
                     )
-                    imgProfile.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.mipmap.ic_notification_unselect,
-                            theme
-                        )
-                    )
+//                    imgProfile.setImageDrawable(
+//                        ResourcesCompat.getDrawable(
+//                            resources,
+//                            R.mipmap.ic_notification_unselect,
+//                            theme
+//                        )
+//                    )
                 }
                 4 -> {
                     imgHome.setImageDrawable(
@@ -247,13 +254,13 @@ class Common {
                             theme
                         )
                     )
-                    imgProfile.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.mipmap.ic_notification_unselect,
-                            theme
-                        )
-                    )
+//                    imgProfile.setImageDrawable(
+//                        ResourcesCompat.getDrawable(
+//                            resources,
+//                            R.mipmap.ic_notification_unselect,
+//                            theme
+//                        )
+//                    )
                 }
                 5 -> {
                     imgHome.setImageDrawable(
@@ -277,13 +284,13 @@ class Common {
                             theme
                         )
                     )
-                    imgProfile.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.mipmap.ic_notification_select,
-                            theme
-                        )
-                    )
+//                    imgProfile.setImageDrawable(
+//                        ResourcesCompat.getDrawable(
+//                            resources,
+//                            R.mipmap.ic_notification_select,
+//                            theme
+//                        )
+//                    )
                 }
             }
         }

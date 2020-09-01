@@ -27,7 +27,7 @@
                 android:layout_weight="1"
                 android:text="@string/email_notifications"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/push_notifications"
             android:textAllCaps="true"
-            android:textColor="@color/black" />
+            android:textColor="@color/theme_black" />
 
 
         <TextView
@@ -53,7 +53,7 @@
             android:layout_marginTop="@dimen/_11sdp"
             android:text="@string/receive_site_notifications_about"
             android:textAllCaps="true"
-            android:textColor="@color/black"
+            android:textColor="@color/theme_black"
             android:textSize="@dimen/_10sdp" />
 
         <CheckBox

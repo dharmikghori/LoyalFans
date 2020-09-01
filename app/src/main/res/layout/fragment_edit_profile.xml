@@ -74,7 +74,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/user_name"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <EditText
                 style="@style/FullBorderEditText"
@@ -93,7 +93,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/display_name"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <EditText
                 style="@style/FullBorderEditText"
@@ -111,7 +111,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/subscription_duration"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <EditText
                 style="@style/FullBorderEditText"
@@ -129,7 +129,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/about"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <EditText
                 style="@style/FullBorderEditText"
@@ -148,7 +148,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/location"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <EditText
                 style="@style/FullBorderEditText"
@@ -166,7 +166,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/website_url"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor="@color/theme_black" />
 
             <EditText
                 style="@style/FullBorderEditText"

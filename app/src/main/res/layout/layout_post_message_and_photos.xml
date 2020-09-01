@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:text="@string/this_is_test_post_thanks_for_following_me_on_loyal_fans_this_is_test_fully_test"
-            android:textColor="@color/black"
+            android:textColor="@color/theme_black"
             android:textSize="@dimen/_13sdp" />
 
     </RelativeLayout>

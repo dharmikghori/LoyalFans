@@ -84,5 +84,43 @@
     <string name="nobody">Nobody</string>
     <string name="mutual_friends">Mutual Friends</string>
     <string name="subscribe">Subscribe</string>
+    <string name="back_press_message">Please press back again to exit</string>
+    <string name="billing_details">Billing Details</string>
+    <string name="we_are_fully_complaint_with_payment_card_industry_data_security_standards">We Are Fully Complaint With Payment Card Industry Data Security Standards.</string>
+    <string name="street">STREET*</string>
+    <string name="city">CITY*</string>
+    <string name="state">STATE/PROVINCE*</string>
+    <string name="zip_postal_code">ZIP POSTAL CODE</string>
+    <string name="country">COUNTRY*</string>
+    <string name="email">EMAIL*</string>
+    <string name="name_in_card">Name in the card*</string>
+    <string name="card_number">Card Number*</string>
+
+    <string name="street_hint">STREET</string>
+    <string name="city_hint">CITY</string>
+    <string name="state_hint">STATE/PROVINCE</string>
+    <string name="zip_postal_code_hint">ZIP POSTAL CODE</string>
+    <string name="country_hint">COUNTRY</string>
+    <string name="email_hint">EMAIL</string>
+    <string name="card_details">Card Details</string>
+    <string name="name_in_card_hint">NAME ON THE CARD</string>
+    <string name="card_number_hint">CARD NUMBER</string>
+    <string name="expiration_mm_yyyy">Expiration</string>
+    <string name="submit">submit</string>
+    <string name="cvc">CVC</string>
+    <string name="mm">MM</string>
+    <string name="yyyy">YYYY</string>
+    <string name="add_card">Add Card</string>
+
+    <string name="banking">Banking</string>
+    <string name="personal_info">Personal Information</string>
+    <string name="fill_detail">Fill in our legal name, Address and attach your government issued Picture ID.</string>
+    <string name="first_name">First Name*</string>
+    <string name="last_name">Last Name*</string>
+    <string name="address">Address</string>
+    <string name="date_of_birth">Date Of Birth</string>
+
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
 
 </resources>

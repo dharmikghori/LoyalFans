@@ -34,7 +34,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/_8sdp"
             android:text="@string/_23_likes"
-            android:textColor="@color/black" />
+            android:textColor="@color/theme_black" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +63,7 @@
             android:layout_weight="1"
             android:singleLine="true"
             android:text="@string/_37_comments"
-            android:textColor="@color/black" />
+            android:textColor="@color/theme_black" />
 
         <CheckBox
             android:id="@+id/cbFavourite"

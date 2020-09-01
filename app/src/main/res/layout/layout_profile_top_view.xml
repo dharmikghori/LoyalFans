@@ -44,7 +44,7 @@
                         android:layout_marginEnd="@dimen/_6sdp"
                         android:layout_marginBottom="@dimen/_3sdp"
                         android:text="@string/henry_mark_name"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/theme_black" />
 
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
@@ -90,7 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/fans"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/theme_black" />
 
                     <TextView
                         style="@style/BaseTextView"
@@ -114,7 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/following"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/theme_black" />
 
                     <TextView
                         style="@style/BaseTextView"
@@ -137,7 +137,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/favorites"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/theme_black" />
 
                     <TextView
                         style="@style/BaseTextView"
@@ -164,7 +164,7 @@
         android:gravity="center"
         android:maxLines="5"
         android:text="@string/lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum"
-        android:textColor="@color/black" />
+        android:textColor="@color/theme_black" />
 
     <View
         android:layout_width="match_parent"
