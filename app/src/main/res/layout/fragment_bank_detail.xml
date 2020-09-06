@@ -90,44 +90,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/state"
-                android:textAllCaps="true"
-                android:textColor="@color/theme_black" />
-
-            <EditText
-                style="@style/FullBorderEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:hint="@string/state_hint"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                tools:ignore="LabelFor" />
-
-            <TextView
-                style="@style/BaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/zip_postal_code"
-                android:textAllCaps="true"
-                android:textColor="@color/theme_black" />
-
-            <EditText
-                style="@style/FullBorderEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:hint="@string/zip_postal_code_hint"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                tools:ignore="LabelFor" />
-
-            <TextView
-                style="@style/BaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/country"
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
@@ -138,6 +100,44 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:hint="@string/country_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/address"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
+
+            <EditText
+                style="@style/FullBorderEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="@string/address"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/city"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
+
+            <EditText
+                style="@style/FullBorderEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="@string/city_hint"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 tools:ignore="LabelFor" />
@@ -161,6 +161,69 @@
                 android:inputType="text"
                 tools:ignore="LabelFor" />
 
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/zip_code"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
+
+            <EditText
+                style="@style/FullBorderEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="@string/zip_code_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/date_of_birth"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
+
+            <EditText
+                style="@style/FullBorderEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="@string/date_of_birth"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/cvc"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
+
+            <EditText
+                style="@style/FullBorderEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="@string/cvc"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
+
+            <ImageView
+                android:layout_width="@dimen/_400sdp"
+                android:layout_height="@dimen/_400sdp"
+                android:contentDescription="@string/app_name"
+                android:layerType="software"
+                android:src="@drawable/dotted_round_bg" />
 
             <TextView
                 style="@style/BaseTextView"

@@ -94,7 +94,7 @@
     <string name="country">COUNTRY*</string>
     <string name="email">EMAIL*</string>
     <string name="name_in_card">Name in the card*</string>
-    <string name="card_number">Card Number*</string>
+    <string name="card_number">Card Number</string>
 
     <string name="street_hint">STREET</string>
     <string name="city_hint">CITY</string>
@@ -103,8 +103,8 @@
     <string name="country_hint">COUNTRY</string>
     <string name="email_hint">EMAIL</string>
     <string name="card_details">Card Details</string>
-    <string name="name_in_card_hint">NAME ON THE CARD</string>
-    <string name="card_number_hint">CARD NUMBER</string>
+    <string name="name_in_card_hint">Name On The Card</string>
+    <string name="card_number_hint">Card Number</string>
     <string name="expiration_mm_yyyy">Expiration</string>
     <string name="submit">submit</string>
     <string name="cvc">CVC</string>
@@ -122,5 +122,7 @@
 
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="zip_code_hint">ZIP CODE</string>
 
 </resources>
