@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider
 import com.calendar.loyalfans.BuildConfig
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.SPHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import java.io.File
@@ -38,6 +39,7 @@ open class BaseActivity : AppCompatActivity() {
     private var GALLERY_RESULT_CODE = 1
     private var IMAGE_CAPTURE_RESULT_CODE = 2
     private var VIDEO_CAPTURE_RESULT_CODE = 4
+    var spHelper: SPHelper = SPHelper(this)
 
     public interface OnImageSelection {
         fun onSuccess(bitmap: Bitmap?, imagePath: String?)

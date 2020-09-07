@@ -1,17 +1,24 @@
 package com.calendar.loyalfans.utils
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
+import android.telephony.TelephonyManager
 import android.view.Window
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.calendar.loyalfans.R
@@ -24,8 +31,14 @@ import com.calendar.loyalfans.fragments.searchFragment.SearchFragment
 import com.calendar.loyalfans.fragments.setting.NotificationSettingFragment
 import com.calendar.loyalfans.fragments.setting.SecuritySettingFragment
 import com.calendar.loyalfans.ui.BaseActivity
+import com.calendar.loyalfans.ui.LoginActivity
+import com.facebook.login.LoginManager
+import com.google.firebase.auth.FirebaseAuth
 import java.io.File
 import java.io.IOException
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.util.regex.Pattern
 
 
 class Common {
@@ -304,7 +317,32 @@ class Common {
         }
 
         fun getIMEI(baseActivity: BaseActivity): String {
-            return ""
+            try {
+                val telephonyManager =
+                    baseActivity.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                val imei: String?
+                if (ContextCompat.checkSelfPermission(
+                        baseActivity,
+                        Manifest.permission.READ_PHONE_STATE
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    imei = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        telephonyManager.imei
+                    } else {
+                        telephonyManager.deviceId
+                    }
+                    return if (imei != null && imei.isNotEmpty()) {
+                        imei
+                    } else {
+                        Build.SERIAL
+                    }
+                }
+            } catch (e: Exception) {
+                val errors = StringWriter()
+                e.printStackTrace(PrintWriter(errors))
+                return errors.toString()
+            }
+            return baseActivity.getString(R.string.not_found)
         }
 
         private val SupportedImageExt = arrayOf("jpeg", "png", "jpg")
@@ -423,5 +461,39 @@ class Common {
             }
             return null
         }
+
+        fun isOnline(context: Context, isShowMessage: Boolean): Boolean {
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkInfo = connectivityManager.activeNetworkInfo
+            val isOnline = networkInfo != null && networkInfo.isConnected
+            if (!isOnline && isShowMessage) {
+                showToast(context, context.getString(R.string.internet_error))
+            }
+            return isOnline
+        }
+
+        fun checkEmail(email: String): Boolean {
+            return Pattern.compile(
+                "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
+                        + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                        + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                        + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                        + "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
+                        + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
+            ).matcher(email).matches()
+        }
+
+        fun automaticallyLogoutOnUnauthorizedOrForbidden() {
+            val context = BaseActivity.getActivity()
+            val auth = FirebaseAuth.getInstance()
+            auth.signOut()
+            LoginManager.getInstance().logOut()
+            SPHelper(context).clearLoginSession()
+            val i = Intent(context, LoginActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(i)
+        }
+
     }
 }

@@ -14,7 +14,7 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="false">
@@ -80,8 +80,8 @@
                 style="@style/SideMenuBaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onAddCard"
                 android:layout_below="@+id/tvPassword"
+                android:onClick="onAddCard"
                 android:text="@string/your_cards_to_subscribe" />
 
             <TextView
@@ -113,6 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:onClick="onLogout"
                 android:text="@string/logout"
                 android:textAllCaps="true"
                 android:textColor="@color/red"
@@ -124,6 +125,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/_5sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onLogout"
                 android:src="@mipmap/ic_logout" />
 
         </RelativeLayout>

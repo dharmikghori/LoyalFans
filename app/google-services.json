@@ -8,9 +8,46 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:590305210481:android:ad742fcf3f4a4d8805abd0",
+        "mobilesdk_app_id": "1:590305210481:android:d6014fab48fc08cb05abd0",
         "android_client_info": {
           "package_name": "com.calendar.loyalfans"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590305210481-kkhtap842c0pumgfb3r7flmhjpj2sdlo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.calendar.loyalfans",
+            "certificate_hash": "8ad595a53b76014b7b919ed231db372096d358e7"
+          }
+        },
+        {
+          "client_id": "590305210481-admgpjhbv2e2ip959rvs2744m18on18a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG8nBjeoBCJo7_rtPdppaHos_mX0Ew-7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590305210481-admgpjhbv2e2ip959rvs2744m18on18a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590305210481:android:ad742fcf3f4a4d8805abd0",
+        "android_client_info": {
+          "package_name": "com.gama.loyalfans"
         }
       },
       "oauth_client": [
@@ -39,7 +76,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:590305210481:android:8f83fe245831c56705abd0",
         "android_client_info": {
-          "package_name": "com.calendar.theearningapp"
+          "package_name": "com.gama.theearningapp"
         }
       },
       "oauth_client": [

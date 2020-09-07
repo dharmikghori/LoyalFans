@@ -1,15 +1,16 @@
 <resources>
     <string name="app_name">LoyalFans</string>
-    <string name="hint_email_phone">User Name or Email Address</string>
+    <string name="internet_error">Seems you\'re not connected with internet</string>
+    <string name="hint_email_phone">Username or Email address</string>
     <string name="sign_in">Login</string>
     <string name="password">Password</string>
-    <string name="forgot_password">forgot your login detail ?</string>
+    <string name="forgot_password">forgot your login details ?</string>
     <string name="or">or</string>
-    <string name="dont_have_account">Don\'t have an Account?</string>
-    <string name="your_name">Your Name</string>
-    <string name="e_mail_address">E-mail Address</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="your_name">Your name</string>
+    <string name="e_mail_address">Email address</string>
     <string name="sign_up">Sign Up</string>
-    <string name="already_have_an_account">Already Have an Account?</string>
+    <string name="already_have_an_account">Already have an account?</string>
     <string name="this_is_test_post_thanks_for_following_me_on_loyal_fans_this_is_test_fully_test">This is test post, Thanks for following me on loyal fans This is test fully test.</string>
     <string name="_23_likes">23 Likes</string>
     <string name="_37_comments">37 Comments</string>
@@ -124,5 +125,11 @@
     <string name="last_name_hint">Last Name</string>
     <string name="zip_code">Zip Code</string>
     <string name="zip_code_hint">ZIP CODE</string>
+    <string name="not_found">not_found</string>
+    <string name="facebook_app_id">754873191757868</string>
+    <string name="valid_email">Please enter valid email</string>
+    <string name="valid_email_username">Email/UserName is mandatory</string>
+    <string name="username_validation">Username is mandatory</string>>
+    <string name="password_validation">Password is mandatory</string>>
 
 </resources>

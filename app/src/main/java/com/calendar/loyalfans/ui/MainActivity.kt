@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.activity_main.*
@@ -12,11 +13,13 @@ import kotlinx.android.synthetic.main.layout_bottom.*
 
 
 class MainActivity : BaseActivity() {
-
+    public var drawerLayout: DrawerLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         imgHome.performClick()
+        tvUserNameMenu.text = spHelper.getLoginData()?.data?.username
+        drawerLayout = drawer_layout
     }
 
 
@@ -120,6 +123,10 @@ class MainActivity : BaseActivity() {
 
     fun onAddCard(view: View) {
         loadFragment(13)
+    }
+
+    fun onLogout(view: View) {
+        Common.automaticallyLogoutOnUnauthorizedOrForbidden()
     }
 
 }
