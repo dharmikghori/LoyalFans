@@ -15,16 +15,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/etSearch"
-        style="@style/BaseSearchEditText"
+    <RelativeLayout
+        android:id="@+id/laySearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/layoutToolbar" />
+        android:background="@drawable/et_bottom_line_background"
+        app:layout_constraintTop_toBottomOf="@+id/layoutToolbar">
 
+        <EditText
+            android:id="@+id/etSearch"
+            style="@style/BaseSearchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/imgRemove"
+            android:background="@color/transparent"
+            android:hint="@string/search"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:inputType="text" />
+
+        <ImageView
+            android:id="@+id/imgRemove"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/ic_close"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvRecentSearch"
@@ -36,17 +56,28 @@
         android:textAllCaps="false"
         android:textColor="@color/blue_color"
         android:textSize="@dimen/_14sdp"
-        app:layout_constraintTop_toBottomOf="@+id/etSearch" />
+        app:layout_constraintTop_toBottomOf="@+id/laySearch" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearch"
+        android:id="@+id/rvRecentSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/tvRecentSearch"
+        tools:itemCount="10"
+        tools:listitem="@layout/layout_search" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearchResult"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_10sdp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRecentSearch"
+        app:layout_constraintTop_toBottomOf="@+id/rvRecentSearch"
         tools:itemCount="10"
         tools:listitem="@layout/layout_search" />
 

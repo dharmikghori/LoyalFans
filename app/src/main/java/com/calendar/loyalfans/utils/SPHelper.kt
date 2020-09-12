@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import com.calendar.loyalfans.model.response.LoginResponse
+import com.calendar.loyalfans.model.response.SearchUsers
 import com.calendar.loyalfans.retrofit.APIServices
 import com.google.gson.Gson
 
@@ -21,18 +22,6 @@ class SPHelper(mContext: Context) {
 
     operator fun get(key: String, defValue: Boolean): Boolean {
         return sp.read(key, defValue)
-    }
-
-    //    fun save(key: String, value: String) {
-//        sp.save(key, value)
-//    }
-//
-//    fun save(key: String, value: Boolean) {
-//        sp.save(key, value)
-//    }
-//
-    fun save(key: String, value: Int) {
-        sp.save(key, value)
     }
 
     fun getString(key: String): String? {
@@ -85,6 +74,37 @@ class SPHelper(mContext: Context) {
         sp.save(RequestParams.USER_LOGIN_DATA, json)
     }
 
+    fun saveRecentSearch(searchUserData: SearchUsers) {
+        val recentSearch = getRecentSearch()
+        val alreadyAddedOrNot = recentSearch.filter { it.username == searchUserData.username }
+        if (alreadyAddedOrNot.isEmpty()) {
+            recentSearch.add(searchUserData)
+        }
+        val toJSON = SearchUsers.toJSON(recentSearch)
+        sp.save(RequestParams.RECENT_SEARCH_USER_DATA + Common.getUserId(), toJSON)
+    }
+
+    fun removeRecentSearch(searchUserData: SearchUsers) {
+        val recentSearch = getRecentSearch()
+        val tempList = recentSearch
+        for (i in 0..tempList.size) {
+            val userData = tempList[i]
+            if (userData.username.equals(searchUserData.username)) {
+                recentSearch.remove(userData)
+                break
+            }
+        }
+        val toJSON = SearchUsers.toJSON(recentSearch)
+        sp.save(RequestParams.RECENT_SEARCH_USER_DATA + Common.getUserId(), toJSON)
+    }
+
+    fun getRecentSearch(): ArrayList<SearchUsers> {
+        var searchUsers = ArrayList<SearchUsers>()
+        val strJson = get(RequestParams.RECENT_SEARCH_USER_DATA + Common.getUserId(), "")
+        strJson?.let { searchUsers = SearchUsers.fromJSON(it) }
+        return searchUsers
+    }
+
     fun clearLoginSession() {
         sp.clearSession()
     }
@@ -97,7 +117,7 @@ class SPHelper(mContext: Context) {
         return APIServices.APP_SECRET_KEY
     }
 
-    private inner class SharedPreferences//  Default constructor
+    private class SharedPreferences//  Default constructor
     constructor(private val mContext: Context) {
         val mPREFERENCES = "LoyalFansPref"
 
@@ -112,20 +132,6 @@ class SPHelper(mContext: Context) {
         fun save(key: String, value: String) {
             val editor = mContext.getSharedPreferences(mPREFERENCES, 0).edit()
             editor.putString(key, value)
-            editor.apply()
-        }
-
-        //  Save Boolean value
-//        fun save(key: String, value: Boolean) {
-//            val editor = mContext.getSharedPreferences(mPREFERENCES, 0).edit()
-//            editor.putBoolean(key, value)
-//            editor.apply()
-//        }
-
-        //  Save Int value
-        fun save(key: String, value: Int) {
-            val editor = mContext.getSharedPreferences(mPREFERENCES, 0).edit()
-            editor.putInt(key, value)
             editor.apply()
         }
 

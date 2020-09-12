@@ -29,6 +29,7 @@ class SelectedFileAdapter(
 
     interface OnAddImage {
         fun onAddImageClick()
+        fun onRemoveImageClick(position: Int)
     }
 
     private fun getItem(position: Int): SelectedFileData {
@@ -47,21 +48,33 @@ class SelectedFileAdapter(
 
     override fun onBindViewHolder(holder: SelectedFileViewHolder, position: Int) {
         val selectedImageData = getItem(position)
-        if (activity != null && selectedImageData.thumbnailPath.isNotEmpty()) {
-            val bitmapFromImagePath =
-                Common.getBitmapFromImagePath(activity, selectedImageData.thumbnailPath)
-            holder.imgSelectedImage.setImageBitmap(bitmapFromImagePath)
+        if (activity != null) {
+            if (selectedImageData.thumbnailPath.isNotEmpty()) {
+                val bitmapFromImagePath =
+                    Common.getBitmapFromImagePath(activity, selectedImageData.thumbnailPath)
+                holder.imgSelectedImage.setImageBitmap(bitmapFromImagePath)
+            } else if (selectedImageData.imageBitmap != null) {
+                holder.imgSelectedImage.setImageBitmap(selectedImageData.imageBitmap)
+            }
         }
-
+        if (position == 0) {
+            holder.imgRemoveAttachment.visibility = View.GONE
+        } else {
+            holder.imgRemoveAttachment.visibility = View.VISIBLE
+        }
         holder.imgSelectedImage.setOnClickListener {
             if (position == 0) {
                 onAddImage?.onAddImageClick()
             }
         }
+        holder.imgRemoveAttachment.setOnClickListener {
+            onAddImage?.onRemoveImageClick(position)
+        }
     }
 
     class SelectedFileViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgSelectedImage: ImageView = view.imgSelectedImage
+        val imgRemoveAttachment: ImageView = view.imgRemoveAttachment
     }
 
 

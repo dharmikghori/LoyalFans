@@ -1,6 +1,7 @@
 package com.calendar.loyalfans.model
 
 import android.graphics.Bitmap
+import android.net.Uri
 
 
 open class SelectedFileData {
@@ -8,4 +9,5 @@ open class SelectedFileData {
     var base64String: String = ""
     var thumbnailPath: String = ""
     var imageBitmap: Bitmap? = null
+    var imageUri: Uri? = null
 }

@@ -6,7 +6,9 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -42,12 +44,11 @@ open class BaseActivity : AppCompatActivity() {
     var spHelper: SPHelper = SPHelper(this)
 
     public interface OnImageSelection {
-        fun onSuccess(bitmap: Bitmap?, imagePath: String?)
+        fun onSuccess(bitmap: Bitmap?, imagePath: String?, imageURI: Uri?)
     }
 
     private var onImageSelection: OnImageSelection? = null
 
-    @JvmName("setOnImageSelection1")
     public fun setOnImageSelection(onImageSelection: OnImageSelection) {
         this.onImageSelection = onImageSelection
     }
@@ -63,7 +64,7 @@ open class BaseActivity : AppCompatActivity() {
         hideActionBar()
 
         if (imei == "") {
-            imei = Common.getIMEI(this)
+            imei = Common.getImei(this)
         }
 
         if (firebaseToken == "") {
@@ -126,7 +127,8 @@ open class BaseActivity : AppCompatActivity() {
 
     open fun imageAndVideoSelectionForPost() {
         val pictureDialogItems = arrayOf(
-            "Gallery",
+            "Choose Image",
+            "Choose Video",
             "Take Photo",
             "Take Video"
         )
@@ -140,9 +142,12 @@ open class BaseActivity : AppCompatActivity() {
                     choosePhotoFromGallery()
                 }
                 1 -> {
-                    takePhotoFromCamera()
+                    chooseVideoFromGallery()
                 }
                 2 -> {
+                    takePhotoFromCamera()
+                }
+                3 -> {
                     takeVideoFromCamera()
                 }
             }
@@ -155,6 +160,14 @@ open class BaseActivity : AppCompatActivity() {
         val galleryIntent = Intent(
             Intent.ACTION_PICK,
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        startActivityForResult(galleryIntent, GALLERY_RESULT_CODE)
+    }
+
+    open fun chooseVideoFromGallery() {
+        val galleryIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         )
         startActivityForResult(galleryIntent, GALLERY_RESULT_CODE)
     }
@@ -179,7 +192,7 @@ open class BaseActivity : AppCompatActivity() {
                 startActivityForResult(cameraIntent, IMAGE_CAPTURE_RESULT_CODE)
             } else {
                 photoURI = FileProvider.getUriForFile(
-                    this, BuildConfig.APPLICATION_ID.toString() + ".provider",
+                    this, BuildConfig.APPLICATION_ID + ".provider",
                     pictureFile!!
                 )
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
@@ -210,7 +223,7 @@ open class BaseActivity : AppCompatActivity() {
                 startActivityForResult(videoIntent, VIDEO_CAPTURE_RESULT_CODE)
             } else {
                 videoURI = FileProvider.getUriForFile(
-                    this, BuildConfig.APPLICATION_ID.toString() + ".provider",
+                    this, BuildConfig.APPLICATION_ID + ".provider",
                     videoFile!!
                 )
                 videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoURI)
@@ -236,6 +249,7 @@ open class BaseActivity : AppCompatActivity() {
         }
         var path = ""
         var bitmap: Bitmap? = null
+        var contentUri: Uri? = null
         if (requestCode == IMAGE_CAPTURE_RESULT_CODE) {
             if (RESULT_OK == resultCode) {
                 path = pictureFile!!.absolutePath
@@ -248,15 +262,26 @@ open class BaseActivity : AppCompatActivity() {
             }
         } else if (GALLERY_RESULT_CODE == requestCode) {
             if (RESULT_OK == resultCode) {
-                val contentURI = data!!.data
-                if (contentURI != null) {
-                    path = contentURI.path.toString()
-                    bitmap = Common.getBitmapFromURI(this, contentURI)
+                contentUri = data!!.data
+                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+                if (contentUri != null) {
+                    val cursor: Cursor? = contentResolver.query(contentUri,
+                        filePathColumn, null, null, null)
+                    if (cursor != null) {
+                        cursor.moveToFirst()
+                        val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+                        path = cursor.getString(columnIndex)
+                        bitmap = BitmapFactory.decodeFile(path)
+                        cursor.close()
+                    } else {
+                        path = contentUri.path.toString()
+                        bitmap = Common.getBitmapFromURI(this, contentUri)
+                    }
                 }
             }
         }
         if (onImageSelection != null) {
-            onImageSelection!!.onSuccess(bitmap, path)
+            onImageSelection!!.onSuccess(bitmap, path, contentUri)
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.request.ForgotPasswordRequest
 import com.calendar.loyalfans.utils.Common
-import com.gama.theearningapp.retrofit.BaseViewModel
+import com.calendar.loyalfans.retrofit.BaseViewModel
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 

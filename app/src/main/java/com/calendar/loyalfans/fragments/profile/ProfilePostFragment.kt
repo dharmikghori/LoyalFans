@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
-import com.calendar.loyalfans.adapter.HomeAdapter
-import com.calendar.loyalfans.model.PostData
+import com.calendar.loyalfans.adapter.HomePostAdapter
+import com.calendar.loyalfans.model.response.PostData
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class ProfilePostFragment : Fragment() {
@@ -37,7 +37,7 @@ class ProfilePostFragment : Fragment() {
         for (i in 0..9) {
             postList.add(PostData())
         }
-        val homeAdapter = HomeAdapter(postList, activity)
+        val homeAdapter = HomePostAdapter(postList, activity)
         rvHomePost.adapter = homeAdapter
     }
 

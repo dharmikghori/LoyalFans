@@ -43,6 +43,7 @@
             tools:listitem="@layout/layout_selected_file" />
 
         <Button
+            android:id="@+id/btnAddPost"
             style="@style/BaseColorRoundedGradientButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

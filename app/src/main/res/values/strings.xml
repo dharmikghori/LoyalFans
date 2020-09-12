@@ -13,7 +13,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="this_is_test_post_thanks_for_following_me_on_loyal_fans_this_is_test_fully_test">This is test post, Thanks for following me on loyal fans This is test fully test.</string>
     <string name="_23_likes">23 Likes</string>
-    <string name="_37_comments">37 Comments</string>
+    <string name="comments"> Comments</string>
     <string name="send_tip">Send Tip</string>
     <string name="send">send</string>
     <string name="enter_tip_amount">Enter Tip Amount</string>
@@ -130,6 +130,8 @@
     <string name="valid_email">Please enter valid email</string>
     <string name="valid_email_username">Email/UserName is mandatory</string>
     <string name="username_validation">Username is mandatory</string>>
-    <string name="password_validation">Password is mandatory</string>>
+    <string name="password_validation">Password is mandatory</string>
+    <string name="attachment_validation">Attachment is required</string>
+    <string name="content_validation">Content is mandatory</string>>
 
 </resources>

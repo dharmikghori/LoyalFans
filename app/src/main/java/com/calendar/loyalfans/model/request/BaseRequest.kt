@@ -2,5 +2,5 @@ package com.calendar.loyalfans.model.request
 
 
 open class BaseRequest(
-    var userid: String = ""
+    var user_id: String = "",
 )

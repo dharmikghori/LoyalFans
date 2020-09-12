@@ -10,10 +10,12 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.media.MediaMetadataRetriever
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.view.Window
 import android.widget.ImageView
@@ -21,6 +23,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.fragments.home.HomeFragment
 import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
@@ -309,30 +315,32 @@ class Common {
         }
 
         fun showToast(context: Context, message: String, isLongMessage: Boolean = false) {
-            if (isLongMessage) {
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            BaseActivity.getActivity().runOnUiThread {
+                if (isLongMessage) {
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
-        fun getIMEI(baseActivity: BaseActivity): String {
+        fun getImei(baseActivity: BaseActivity): String {
             try {
                 val telephonyManager =
                     baseActivity.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                val imei: String?
+                val iMEI: String?
                 if (ContextCompat.checkSelfPermission(
                         baseActivity,
                         Manifest.permission.READ_PHONE_STATE
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-                    imei = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    iMEI = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         telephonyManager.imei
                     } else {
                         telephonyManager.deviceId
                     }
-                    return if (imei != null && imei.isNotEmpty()) {
-                        imei
+                    return if (iMEI != null && iMEI.isNotEmpty()) {
+                        iMEI
                     } else {
                         Build.SERIAL
                     }
@@ -340,14 +348,15 @@ class Common {
             } catch (e: Exception) {
                 val errors = StringWriter()
                 e.printStackTrace(PrintWriter(errors))
-                return errors.toString()
+                return Settings.Secure.getString(baseActivity.contentResolver,
+                    Settings.Secure.ANDROID_ID)
             }
             return baseActivity.getString(R.string.not_found)
         }
 
         private val SupportedImageExt = arrayOf("jpeg", "png", "jpg")
 
-        public fun isVideo(fileName: String): Boolean {
+        fun isVideo(fileName: String): Boolean {
             val extension: String = getFileExtension(fileName)
             for (photosVideoType in SupportedImageExt) {
                 if (extension.equals(photosVideoType, ignoreCase = true)) {
@@ -432,7 +441,7 @@ class Common {
 
         fun dismissProgress() {
             try {
-                if (progressDialog != null && progressDialog!!.isShowing()) {
+                if (progressDialog != null && progressDialog!!.isShowing) {
                     progressDialog!!.dismiss()
                 }
             } catch (ex: java.lang.Exception) {
@@ -440,7 +449,7 @@ class Common {
         }
 
 
-        public fun getBitmapFromImagePath(activity: Context, imagePath: String): Bitmap? {
+        fun getBitmapFromImagePath(activity: Context, imagePath: String): Bitmap? {
             try {
                 return MediaStore.Images.Media.getBitmap(
                     activity.contentResolver, Uri.fromFile(File(imagePath))
@@ -489,11 +498,67 @@ class Common {
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
             LoginManager.getInstance().logOut()
+
             SPHelper(context).clearLoginSession()
             val i = Intent(context, LoginActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(i)
         }
 
+        fun getUserId(): String {
+            val loginData = SPHelper(BaseActivity.getActivity()).getLoginData()
+            if (loginData?.data != null) {
+                return loginData.data.user_id
+            }
+            return ""
+        }
+
+        fun loadImageUsingURL(
+            imageView: ImageView,
+            url: String?,
+            context: Context,
+            isCache: Boolean = false,
+        ) {
+            if (url != null) {
+                if (isCache) {
+                    Glide.with(context)
+                        .load(url)
+                        .fitCenter()
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(imageView)
+                } else {
+                    Glide.with(context)
+                        .load(url)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .fitCenter()
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(imageView)
+                }
+            }
+        }
+
+        fun setupVerticalRecyclerView(recyclerView: RecyclerView, activity: Context?) {
+            recyclerView.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        }
+
+        @Throws(Throwable::class)
+        fun retriveVideoFrameFromVideo(videoPath: String?): Bitmap? {
+            val bitmap: Bitmap?
+            var mediaMetadataRetriever: MediaMetadataRetriever? = null
+            try {
+                mediaMetadataRetriever = MediaMetadataRetriever()
+                mediaMetadataRetriever.setDataSource(videoPath, HashMap<String, String>())
+                //   mediaMetadataRetriever.setDataSource(videoPath);
+                bitmap = mediaMetadataRetriever.frameAtTime
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+                throw Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+            } finally {
+                mediaMetadataRetriever?.release()
+            }
+            return bitmap
+        }
     }
 }

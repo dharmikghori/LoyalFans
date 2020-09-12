@@ -3,6 +3,8 @@ package com.calendar.loyalfans.retrofit
 import com.calendar.loyalfans.ui.BaseActivity
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -15,9 +17,12 @@ open class RetrofitService {
 
 
     companion object {
+        var gson: Gson = GsonBuilder()
+            .setLenient()
+            .create()
         private val retrofit = Retrofit.Builder()
             .baseUrl(APIServices.SERVICE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttp)
             .build()
         private val okHttp: OkHttpClient
@@ -35,13 +40,11 @@ open class RetrofitService {
                 val original = chain.request()
                 val builder = original.newBuilder()
                 val request = builder
-                    .header("APP-SECRET-KEY",
+                    .header("App-Secret-Key",
                         SPHelper(BaseActivity.getActivity()).getLoginAppSecretKey())
                     .header("Authorization", Credentials.basic("admin", "1234"))
-                    .header("AUTHORIZATION_TOKEN", APIServices.AUTH_TOKEN)
-//                    .header("Accept", "*/*")
+                    .header("Authorization_token", APIServices.AUTH_TOKEN)
                     .header("Content-Type", "application/x-www-form-urlencoded")
-//                    .method(original.method, original.body)
                     .build()
                 chain.proceed(request)
             }

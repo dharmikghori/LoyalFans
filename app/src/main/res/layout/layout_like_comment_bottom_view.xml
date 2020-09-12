@@ -8,10 +8,10 @@
 
     <LinearLayout
         android:id="@+id/llLayLikes"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:gravity="center"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
@@ -29,7 +29,7 @@
         <TextView
             android:id="@+id/tvTotalLike"
             style="@style/BaseTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/_8sdp"
@@ -56,17 +56,17 @@
         <TextView
             android:id="@+id/tvTotalComment"
             style="@style/BaseTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_weight="1"
             android:singleLine="true"
-            android:text="@string/_37_comments"
+            android:text="@string/comments"
             android:textColor="@color/theme_black" />
 
         <CheckBox
-            android:id="@+id/cbFavourite"
+            android:id="@+id/cbBookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

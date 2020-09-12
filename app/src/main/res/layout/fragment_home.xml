@@ -20,6 +20,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeToolBar"
         tools:itemCount="10"
-        tools:listitem="@layout/layout_home" />
+        tools:listitem="@layout/layout_home_post" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
