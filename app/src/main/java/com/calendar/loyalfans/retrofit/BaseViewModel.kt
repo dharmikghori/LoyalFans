@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.calendar.loyalfans.BuildConfig
 import com.calendar.loyalfans.model.request.*
-import com.calendar.loyalfans.model.response.BaseResponse
-import com.calendar.loyalfans.model.response.LoginResponse
-import com.calendar.loyalfans.model.response.PostResponse
-import com.calendar.loyalfans.model.response.SearchUserData
+import com.calendar.loyalfans.model.response.*
+import com.calendar.loyalfans.utils.Common
 import com.google.gson.Gson
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -252,6 +250,149 @@ class BaseViewModel : ViewModel() {
             }
         }))
         return postData
+    }
+
+
+    fun profilePost(
+        postListRequest: PostListRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<PostResponse> {
+        postListRequest.user_id = Common.getUserId()
+        val apiName = APIServices.POST_LIST
+        val postData: MutableLiveData<PostResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        printStrRequestJson(postListRequest, apiName)
+        apiServices?.profilePost(
+            postListRequest.user_id,
+            postListRequest.offset.toString(),
+            postListRequest.limit.toString(),
+            postListRequest.profile_id,
+            postListRequest.type.toString()
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val postResponse = response as PostResponse
+                printStrJson(postResponse, apiName)
+                postData.value = postResponse
+            }
+        }))
+        return postData
+    }
+
+    fun updatePost(
+        postEditRequest: PostEditRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.UPDATE_POST
+        val updatePostData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        printStrRequestJson(postEditRequest, apiName)
+        apiServices?.updatePost(
+            postEditRequest.user_id,
+            postEditRequest.post_id,
+            postEditRequest.content
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val updatePostResponse = response as BaseResponse
+                printStrJson(updatePostResponse, apiName)
+                updatePostData.value = updatePostResponse
+            }
+        }))
+        return updatePostData
+    }
+
+    fun deletePost(
+        postEditRequest: PostDetailRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.DELETE_POST
+        val deletePostData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        printStrRequestJson(postEditRequest, apiName)
+        apiServices?.deletePost(
+            postEditRequest.user_id,
+            postEditRequest.post_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val deletePostResponse = response as BaseResponse
+                printStrJson(deletePostResponse, apiName)
+                deletePostData.value = deletePostResponse
+            }
+        }))
+        return deletePostData
+    }
+
+    fun getProfile(
+        profileDetailRequest: ProfileDetailRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<ProfileResponse> {
+        val apiName = APIServices.GET_PROFILE
+        val profileData: MutableLiveData<ProfileResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        printStrRequestJson(profileDetailRequest, apiName)
+        apiServices?.getProfile(
+            profileDetailRequest.user_id,
+            profileDetailRequest.profile_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val profileResponse = response as ProfileResponse
+                printStrJson(profileResponse, apiName)
+                profileData.value = profileResponse
+            }
+        }))
+        return profileData
+    }
+
+    fun getEditProfile(
+        profileDetailRequest: ProfileDetailRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<ProfileResponse> {
+        val apiName = APIServices.GET_EDIT_PROFILE
+        val profileData: MutableLiveData<ProfileResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        printStrRequestJson(profileDetailRequest, apiName)
+        apiServices?.getEditProfile(
+            profileDetailRequest.user_id,
+            profileDetailRequest.profile_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val profileResponse = response as ProfileResponse
+                printStrJson(profileResponse, apiName)
+                profileData.value = profileResponse
+            }
+        }))
+        return profileData
+    }
+
+    fun updateProfile(
+        updateProfileRequest: UpdateProfileRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.UPDATE_PROFILE
+        val updateProfileData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        printStrRequestJson(updateProfileRequest, apiName)
+        apiServices?.updateProfile(
+            updateProfileRequest.user_id,
+            updateProfileRequest.display_name,
+            updateProfileRequest.location,
+            updateProfileRequest.about,
+            updateProfileRequest.website,
+            updateProfileRequest.profile_img,
+            updateProfileRequest.banner_img,
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val updateProfileResponse = response as BaseResponse
+                printStrJson(updateProfileResponse, apiName)
+                updateProfileData.value = updateProfileResponse
+            }
+        }))
+        return updateProfileData
     }
 
     private fun printStrRequestJson(request: Any, apiName: String) {

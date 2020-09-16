@@ -35,6 +35,7 @@
                     android:src="@drawable/model" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgEditProfile"
                     android:layout_width="@dimen/_60sdp"
                     android:layout_height="@dimen/_60sdp"
                     android:layout_marginStart="@dimen/_20sdp"
@@ -77,10 +78,13 @@
                 android:textColor="@color/theme_black" />
 
             <EditText
+                android:id="@+id/etUserName"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:editable="false"
+                android:enabled="false"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 tools:ignore="LabelFor" />
@@ -96,6 +100,7 @@
                 android:textColor="@color/theme_black" />
 
             <EditText
+                android:id="@+id/etDisplayName"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,6 +137,7 @@
                 android:textColor="@color/theme_black" />
 
             <EditText
+                android:id="@+id/etAbout"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,6 +157,7 @@
                 android:textColor="@color/theme_black" />
 
             <EditText
+                android:id="@+id/etLocation"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,6 +176,7 @@
                 android:textColor="@color/theme_black" />
 
             <EditText
+                android:id="@+id/etWebsiteURL"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

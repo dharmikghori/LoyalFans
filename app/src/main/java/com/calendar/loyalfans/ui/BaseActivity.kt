@@ -155,6 +155,28 @@ open class BaseActivity : AppCompatActivity() {
         pictureDialog.show()
     }
 
+    open fun imageSelection() {
+        val pictureDialogItems = arrayOf(
+            "Choose Image",
+            "Take Photo"
+        )
+        val pictureDialog = AlertDialog.Builder(this)
+        pictureDialog.setTitle(getString(R.string.media_selection))
+        pictureDialog.setItems(
+            pictureDialogItems
+        ) { dialog: DialogInterface, which: Int ->
+            when (which) {
+                0 -> {
+                    choosePhotoFromGallery()
+                }
+                1 -> {
+                    takePhotoFromCamera()
+                }
+            }
+        }
+        pictureDialog.show()
+    }
+
 
     open fun choosePhotoFromGallery() {
         val galleryIntent = Intent(

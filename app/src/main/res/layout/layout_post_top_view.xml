@@ -56,6 +56,14 @@
         style="@style/BaseColorRoundedGradientButton"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_25sdp"
-        android:text="@string/send_tip" />
+        android:text="@string/send_tip"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/imgMoreOption"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_more_option"
+        android:visibility="gone" />
 
 </LinearLayout>

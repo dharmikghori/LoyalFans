@@ -7,8 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.model.request.ProfileDetailRequest
+import com.calendar.loyalfans.model.response.ProfileData
+import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.ui.MainActivity
+import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.SPHelper
 import com.calendar.loyalfans.viewpager.ProfileTabPagerAdapter
 import kotlinx.android.synthetic.main.layout_profile_body.*
 import kotlinx.android.synthetic.main.layout_profile_top_view.*
@@ -30,10 +36,40 @@ class MyProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        getProfile()
         setTabLayoutAdapter()
         layFans.setOnClickListener(this)
         layFollowing.setOnClickListener(this)
         layFavorites.setOnClickListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getProfile()
+    }
+
+    private fun getProfile() {
+        val postDetailRequest = ProfileDetailRequest(Common.getUserId())
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.getProfile(
+            postDetailRequest, true
+        ).observe(viewLifecycleOwner, { it ->
+            if (it.status) {
+                setUpProfileData(it.data)
+            }
+        })
+
+    }
+
+    private fun setUpProfileData(data: ProfileData) {
+        activity?.let { SPHelper(it).saveProfileData(data) }
+        tvProfileName.text = data.display_name
+        tvUserName.text = data.username
+        tvAbout.text = data.about
+        tvTotalFansCount.text = data.fans
+        tvFollowingCount.text = data.followers
+        tvFavouritesCount.text = data.favorites
+        activity?.let { Common.loadImageUsingURL(imgProfilePic, data.profile_img, it) }
     }
 
     private fun setTabLayoutAdapter() {
@@ -41,6 +77,7 @@ class MyProfileFragment : Fragment(), View.OnClickListener {
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
                 ProfileTabPagerAdapter(requireActivity(), supportFragmentManager)
+            viewPager.offscreenPageLimit = 3
             viewPager.adapter = tabsPagerAdapter
             tabLayout.setupWithViewPager(viewPager)
             for (i in 0 until tabLayout.tabCount) {

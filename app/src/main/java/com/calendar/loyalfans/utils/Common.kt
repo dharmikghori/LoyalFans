@@ -17,12 +17,14 @@ import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import android.util.Base64
 import android.view.Window
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -38,12 +40,10 @@ import com.calendar.loyalfans.fragments.setting.NotificationSettingFragment
 import com.calendar.loyalfans.fragments.setting.SecuritySettingFragment
 import com.calendar.loyalfans.ui.BaseActivity
 import com.calendar.loyalfans.ui.LoginActivity
+import com.calendar.loyalfans.ui.MainActivity
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
-import java.io.File
-import java.io.IOException
-import java.io.PrintWriter
-import java.io.StringWriter
+import java.io.*
 import java.util.regex.Pattern
 
 
@@ -53,7 +53,6 @@ class Common {
         private val homeFragment = HomeFragment.newInstance()
         private val searchFragment = SearchFragment.newInstance()
         private val addPostFragment = AddPostFragment.newInstance()
-        private val myProfileFragment = MyProfileFragment.newInstance()
 
         fun showSendDialog(context: Context) {
             val dialog = Dialog(context, R.style.FullScreenDialogStyle)
@@ -102,6 +101,9 @@ class Common {
                 13 -> {
                     "AddCardFragment"
                 }
+                14 -> {
+                    "EditPostFragment"
+                }
                 else -> ""
             }
         }
@@ -121,7 +123,7 @@ class Common {
                     null
                 }
                 5 -> {
-                    myProfileFragment
+                    MyProfileFragment.newInstance()
                 }
                 6 -> {
                     FansFragment.newInstance()
@@ -513,6 +515,12 @@ class Common {
             return ""
         }
 
+        fun moveToHomeFragment(activity: FragmentActivity) {
+            if (activity is MainActivity) {
+                activity.loadFragment(1)
+            }
+        }
+
         fun loadImageUsingURL(
             imageView: ImageView,
             url: String?,
@@ -559,6 +567,16 @@ class Common {
                 mediaMetadataRetriever?.release()
             }
             return bitmap
+        }
+
+        fun getBase64FromBitmap(path: String): String {
+            var base64: String? = ""
+            val file = File(path)
+            val buffer = ByteArray(file.length().toInt() + 100)
+            val length = FileInputStream(file).read(buffer)
+            base64 = Base64.encodeToString(buffer, 0, length,
+                Base64.DEFAULT)
+            return base64
         }
     }
 }

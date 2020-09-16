@@ -132,6 +132,17 @@
     <string name="username_validation">Username is mandatory</string>>
     <string name="password_validation">Password is mandatory</string>
     <string name="attachment_validation">Attachment is required</string>
-    <string name="content_validation">Content is mandatory</string>>
+    <string name="content_validation">Content is mandatory</string>
+    <string name="current_password_validation">Current password required</string>>
+    <string name="new_password_validation">New password required</string>>
+    <string name="confirm_password_validation">Confirm password required</string>>
+    <string name="confirm_new_password_validation">New password and confirm password should be same</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="edit_post">Edit Post</string>
+    <string name="display_text_Validation">Display text is required</string>
+    <string name="about_Validation">About is required</string>
+    <string name="location_Validation">Location is required</string>
+    <string name="website_Validation">Website URL is required</string>
 
 </resources>

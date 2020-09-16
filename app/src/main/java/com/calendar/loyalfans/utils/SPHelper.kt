@@ -4,7 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import com.calendar.loyalfans.model.response.LoginResponse
+import com.calendar.loyalfans.model.response.ProfileData
 import com.calendar.loyalfans.model.response.SearchUsers
 import com.calendar.loyalfans.retrofit.APIServices
 import com.google.gson.Gson
@@ -59,6 +61,12 @@ class SPHelper(mContext: Context) {
         return bitmap
     }
 
+    //  Save login object
+    fun saveLoginData(userLoginData: LoginResponse) {
+        val json = Gson().toJson(userLoginData)
+        sp.save(RequestParams.USER_LOGIN_DATA, json)
+    }
+
     fun getLoginData(): LoginResponse? {
         val json = sp.read(RequestParams.USER_LOGIN_DATA, "")
         return try {
@@ -68,10 +76,21 @@ class SPHelper(mContext: Context) {
         }
     }
 
-    //  Save login object
-    fun saveLoginData(userLoginData: LoginResponse) {
-        val json = Gson().toJson(userLoginData)
-        sp.save(RequestParams.USER_LOGIN_DATA, json)
+
+    //  Save Profile object
+    fun saveProfileData(profileData: ProfileData) {
+        val json = Gson().toJson(profileData)
+        sp.save(RequestParams.PROFILE_DATA, json)
+    }
+
+    //GetProfile Object
+    fun getProfileData(): ProfileData? {
+        val json = sp.read(RequestParams.PROFILE_DATA, "")
+        return try {
+            Gson().fromJson(json, ProfileData::class.java)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     fun saveRecentSearch(searchUserData: SearchUsers) {
@@ -111,10 +130,14 @@ class SPHelper(mContext: Context) {
 
     fun getLoginAppSecretKey(): String {
         val loginData = getLoginData()
+        var secretKey = ""
         if (loginData != null) {
-            return loginData.appSecretKey
+            secretKey = loginData.appSecretKey
+        } else {
+            secretKey = APIServices.APP_SECRET_KEY
         }
-        return APIServices.APP_SECRET_KEY
+        Log.d("secretKey", secretKey)
+        return secretKey
     }
 
     private class SharedPreferences//  Default constructor

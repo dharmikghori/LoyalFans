@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.response.PostData
+import com.calendar.loyalfans.ui.BaseActivity
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.SPHelper
 import com.google.android.material.tabs.TabLayout
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_like_comment_bottom_view.view.*
@@ -19,13 +21,15 @@ import kotlinx.android.synthetic.main.layout_post_top_view.view.*
 import java.util.*
 
 
-class HomePostAdapter(
+class MyProfilePostAdapter(
     private var postListData: ArrayList<PostData>,
     private val activity: FragmentActivity?,
     private val isMyPost: Boolean = false,
 ) :
-    RecyclerView.Adapter<HomePostAdapter.HomePostViewHolder>() {
+    RecyclerView.Adapter<MyProfilePostAdapter.HomePostViewHolder>() {
     var onPostAction: OnPostAction? = null
+    var profileData = SPHelper(BaseActivity.getActivity()).getProfileData()
+
 
     interface OnPostAction {
         fun onBottomReached(position: Int)
@@ -59,23 +63,37 @@ class HomePostAdapter(
         val postData = getItem(position)
         holder.btnSendTip.setOnClickListener { activity?.let { Common.showSendDialog(it) } }
         holder.tvActivityMessage.text = postData.content
-        holder.tvProfileName.text = postData.display_name
-        holder.tvUserName.text = postData.username
+        holder.tvProfileName.text = profileData?.display_name
+        holder.tvUserName.text = profileData?.username
         holder.tvTotalComment.text = postData.comments + " Comments"
         holder.tvTotalLike.text = postData.likes + " Likes"
         activity?.let {
-            holder.photos_viewpager.adapter = PostImageVideoPagerAdapter(it, postData.images)
-            if (postData.images.size > 1) {
-                holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
-                holder.tabLayout.visibility = View.VISIBLE
-            } else {
-                holder.tabLayout.visibility = View.GONE
+
+            when {
+                postData.images.isNotEmpty() -> {
+                    holder.photos_viewpager.adapter =
+                        PostImageVideoPagerAdapter(it, postData.images)
+                    if (postData.images.size > 1) {
+                        holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
+                        holder.tabLayout.visibility = View.VISIBLE
+                    }
+                }
+                postData.videos.isNotEmpty() -> {
+                    holder.photos_viewpager.adapter =
+                        PostImageVideoPagerAdapter(it, postData.videos)
+                    if (postData.videos.size > 1) {
+                        holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
+                        holder.tabLayout.visibility = View.VISIBLE
+                    }                }
+                else -> {
+                    holder.tabLayout.visibility = View.GONE
+                }
             }
         }
 
         activity?.let {
             Common.loadImageUsingURL(holder.imgProfilePic,
-                postData.profile_img, it, true)
+                profileData?.profile_img, it, true)
         }
         holder.cbLikeUnlike.setOnCheckedChangeListener(null)
         holder.cbLikeUnlike.isChecked = when (postData.is_likes) {
@@ -156,7 +174,7 @@ class HomePostAdapter(
                 else -> return@setOnMenuItemClickListener false
             }
         }
-        inflater.inflate(R.menu.post_option, activityActionMenu.menu);
+        inflater.inflate(R.menu.post_option, activityActionMenu.menu)
         activityActionMenu.menu.findItem(R.id.edit_post).isVisible = true
         activityActionMenu.menu.findItem(R.id.delete_post).isVisible = true
         activityActionMenu.show()

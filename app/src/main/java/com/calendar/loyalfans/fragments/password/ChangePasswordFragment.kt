@@ -5,7 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.model.request.ChangePasswordRequest
+import com.calendar.loyalfans.retrofit.BaseViewModel
+import com.calendar.loyalfans.ui.BaseActivity
+import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_change_password.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
@@ -35,7 +40,9 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
         if (view != null) {
             when (view.id) {
                 R.id.btnChangePassword -> {
-                    onChangePassword()
+                    if (checkValidation()) {
+                        onChangePassword()
+                    }
                 }
                 R.id.imgBack -> {
                     activity?.onBackPressed()
@@ -44,8 +51,56 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun onChangePassword() {
+    private fun checkValidation(): Boolean {
+        when {
+            etCurrentPassword.text.isEmpty() -> {
+                activity?.let {
+                    Common.showToast(it,
+                        getString(R.string.current_password_validation))
+                }
+                return false
+            }
+            etNewPassword.text.isEmpty() -> {
+                activity?.let {
+                    Common.showToast(it,
+                        getString(R.string.new_password_validation))
+                }
+                return false
+            }
+            etConfirmPassword.text.isEmpty() -> {
+                activity?.let {
+                    Common.showToast(it,
+                        getString(R.string.confirm_password_validation))
+                }
+                return false
+            }
+            etNewPassword.text.toString() != etConfirmPassword.text.toString() -> {
+                activity?.let {
+                    Common.showToast(it,
+                        getString(R.string.confirm_new_password_validation))
+                }
+                return false
+            }
+        }
+        return true
+    }
 
+    private fun onChangePassword() {
+        val changePasswordRequest =
+            ChangePasswordRequest(etCurrentPassword.text.toString(),
+                etNewPassword.text.toString(), etConfirmPassword.text.toString())
+        changePasswordRequest.user_id = Common.getUserId()
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.changePassword(
+            changePasswordRequest, false
+        )
+            .observe(viewLifecycleOwner,
+                {
+                    if (it.status) {
+                        Common.showToast(BaseActivity.getActivity(), it.msg)
+                        activity?.let { it1 -> Common.moveToHomeFragment(it1) }
+                    }
+                })
     }
 
 

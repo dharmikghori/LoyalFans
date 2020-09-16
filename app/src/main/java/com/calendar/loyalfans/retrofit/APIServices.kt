@@ -1,9 +1,6 @@
 package com.calendar.loyalfans.retrofit
 
-import com.calendar.loyalfans.model.response.BaseResponse
-import com.calendar.loyalfans.model.response.LoginResponse
-import com.calendar.loyalfans.model.response.PostResponse
-import com.calendar.loyalfans.model.response.SearchUserData
+import com.calendar.loyalfans.model.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -24,6 +21,12 @@ interface APIServices {
         const val SEARCH_USER = "auth/searchuser"
         const val NEW_POST = "auth/newpost"
         const val POST_LIST = "auth/postlist"
+        const val PROFILE_POST = "auth/getpostdata"
+        const val UPDATE_POST = "auth/updatepost"
+        const val DELETE_POST = "auth/deletepost"
+        const val GET_PROFILE = "auth/getprofile"
+        const val GET_EDIT_PROFILE = "auth/editprofile"
+        const val UPDATE_PROFILE = "auth/updateprofile"
     }
 
     @FormUrlEncoded
@@ -115,6 +118,57 @@ interface APIServices {
         @Field("offset") offset: String,
         @Field("limit") limit: String,
     ): Call<PostResponse>
+
+    @FormUrlEncoded
+    @POST(PROFILE_POST)
+    fun profilePost(
+        @Field("user_id") user_id: String,
+        @Field("offset") offset: String,
+        @Field("limit") limit: String,
+        @Field("profile_id") profile_id: String,
+        @Field("type") type: String,
+    ): Call<PostResponse>
+
+    @FormUrlEncoded
+    @POST(UPDATE_POST)
+    fun updatePost(
+        @Field("user_id") user_id: String,
+        @Field("post_id") post_id: String,
+        @Field("content") content: String,
+    ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(DELETE_POST)
+    fun deletePost(
+        @Field("user_id") user_id: String,
+        @Field("post_id") post_id: String,
+    ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(GET_PROFILE)
+    fun getProfile(
+        @Field("user_id") user_id: String,
+        @Field("profile_id") profile_id: String,
+    ): Call<ProfileResponse>
+
+    @FormUrlEncoded
+    @POST(GET_EDIT_PROFILE)
+    fun getEditProfile(
+        @Field("user_id") user_id: String,
+        @Field("profile_id") profile_id: String,
+    ): Call<ProfileResponse>
+
+    @FormUrlEncoded
+    @POST(UPDATE_PROFILE)
+    fun updateProfile(
+        @Field("user_id") user_id: String,
+        @Field("display_name") display_name: String,
+        @Field("location") location: String,
+        @Field("about") about: String,
+        @Field("website") website: String,
+        @Field("profile_img") profile_img: String,
+        @Field("banner_img") banner_img: String,
+    ): Call<ProfileResponse>
 
 
 }

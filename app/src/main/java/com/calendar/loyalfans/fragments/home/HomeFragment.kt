@@ -87,16 +87,18 @@ class HomeFragment : Fragment() {
         homeAdapter?.notifyDataSetChanged()
     }
 
-    private fun setUpAdapter(postList: ArrayList<PostData>) {
+    private fun setUpAdapter(lastPostList: ArrayList<PostData>) {
         rvHomePost?.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        this.postList.addAll(postList)
+        this.postList.addAll(lastPostList)
         homeAdapter = HomePostAdapter(this.postList, activity)
         rvHomePost.adapter = homeAdapter
         homeAdapter!!.onPostAction = object : HomePostAdapter.OnPostAction {
             override fun onBottomReached(position: Int) {
-                offset += limit
-                getPosts()
+                if (postList.size % limit == 0) {
+                    offset += limit
+                    getPosts()
+                }
             }
 
             override fun onLikeUnLike(postData: PostData, position: Int) {
@@ -108,6 +110,14 @@ class HomeFragment : Fragment() {
             }
 
             override fun onBookmark(postData: PostData, position: Int) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onEditPost(postData: PostData, position: Int) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDeletePost(postData: PostData, position: Int) {
                 TODO("Not yet implemented")
             }
         }

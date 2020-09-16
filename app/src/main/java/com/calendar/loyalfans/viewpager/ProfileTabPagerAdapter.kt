@@ -6,7 +6,7 @@ import androidx.annotation.Nullable
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.fragments.profile.ProfilePhotosFragment
 import com.calendar.loyalfans.fragments.profile.ProfilePostFragment
@@ -14,17 +14,13 @@ import com.calendar.loyalfans.fragments.profile.ProfileVideosFragment
 
 @SuppressLint("WrongConstant")
 class ProfileTabPagerAdapter(context: Context, fm: FragmentManager) :
-    FragmentPagerAdapter(fm) {
+    FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val mContext = context
-    private val profilePostFragment = ProfilePostFragment.newInstance()
-    private val profilePhotosFragment = ProfilePhotosFragment.newInstance()
-    private val profileVideoFragment = ProfileVideosFragment.newInstance()
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> profilePostFragment
-            1 -> profilePhotosFragment
-            2 -> profileVideoFragment
-            else -> profilePhotosFragment
+            0 -> ProfilePostFragment.newInstance()
+            1 -> ProfilePhotosFragment.newInstance()
+            else -> ProfileVideosFragment.newInstance()
         }
     }
 

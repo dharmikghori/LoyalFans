@@ -7,13 +7,15 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.fragments.post.EditPostFragment
+import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom.*
 
 
 class MainActivity : BaseActivity() {
-    public var drawerLayout: DrawerLayout? = null
+    var drawerLayout: DrawerLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +40,25 @@ class MainActivity : BaseActivity() {
                 .addToBackStack(fragmentToTag)
                 .commit()
         }
+    }
+
+    fun loadFragmentWithEditPostListener(
+        type: Int,
+        postData: PostData,
+        onPostEdit: EditPostFragment.OnPostEdit,
+    ) {
+        val fragmentToTag = Common.getTagBasedOnType(type)
+        Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+            type, imgHome, imgSearch, imgNotification, imgProfile,
+            resources, theme
+        )
+        closeDrawer()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.layFrame,
+                EditPostFragment.newInstance(postData, onPostEdit), fragmentToTag)
+            .addToBackStack(fragmentToTag)
+            .commit()
     }
 
     var doubleBackToExitPressedOnce = false

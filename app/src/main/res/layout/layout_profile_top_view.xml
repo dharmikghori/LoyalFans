@@ -93,6 +93,7 @@
                         android:textColor="@color/theme_black" />
 
                     <TextView
+                        android:id="@+id/tvTotalFansCount"
                         style="@style/BaseTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -117,6 +118,7 @@
                         android:textColor="@color/theme_black" />
 
                     <TextView
+                        android:id="@+id/tvFollowingCount"
                         style="@style/BaseTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -140,6 +142,7 @@
                         android:textColor="@color/theme_black" />
 
                     <TextView
+                        android:id="@+id/tvFavouritesCount"
                         style="@style/BaseTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -159,6 +162,7 @@
 
     <TextView
         style="@style/BaseTextView"
+        android:id="@+id/tvAbout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
