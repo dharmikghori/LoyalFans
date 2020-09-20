@@ -1,7 +1,7 @@
 package com.calendar.loyalfans.retrofit
 
 import com.calendar.loyalfans.model.response.BaseResponse
-import com.calendar.loyalfans.ui.BaseActivity
+import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.utils.Common
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.reflect.Type
-import java.net.HttpURLConnection
+import java.net.HttpURLConnection.*
 
 
 class CustomCB<T>(isShowProgressDialog: Boolean, onAPIResponse: OnAPIResponse) : Callback<T> {
@@ -24,7 +24,7 @@ class CustomCB<T>(isShowProgressDialog: Boolean, onAPIResponse: OnAPIResponse) :
         response: Response<T>,
     ) {
         dismissProgress()
-        if (response.code() == HttpURLConnection.HTTP_OK) {
+        if (response.code() == HTTP_OK) {
             try {
                 val isBaseResponse = response.body() is BaseResponse
                 if (isBaseResponse) {
@@ -46,6 +46,15 @@ class CustomCB<T>(isShowProgressDialog: Boolean, onAPIResponse: OnAPIResponse) :
                     Gson().fromJson(response.errorBody()?.charStream(), type)
                 if (errorResponse != null && errorResponse.msg.isNotEmpty()) {
                     Common.showToast(BaseActivity.getActivity(), errorResponse.msg)
+                }
+                if (errorResponse != null) {
+                    if ((response.code() == HTTP_NOT_FOUND && errorResponse.msg.equals(
+                            "Unauthorized"))
+                    ) {
+                        Common.automaticallyLogoutOnUnauthorizedOrForbidden()
+                    }
+                } else if (response.code() == HTTP_UNAUTHORIZED) {
+                    Common.automaticallyLogoutOnUnauthorizedOrForbidden()
                 }
             } catch (e: Exception) {
             }

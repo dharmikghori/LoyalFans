@@ -1,4 +1,4 @@
-package com.calendar.loyalfans.ui
+package com.calendar.loyalfans.activities
 
 import android.Manifest
 import android.app.Activity
@@ -24,7 +24,6 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         FacebookSdk.sdkInitialize(this)
-//        printKeyHash(this)
         checkAllPermissionsAreAllow()
     }
 

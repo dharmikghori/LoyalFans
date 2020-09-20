@@ -27,6 +27,10 @@ interface APIServices {
         const val GET_PROFILE = "auth/getprofile"
         const val GET_EDIT_PROFILE = "auth/editprofile"
         const val UPDATE_PROFILE = "auth/updateprofile"
+        const val SUBSCRIPTION_PLAN = "auth/subscriptionplan"
+        const val GET_FANS = "auth/getfans"
+        const val GET_FOLLOWING = "auth/getfollowings"
+        const val GET_FAVORITE = "auth/favoritelist"
     }
 
     @FormUrlEncoded
@@ -169,6 +173,43 @@ interface APIServices {
         @Field("profile_img") profile_img: String,
         @Field("banner_img") banner_img: String,
     ): Call<ProfileResponse>
+
+    @FormUrlEncoded
+    @POST(SUBSCRIPTION_PLAN)
+    fun setSubscriptionPlan(
+        @Field("user_id") user_id: String,
+        @Field("subscription_plans") subscription_plans: String,
+    ): Call<SubscriptionResponse>
+
+    @FormUrlEncoded
+    @POST(SUBSCRIPTION_PLAN)
+    fun getSubscriptionPlan(
+        @Field("user_id") user_id: String,
+    ): Call<SubscriptionResponse>
+
+    @FormUrlEncoded
+    @POST(GET_FANS)
+    fun getFansByType(
+        @Field("user_id") user_id: String,
+        @Field("profile_id") profile_id: String,
+        @Field("type") type: String,
+    ): Call<FansResponse>
+
+    @FormUrlEncoded
+    @POST(GET_FOLLOWING)
+    fun getFollowingByType(
+        @Field("user_id") user_id: String,
+        @Field("profile_id") profile_id: String,
+        @Field("type") type: String,
+    ): Call<FansResponse>
+
+
+    @FormUrlEncoded
+    @POST(GET_FAVORITE)
+    fun getFavorite(
+        @Field("user_id") user_id: String,
+        @Field("type") type: String,
+    ): Call<FavouriteResponse>
 
 
 }

@@ -18,9 +18,9 @@ open class PostData : BaseResponse(), Serializable {
     var username: String = ""
     var profile_img: String = ""
     var images: ArrayList<String> = ArrayList()
-    var videos: ArrayList<String> = ArrayList()
-    var likes: String = ""
-    var comments: String = ""
+//    var videos: ArrayList<String> = ArrayList()
+    var likes: String = "0"
+    var comments: String = "0"
     var bookmark: String = ""
     var is_likes: String = ""
 }

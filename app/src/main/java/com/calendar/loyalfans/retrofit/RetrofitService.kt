@@ -1,6 +1,6 @@
 package com.calendar.loyalfans.retrofit
 
-import com.calendar.loyalfans.ui.BaseActivity
+import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
 import com.google.gson.Gson

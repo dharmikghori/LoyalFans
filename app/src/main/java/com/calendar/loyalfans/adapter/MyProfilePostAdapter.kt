@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.response.PostData
-import com.calendar.loyalfans.ui.BaseActivity
+import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
 import com.google.android.material.tabs.TabLayout
@@ -76,15 +76,17 @@ class MyProfilePostAdapter(
                     if (postData.images.size > 1) {
                         holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
                         holder.tabLayout.visibility = View.VISIBLE
+                    }else{
+                        holder.tabLayout.visibility = View.VISIBLE
                     }
                 }
-                postData.videos.isNotEmpty() -> {
-                    holder.photos_viewpager.adapter =
-                        PostImageVideoPagerAdapter(it, postData.videos)
-                    if (postData.videos.size > 1) {
-                        holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
-                        holder.tabLayout.visibility = View.VISIBLE
-                    }                }
+//                postData.videos.isNotEmpty() -> {
+//                    holder.photos_viewpager.adapter =
+//                        PostImageVideoPagerAdapter(it, postData.videos)
+//                    if (postData.videos.size > 1) {
+//                        holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
+//                        holder.tabLayout.visibility = View.VISIBLE
+//                    }                }
                 else -> {
                     holder.tabLayout.visibility = View.GONE
                 }

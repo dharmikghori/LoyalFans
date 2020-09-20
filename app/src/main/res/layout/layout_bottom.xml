@@ -5,7 +5,7 @@
     android:layout_height="@dimen/_55sdp"
     android:background="@color/white"
     android:paddingBottom="@dimen/_5sdp"
-    tools:context=".ui.MainActivity">
+    tools:context=".activities.MainActivity">
 
 
     <View

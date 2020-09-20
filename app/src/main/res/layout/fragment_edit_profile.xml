@@ -44,6 +44,7 @@
                     android:src="@drawable/model" />
 
                 <Button
+                    android:id="@+id/btnUploadProfileImg"
                     style="@style/BaseColorRoundedGradientButton"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_20sdp"
@@ -56,6 +57,7 @@
                     android:textSize="@dimen/_8sdp" />
 
                 <Button
+                    android:id="@+id/btnUploadCoverImg"
                     style="@style/BaseColorRoundedGradientButton"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_20sdp"

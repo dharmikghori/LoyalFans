@@ -1,4 +1,4 @@
-package com.calendar.loyalfans.ui
+package com.calendar.loyalfans.activities
 
 import android.os.Bundle
 import android.os.Handler
@@ -23,7 +23,6 @@ class MainActivity : BaseActivity() {
         tvUserNameMenu.text = spHelper.getLoginData()?.data?.username
         drawerLayout = drawer_layout
     }
-
 
     fun loadFragment(type: Int) {
         val fragmentToBeLoad = Common.getFragmentBasedOnType(type)
@@ -148,6 +147,10 @@ class MainActivity : BaseActivity() {
 
     fun onLogout(view: View) {
         Common.automaticallyLogoutOnUnauthorizedOrForbidden()
+    }
+
+    fun onSubscriptionPlan(view: View) {
+        loadFragment(14)
     }
 
 }

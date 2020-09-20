@@ -9,8 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.request.ChangePasswordRequest
 import com.calendar.loyalfans.retrofit.BaseViewModel
-import com.calendar.loyalfans.ui.BaseActivity
+import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.SPHelper
 import kotlinx.android.synthetic.main.fragment_change_password.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
@@ -78,6 +79,13 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
                 activity?.let {
                     Common.showToast(it,
                         getString(R.string.confirm_new_password_validation))
+                }
+                return false
+            }
+            etCurrentPassword.text.toString() != SPHelper(BaseActivity.getActivity()).getUserPassword() -> {
+                activity?.let {
+                    Common.showToast(it,
+                        getString(R.string.current_password_not_match_validation))
                 }
                 return false
             }

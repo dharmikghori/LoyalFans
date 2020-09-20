@@ -38,6 +38,7 @@ class FansFragment : Fragment(), View.OnClickListener {
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
                 FansTabPagerAdapter(requireActivity(), supportFragmentManager)
+            viewPagerFans.offscreenPageLimit = 4
             viewPagerFans.adapter = tabsPagerAdapter
             tabFansLayout.setupWithViewPager(viewPagerFans)
             tabsPagerAdapter.notifyDataSetChanged()

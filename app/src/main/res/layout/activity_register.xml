@@ -7,7 +7,7 @@
     android:background="@drawable/app_background"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.RegisterActivity">
+    tools:context=".activities.RegisterActivity">
 
     <ScrollView
         android:layout_width="match_parent"

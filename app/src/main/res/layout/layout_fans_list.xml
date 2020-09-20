@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_5sdp"
@@ -66,7 +67,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvDate"
+                    android:id="@+id/tvExpiryDate"
                     style="@style/BaseTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,10 +75,17 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
+                    android:ellipsize="marquee"
+                    android:fadingEdge="horizontal"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:maxLines="1"
                     android:text="@string/till_20_sep_2020"
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_10sdp"
+                    android:singleLine="true"
+                    tools:ignore="EllipsizeMaxLines" />
 
             </LinearLayout>
         </LinearLayout>

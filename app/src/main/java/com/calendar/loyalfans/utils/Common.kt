@@ -38,13 +38,16 @@ import com.calendar.loyalfans.fragments.profile.*
 import com.calendar.loyalfans.fragments.searchFragment.SearchFragment
 import com.calendar.loyalfans.fragments.setting.NotificationSettingFragment
 import com.calendar.loyalfans.fragments.setting.SecuritySettingFragment
-import com.calendar.loyalfans.ui.BaseActivity
-import com.calendar.loyalfans.ui.LoginActivity
-import com.calendar.loyalfans.ui.MainActivity
+import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.LoginActivity
+import com.calendar.loyalfans.activities.MainActivity
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.HashMap
 
 
 class Common {
@@ -102,7 +105,7 @@ class Common {
                     "AddCardFragment"
                 }
                 14 -> {
-                    "EditPostFragment"
+                    "SubscriptionPlan"
                 }
                 else -> ""
             }
@@ -148,6 +151,9 @@ class Common {
                 }
                 13 -> {
                     AddCardFragment.newInstance()
+                }
+                14 -> {
+                    SubscriptionFragment.newInstance()
                 }
                 else -> null
             }
@@ -532,7 +538,7 @@ class Common {
                     Glide.with(context)
                         .load(url)
                         .fitCenter()
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.drawable.place_holder)
                         .into(imageView)
                 } else {
                     Glide.with(context)
@@ -540,7 +546,7 @@ class Common {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .fitCenter()
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.drawable.place_holder)
                         .into(imageView)
                 }
             }
@@ -577,6 +583,14 @@ class Common {
             base64 = Base64.encodeToString(buffer, 0, length,
                 Base64.DEFAULT)
             return base64
+        }
+
+        var yyyyHHmmssFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        var ddMMYYFormat = SimpleDateFormat("dd MMM, yyyy", Locale.US)
+
+        fun formatDate(strDate: String): String {
+            val format = yyyyHHmmssFormat.parse(strDate)
+            return ddMMYYFormat.format(format)
         }
     }
 }

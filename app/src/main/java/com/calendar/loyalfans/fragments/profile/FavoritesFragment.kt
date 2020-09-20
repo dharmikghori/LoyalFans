@@ -29,7 +29,7 @@ class FavoritesFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setTabLayoutAdapter()
+//        setTabLayoutAdapter()
         tvToolBarName.text = getString(R.string.favorites)
 //        imgBack.setOnClickListener(this)
     }

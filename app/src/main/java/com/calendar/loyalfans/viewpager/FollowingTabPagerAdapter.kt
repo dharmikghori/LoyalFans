@@ -8,18 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.calendar.loyalfans.R
-import com.calendar.loyalfans.fragments.profile.FansTypeListFragment
+import com.calendar.loyalfans.fragments.profile.FollowingTypeListFragment
 
 @SuppressLint("WrongConstant")
-class FansTabPagerAdapter(context: Context, fm: FragmentManager) :
+class FollowingTabPagerAdapter(context: Context, fm: FragmentManager) :
     FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val mContext = context
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> FansTypeListFragment.newInstance("1")
-            1 -> FansTypeListFragment.newInstance("0")
-            2 -> FansTypeListFragment.newInstance("2")
-            else -> FansTypeListFragment.newInstance("")
+            0 -> FollowingTypeListFragment.newInstance("1")
+            1 -> FollowingTypeListFragment.newInstance("0")
+            else -> FollowingTypeListFragment.newInstance("2")
         }
     }
 
@@ -35,10 +34,10 @@ class FansTabPagerAdapter(context: Context, fm: FragmentManager) :
     companion object {
         @StringRes
         private val TAB_TITLES =
-            intArrayOf(R.string.active,
+            intArrayOf(
+                R.string.active,
                 R.string.expired,
-                R.string.blocked,
-                R.string.all)
+                R.string.blocked)
     }
 
 }

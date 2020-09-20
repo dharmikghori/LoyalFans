@@ -14,8 +14,8 @@ import com.calendar.loyalfans.model.request.PostDetailRequest
 import com.calendar.loyalfans.model.request.PostListRequest
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
-import com.calendar.loyalfans.ui.BaseActivity
-import com.calendar.loyalfans.ui.MainActivity
+import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_profile_post.*
 

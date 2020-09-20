@@ -1,4 +1,4 @@
-package com.calendar.loyalfans.fragments.post
+package com.calendar.loyalfans.fragments.ppv
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -29,10 +29,10 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 
-class AddPostFragment : Fragment(), View.OnClickListener {
+class AddPpvPostFragment : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() = AddPostFragment()
+        fun newInstance() = AddPpvPostFragment()
     }
 
 

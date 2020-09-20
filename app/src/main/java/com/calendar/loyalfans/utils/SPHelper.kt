@@ -77,6 +77,16 @@ class SPHelper(mContext: Context) {
     }
 
 
+    //  Save login object
+    fun saveUserPassword(password: String) {
+        sp.save(RequestParams.USER_PASSWORD, password)
+    }
+
+    fun getUserPassword(): String {
+        return sp.read(RequestParams.USER_PASSWORD, "").toString()
+    }
+
+
     //  Save Profile object
     fun saveProfileData(profileData: ProfileData) {
         val json = Gson().toJson(profileData)

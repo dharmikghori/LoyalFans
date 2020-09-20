@@ -8,8 +8,6 @@ import com.calendar.loyalfans.model.request.*
 import com.calendar.loyalfans.model.response.*
 import com.calendar.loyalfans.utils.Common
 import com.google.gson.Gson
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 
 class BaseViewModel : ViewModel() {
@@ -206,29 +204,6 @@ class BaseViewModel : ViewModel() {
         return searchUserData
     }
 
-    fun newPost(
-        userIdBody: RequestBody,
-        contentBody: RequestBody,
-        multipartFiles: List<MultipartBody.Part>,
-        progressShow: Boolean,
-    ): MutableLiveData<BaseResponse> {
-        val apiName = APIServices.NEW_POST
-        val searchUserData: MutableLiveData<BaseResponse> =
-            MutableLiveData()
-        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
-//        printStrRequestJson(searchUserRequest, apiName)
-        apiServices?.newPost(userIdBody,
-            contentBody, multipartFiles
-        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
-            override fun onResponse(response: Any) {
-                val searchUserResponse = response as BaseResponse
-                printStrJson(searchUserResponse, apiName)
-                searchUserData.value = searchUserResponse
-            }
-        }))
-        return searchUserData
-    }
-
     fun postList(
         postListRequest: PostListRequest,
         progressShow: Boolean,
@@ -393,6 +368,116 @@ class BaseViewModel : ViewModel() {
             }
         }))
         return updateProfileData
+    }
+
+    fun getSubscriptionPlan(
+        progressShow: Boolean,
+    ): MutableLiveData<SubscriptionResponse> {
+        val apiName = APIServices.SUBSCRIPTION_PLAN
+        val subscriptionData: MutableLiveData<SubscriptionResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        val baseRequest = BaseRequest(Common.getUserId())
+        printStrRequestJson(baseRequest, apiName)
+        apiServices?.getSubscriptionPlan(
+            baseRequest.user_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val subscriptionResponse = response as SubscriptionResponse
+                printStrJson(subscriptionResponse, apiName)
+                subscriptionData.value = subscriptionResponse
+            }
+        }))
+        return subscriptionData
+    }
+
+    fun setSubscriptionPlan(
+        subscriptionRequestData: String,
+        progressShow: Boolean,
+    ): MutableLiveData<SubscriptionResponse> {
+        val apiName = APIServices.SUBSCRIPTION_PLAN
+        val subscriptionData: MutableLiveData<SubscriptionResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        val baseRequest = BaseRequest(Common.getUserId())
+        printStrRequestJson(subscriptionRequestData, apiName)
+        val toJson = Gson().toJson(subscriptionRequestData)
+        apiServices?.setSubscriptionPlan(
+            baseRequest.user_id, toJson
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val subscriptionResponse = response as SubscriptionResponse
+                printStrJson(subscriptionResponse, apiName)
+                subscriptionData.value = subscriptionResponse
+            }
+        }))
+        return subscriptionData
+    }
+
+    fun getFansByType(
+        fansFollowingRequest: FansFollowingRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<FansResponse> {
+        val apiName = APIServices.GET_FANS
+        val fansData: MutableLiveData<FansResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        fansFollowingRequest.user_id = Common.getUserId()
+        printStrRequestJson(fansFollowingRequest, apiName)
+        apiServices?.getFansByType(
+            fansFollowingRequest.user_id, fansFollowingRequest.profile_id, fansFollowingRequest.type
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val fansResponse = response as FansResponse
+                printStrJson(fansResponse, apiName)
+                fansData.value = fansResponse
+            }
+        }))
+        return fansData
+    }
+
+    fun getFollowingByType(
+        fansFollowingRequest: FansFollowingRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<FansResponse> {
+        val apiName = APIServices.GET_FANS
+        val fansData: MutableLiveData<FansResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        fansFollowingRequest.user_id = Common.getUserId()
+        printStrRequestJson(fansFollowingRequest, apiName)
+        apiServices?.getFollowingByType(
+            fansFollowingRequest.user_id, fansFollowingRequest.profile_id, fansFollowingRequest.type
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val fansResponse = response as FansResponse
+                printStrJson(fansResponse, apiName)
+                fansData.value = fansResponse
+            }
+        }))
+        return fansData
+    }
+
+    fun getFavoriteByType(
+        fansFollowingRequest: FansFollowingRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<FavouriteResponse> {
+        val apiName = APIServices.GET_FAVORITE
+        val favouriteData: MutableLiveData<FavouriteResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        fansFollowingRequest.user_id = Common.getUserId()
+        printStrRequestJson(fansFollowingRequest, apiName)
+        apiServices?.getFavorite(
+            fansFollowingRequest.user_id, fansFollowingRequest.type
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val favouriteResponse = response as FavouriteResponse
+                printStrJson(favouriteResponse, apiName)
+                favouriteData.value = favouriteResponse
+            }
+        }))
+        return favouriteData
     }
 
     private fun printStrRequestJson(request: Any, apiName: String) {

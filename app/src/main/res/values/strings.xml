@@ -56,7 +56,7 @@
     <string name="profile_image">IMAGE</string>
     <string name="profile_video">VIDEO</string>
     <string name="lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum">Lorem ipsum ipsum ipsuipsum ipsum ipsum m ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum</string>
-    <string name="till_20_sep_2020">Till 20 Sep, 2020</string>
+    <string name="till_20_sep_2020" />
     <string name="blocked">BLOCKED</string>
     <string name="active">ACTIVE</string>
     <string name="expired">EXPIRED</string>
@@ -75,6 +75,7 @@
     <string name="upload_profile_image">upload profile image</string>
     <string name="upload_cover_image">Upload cover image</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="subscription_plan">Subscription Plan</string>
     <string name="email_notifications">Email Notifications</string>
     <string name="push_notifications">Push Notifications</string>
     <string name="receive_site_notifications_about">Receive Site Notifications About</string>
@@ -134,6 +135,7 @@
     <string name="attachment_validation">Attachment is required</string>
     <string name="content_validation">Content is mandatory</string>
     <string name="current_password_validation">Current password required</string>>
+    <string name="current_password_not_match_validation">Current password not match</string>>
     <string name="new_password_validation">New password required</string>>
     <string name="confirm_password_validation">Confirm password required</string>>
     <string name="confirm_new_password_validation">New password and confirm password should be same</string>
@@ -144,5 +146,13 @@
     <string name="about_Validation">About is required</string>
     <string name="location_Validation">Location is required</string>
     <string name="website_Validation">Website URL is required</string>
+    <string name="add_edit_subscription">Add/Edit Subscription</string>
+    <string name="_1_month">1 month</string>
+    <string name="_3_month">3 month</string>
+    <string name="_6_month">6 month</string>
+    <string name="_12_month">12 month</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="update">Update</string>
+    <string name="ppv_send">PPV Send</string>
 
 </resources>

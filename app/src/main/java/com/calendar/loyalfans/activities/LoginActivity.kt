@@ -1,4 +1,4 @@
-package com.calendar.loyalfans.ui
+package com.calendar.loyalfans.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.request.LoginRequest
+import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -14,7 +15,6 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -131,6 +131,7 @@ class LoginActivity : BaseActivity() {
         )
             .observe(this, {
                 if (it.status) {
+                    spHelper.saveUserPassword(loginRequest.password)
                     spHelper.saveLoginData(it)
                     val intent = Intent(this@LoginActivity, MainActivity::
                     class.java)

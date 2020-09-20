@@ -12,7 +12,7 @@ import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.request.ProfileDetailRequest
 import com.calendar.loyalfans.model.response.ProfileData
 import com.calendar.loyalfans.retrofit.BaseViewModel
-import com.calendar.loyalfans.ui.MainActivity
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
 import com.calendar.loyalfans.viewpager.ProfileTabPagerAdapter
@@ -41,6 +41,7 @@ class MyProfileFragment : Fragment(), View.OnClickListener {
         layFans.setOnClickListener(this)
         layFollowing.setOnClickListener(this)
         layFavorites.setOnClickListener(this)
+        imgEditProfile.setOnClickListener(this)
     }
 
     override fun onResume() {
@@ -120,6 +121,12 @@ class MyProfileFragment : Fragment(), View.OnClickListener {
                     if (activity is MainActivity) {
                         val mainActivity = activity as MainActivity
                         mainActivity.loadFragment(8)
+                    }
+                }
+                R.id.imgEditProfile -> {
+                    if (activity is MainActivity) {
+                        val mainActivity = activity as MainActivity
+                        mainActivity.loadFragment(10)
                     }
                 }
                 else -> {

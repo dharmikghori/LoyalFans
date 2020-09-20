@@ -1,4 +1,4 @@
-package com.calendar.loyalfans.ui
+package com.calendar.loyalfans.activities
 
 
 import android.Manifest.permission

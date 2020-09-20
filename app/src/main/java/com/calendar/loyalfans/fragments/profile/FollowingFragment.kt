@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.viewpager.FansTabPagerAdapter
+import com.calendar.loyalfans.viewpager.FollowingTabPagerAdapter
 import kotlinx.android.synthetic.main.fragment_fans.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
@@ -38,7 +39,8 @@ class FollowingFragment : Fragment(), View.OnClickListener {
         val supportFragmentManager = activity?.supportFragmentManager
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
-                FansTabPagerAdapter(requireActivity(), supportFragmentManager)
+                FollowingTabPagerAdapter(requireActivity(), supportFragmentManager)
+            viewPagerFans.offscreenPageLimit = 3
             viewPagerFans.adapter = tabsPagerAdapter
             tabFansLayout.setupWithViewPager(viewPagerFans)
             tabsPagerAdapter.notifyDataSetChanged()
