@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/layMainSuggestion"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_150sdp"
+    android:fitsSystemWindows="false"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/imgProfileCover"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp"
+        android:contentDescription="@string/app_name"
+        android:foreground="#50000000"
+        android:scaleType="centerCrop"
+        android:src="@drawable/model" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgProfilePic"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:src="@drawable/model" />
+
+    <LinearLayout
+        android:id="@+id/viewProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_toEndOf="@+id/imgProfilePic"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvProfileName"
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:text="@string/henry_mark_name"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:text="@string/henry_mark"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:background="@color/black"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/subscriptionAmount"
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp" />
+    </LinearLayout>
+</RelativeLayout>

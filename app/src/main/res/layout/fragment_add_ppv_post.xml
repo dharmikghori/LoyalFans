@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_10sdp"
+    tools:context=".fragments.home.HomeFragment">
+
+    <include
+        android:id="@+id/addPostToolBar"
+        layout="@layout/layout_toolbar_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addPostToolBar">
+
+        <EditText
+            android:id="@+id/etPostMessage"
+            style="@style/BaseSearchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_bottom_line_background"
+            android:gravity="top"
+            android:hint="@string/write_something"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:minLines="3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSelectedFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etPostMessage"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="1"
+            tools:listitem="@layout/layout_selected_file" />
+
+        <RadioGroup
+            android:id="@+id/rgPPVType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rvSelectedFiles"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbFree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/free"
+                android:textAllCaps="true" />
+
+            <RadioButton
+                android:id="@+id/rbPaid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:checked="false"
+                android:text="@string/paid"
+                android:textAllCaps="true" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/layPPVAmount"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_below="@+id/rgPPVType"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/border_color">
+
+            <TextView
+                android:id="@+id/tvTipAmount"
+                style="@style/BaseTextView"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@color/dark_border_color"
+                android:gravity="center"
+                android:text="@string/dollar"
+                android:textColor="@color/theme_black" />
+
+            <EditText
+                android:id="@+id/etPPVPostAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@color/transparent"
+                android:fontFamily="@font/cambria"
+                android:hint="@string/enter_amount"
+                android:text="0"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:labelFor="@+id/tvTipAmount"
+                android:textColor="@color/theme_black"
+                android:textColorHint="@color/theme_black"
+                android:textSize="@dimen/_11sdp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnAddPost"
+            style="@style/BaseColorRoundedGradientButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="@string/post"
+            android:textSize="@dimen/_14sdp" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

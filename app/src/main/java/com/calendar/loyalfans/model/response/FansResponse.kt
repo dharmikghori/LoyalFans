@@ -12,6 +12,7 @@ open class FansData : BaseResponse() {
     var end_date: String? = null
     var followingID: String = ""
     var profile_img: String = ""
+    var isSelected: Boolean = false
 }
 
 

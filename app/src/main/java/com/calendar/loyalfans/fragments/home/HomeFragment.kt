@@ -1,5 +1,6 @@
 package com.calendar.loyalfans.fragments.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.MainActivity
+import com.calendar.loyalfans.activities.PPVActivity
 import com.calendar.loyalfans.adapter.HomePostAdapter
 import com.calendar.loyalfans.model.request.PostDetailRequest
 import com.calendar.loyalfans.model.request.PostListRequest
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
-import com.calendar.loyalfans.activities.BaseActivity
-import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_ppv_message.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class HomeFragment : Fragment() {
@@ -46,6 +49,9 @@ class HomeFragment : Fragment() {
                 mainActivity.drawerLayout?.openDrawer(GravityCompat.START)
             }
         }
+        imgSendPPV.setOnClickListener {
+            startActivity(Intent(activity, PPVActivity::class.java))
+        }
     }
 
     private var limit = 10
@@ -58,9 +64,7 @@ class HomeFragment : Fragment() {
         postList = ArrayList()
         homeAdapter = null
         getPosts()
-
     }
-
 
     private fun getPosts() {
         val postListRequest = PostListRequest(offset, limit)
@@ -88,8 +92,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpAdapter(lastPostList: ArrayList<PostData>) {
-        rvHomePost?.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        Common.setupVerticalRecyclerView(rvHomePost, activity)
         this.postList.addAll(lastPostList)
         homeAdapter = HomePostAdapter(this.postList, activity)
         rvHomePost.adapter = homeAdapter
@@ -106,7 +109,12 @@ class HomeFragment : Fragment() {
             }
 
             override fun onComment(postData: PostData, position: Int) {
-                TODO("Not yet implemented")
+                if (activity is MainActivity) {
+                    if (postData.comments != "0" && postData.comments != "") {
+                        (activity as MainActivity).loadFragment(17, postData.id)
+                    } else {
+                        Common.showToast(activity as MainActivity, "No comments")
+                    }                }
             }
 
             override fun onBookmark(postData: PostData, position: Int) {

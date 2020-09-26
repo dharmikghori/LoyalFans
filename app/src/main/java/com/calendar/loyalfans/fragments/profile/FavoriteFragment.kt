@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import com.calendar.loyalfans.R
-import com.calendar.loyalfans.viewpager.FansTabPagerAdapter
+import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.viewpager.FavoriteTabPagerAdapter
 import kotlinx.android.synthetic.main.fragment_fans.*
-import kotlinx.android.synthetic.main.layout_toolbar_back.*
-import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
+import kotlinx.android.synthetic.main.layout_toolbar_textview.*
 
-class FavoritesFragment : Fragment(), View.OnClickListener {
+class FavoriteFragment(private val profileId: String) : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() = FavoritesFragment()
+        fun newInstance(profileId: String) = FavoriteFragment(profileId)
+        fun newInstance() = FavoriteFragment(Common.getUserId())
     }
 
 
@@ -29,7 +30,7 @@ class FavoritesFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        setTabLayoutAdapter()
+        setTabLayoutAdapter()
         tvToolBarName.text = getString(R.string.favorites)
 //        imgBack.setOnClickListener(this)
     }
@@ -38,7 +39,8 @@ class FavoritesFragment : Fragment(), View.OnClickListener {
         val supportFragmentManager = activity?.supportFragmentManager
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
-                FansTabPagerAdapter(requireActivity(), supportFragmentManager)
+                FavoriteTabPagerAdapter(requireActivity(), supportFragmentManager,profileId)
+            viewPagerFans.offscreenPageLimit = 4
             viewPagerFans.adapter = tabsPagerAdapter
             tabFansLayout.setupWithViewPager(viewPagerFans)
             tabsPagerAdapter.notifyDataSetChanged()
@@ -55,7 +57,6 @@ class FavoritesFragment : Fragment(), View.OnClickListener {
                                 requireContext().assets,
                                 "cambria.ttf"
                             )
-//                            tabViewChild.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11F)
                         }
                     }
                 }

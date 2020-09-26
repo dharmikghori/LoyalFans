@@ -8,24 +8,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.MyProfilePostAdapter
 import com.calendar.loyalfans.fragments.post.EditPostFragment
 import com.calendar.loyalfans.model.request.PostDetailRequest
 import com.calendar.loyalfans.model.request.PostListRequest
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
-import com.calendar.loyalfans.activities.BaseActivity
-import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_profile_post.*
 
-class ProfilePostFragment : Fragment() {
+class ProfilePostFragment(private val profileId: String) : Fragment() {
 
     private var limit = 10
     private var offset = 0
 
     companion object {
-        fun newInstance() = ProfilePostFragment()
+        fun newInstance(profileId: String) = ProfilePostFragment(profileId)
     }
 
 
@@ -42,7 +42,7 @@ class ProfilePostFragment : Fragment() {
     }
 
     private fun getPosts() {
-        val postListRequest = PostListRequest(offset, limit, 0, Common.getUserId())
+        val postListRequest = PostListRequest(offset, limit, 0, profileId)
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.profilePost(
             postListRequest, true
@@ -66,8 +66,7 @@ class ProfilePostFragment : Fragment() {
     }
 
     private fun setUpAdapter(lastPostList: ArrayList<PostData>) {
-        rvHomePost?.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        Common.setupVerticalRecyclerView(rvHomePost, activity)
         this.postList.addAll(lastPostList)
         myProfilePostAdapter = MyProfilePostAdapter(this.postList, activity, true)
         rvHomePost.adapter = myProfilePostAdapter
@@ -84,8 +83,12 @@ class ProfilePostFragment : Fragment() {
             }
 
             override fun onComment(postData: PostData, position: Int) {
-                TODO("Not yet implemented")
-            }
+                if (activity is MainActivity) {
+                    if (postData.comments != "0" && postData.comments != "") {
+                        (activity as MainActivity).loadFragment(17, postData.id)
+                    } else {
+                        Common.showToast(activity as MainActivity, "No comments")
+                    }                }            }
 
             override fun onBookmark(postData: PostData, position: Int) {
                 TODO("Not yet implemented")

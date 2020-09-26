@@ -8,19 +8,4 @@
     android:paddingTop="@dimen/_5sdp"
     android:paddingEnd="@dimen/_10sdp"
     android:paddingBottom="@dimen/_10sdp">
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        app:tabMaxWidth="@dimen/_100sdp"
-        app:tabSelectedTextColor="@color/colorAccent"
-        app:tabTextColor="@color/theme_black" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_320sdp" />
 </LinearLayout>

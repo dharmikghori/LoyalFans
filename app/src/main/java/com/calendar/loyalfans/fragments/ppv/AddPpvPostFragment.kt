@@ -6,18 +6,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
-import com.calendar.loyalfans.adapter.SelectedFileAdapter
-import com.calendar.loyalfans.model.SelectedFileData
-import com.calendar.loyalfans.retrofit.APIServices
 import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.MainActivity
+import com.calendar.loyalfans.activities.PPVActivity
+import com.calendar.loyalfans.adapter.SelectedFileAdapter
+import com.calendar.loyalfans.dialog.FansSelectionDialog
+import com.calendar.loyalfans.model.SelectedFileData
+import com.calendar.loyalfans.model.response.FansData
+import com.calendar.loyalfans.retrofit.APIServices
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.ImageSaver
 import com.calendar.loyalfans.utils.SPHelper
-import kotlinx.android.synthetic.main.fragment_addpost.*
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_add_ppv_post.*
+import kotlinx.android.synthetic.main.fragment_addpost.btnAddPost
+import kotlinx.android.synthetic.main.fragment_addpost.etPostMessage
+import kotlinx.android.synthetic.main.fragment_addpost.rvSelectedFiles
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +37,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 
-class AddPpvPostFragment : Fragment(), View.OnClickListener {
+class AddPpvPostFragment : Fragment(), View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     companion object {
         fun newInstance() = AddPpvPostFragment()
@@ -40,14 +48,16 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_addpost, container, false)
+        return inflater.inflate(R.layout.fragment_add_ppv_post, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        tvToolBarName.text = getString(R.string.add_post)
+        tvToolBarName.text = getString(R.string.ppv_send)
         setUpSelectedFilesAdapter()
         btnAddPost.setOnClickListener(this)
+        rgPPVType.setOnCheckedChangeListener(this)
+        rbFree.isChecked = true
     }
 
     private val selectedFileList = ArrayList<SelectedFileData>()
@@ -62,8 +72,8 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener {
         rvSelectedFiles.adapter = selectedFileAdapter
         selectedFileAdapter.setOnAddImageClick(object : SelectedFileAdapter.OnAddImage {
             override fun onAddImageClick() {
-                if (activity is MainActivity) {
-                    val mainActivity = activity as MainActivity
+                if (activity is PPVActivity) {
+                    val mainActivity = activity as PPVActivity
                     mainActivity.imageAndVideoSelectionForPost()
                     mainActivity.setOnImageSelection(object : BaseActivity.OnImageSelection {
                         override fun onSuccess(
@@ -89,7 +99,6 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener {
         imagePath: String?,
         imageUri: Uri?,
     ) {
-        var thumbImagePath: String
         val selectedFileData = SelectedFileData()
         if (imagePath != null && Common.isVideo(imagePath)) {
             ImageSaver(context).saveFileIntoPrivateStorage(imagePath
@@ -120,84 +129,120 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(p0: View?) {
-//        BaseActivity.getActivity().runOnUiThread {
         if (checkValidation()) {
-            val contentString = etPostMessage.text.toString()
-            val userId = Common.getUserId()
-            var i = 1
-            val size: Int = selectedFileList.size
-            Common.displayProgress(BaseActivity.getActivity())
-            CoroutineScope(Dispatchers.Main).launch {
-                withContext(Dispatchers.Default) {
-                    val client = OkHttpClient()
-                        .newBuilder()
-                        .connectTimeout(10, TimeUnit.MINUTES)
-                        .writeTimeout(10, TimeUnit.MINUTES)
-                        .readTimeout(10, TimeUnit.MINUTES)
-                        .build()
-
-                    val body: MultipartBody.Builder =
-                        MultipartBody.Builder().setType(MultipartBody.FORM)
-                    body.addFormDataPart("content", contentString)
-                        .addFormDataPart("user_id", userId)
-                    while (i < size) {
-                        val selectedFileData = selectedFileList[i]
-                        val file = File(selectedFileData.filePath)
-                        val fileUri = when (selectedFileData.imageUri) {
-                            null -> {
-                                Uri.fromFile(file)
-                            }
-                            else -> {
-                                selectedFileData.imageUri
-                            }
-                        }
-
-                        body.addFormDataPart(i.toString(), file.name,
-                            RequestBody.create(fileUri?.let {
-                                BaseActivity.getActivity().contentResolver.getType(
-                                    it).toString().toMediaTypeOrNull()
-                            },
-                                file
-                            ))
-                        i++
-                    }
-                    val build = body.build()
-                    val request: Request = Request.Builder()
-                        .url(APIServices.SERVICE_URL + APIServices.NEW_POST)
-                        .method("POST", build)
-                        .addHeader("App-Secret-Key",
-                            SPHelper(BaseActivity.getActivity()).getLoginAppSecretKey())
-                        .addHeader("Authorization_token",
-                            "eyJ0eXA1iOi0JKV1QiL8CJhb5GciTWvLUzI1NiJ9IiRk2YXRh8Ig")
-                        .addHeader("Authorization", "Basic YWRtaW46MTIzNA==")
-                        .build()
-                    try {
-                        val response: Response = client.newCall(request).execute()
-                        Common.dismissProgress()
-                        if (response.code == 200) {
-                            moveToHome()
-                        } else {
-                            activity?.let { Common.showToast(it, "Unable to add post") }
-                        }
-                    } catch (e: Exception) {
-                        Common.dismissProgress()
-                        activity?.let { e.message?.let { it1 -> Common.showToast(it, it1) } }
-                    }
-                }
-            }
+            openFansSelectionDialog()
         }
-//        }
     }
 
     private fun moveToHome() {
         activity?.runOnUiThread {
             selectedFileList.clear()
             selectedFileAdapter.notifyDataSetChanged()
-            activity?.let { Common.showToast(it, "Post Added") }
-            (activity as MainActivity).loadFragment(1)
-            etPostMessage.setText("")
+            activity?.let { Common.showToast(it, "PPV Sent") }
+            (activity as PPVActivity).loadFragment(15)
         }
     }
+
+    private fun openFansSelectionDialog() {
+        val fansSelectionDialog = FansSelectionDialog(BaseActivity.getActivity())
+        fansSelectionDialog.setOnPPVSend(object : FansSelectionDialog.OnPPVSend {
+            override fun onSendPPV(selectedFans: List<FansData>) {
+                callSendPPVAPI(selectedFans)
+            }
+        })
+        fansSelectionDialog.show()
+    }
+
+    private fun callSendPPVAPI(selectedFans: List<FansData>) {
+        val selectedFansId = ArrayList<String>()
+        for (selectData in selectedFans) {
+            selectedFansId.add(selectData.fanid)
+        }
+        val selectedFansIds = Gson().toJson(selectedFansId)
+        val contentString = etPostMessage.text.toString()
+        val userId = Common.getUserId()
+        var i = 1
+        val size: Int = selectedFileList.size
+        Common.displayProgress(BaseActivity.getActivity())
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.Default) {
+                val client = OkHttpClient()
+                    .newBuilder()
+                    .connectTimeout(10, TimeUnit.MINUTES)
+                    .writeTimeout(10, TimeUnit.MINUTES)
+                    .readTimeout(10, TimeUnit.MINUTES)
+                    .build()
+
+                val body: MultipartBody.Builder =
+                    MultipartBody.Builder().setType(MultipartBody.FORM)
+                body.addFormDataPart("content", contentString)
+                    .addFormDataPart("user_id", userId)
+                    .addFormDataPart("ppv_type", when (rgPPVType.checkedRadioButtonId) {
+                        R.id.rbPaid -> {
+                            "PAID"
+                        }
+                        R.id.rbFree -> {
+                            "FREE"
+                        }
+                        else -> ""
+                    })
+                    .addFormDataPart("amount", when (rgPPVType.checkedRadioButtonId) {
+                        R.id.rbPaid -> {
+                            etPPVPostAmount.text.toString()
+                        }
+                        R.id.rbFree -> {
+                            "0"
+                        }
+                        else -> "0"
+                    })
+                    .addFormDataPart("ppv_send", selectedFansIds)
+                while (i < size) {
+                    val selectedFileData = selectedFileList[i]
+                    val file = File(selectedFileData.filePath)
+                    val fileUri = when (selectedFileData.imageUri) {
+                        null -> {
+                            Uri.fromFile(file)
+                        }
+                        else -> {
+                            selectedFileData.imageUri
+                        }
+                    }
+
+                    body.addFormDataPart(i.toString(), file.name,
+                        RequestBody.create(fileUri?.let {
+                            BaseActivity.getActivity().contentResolver.getType(
+                                it).toString().toMediaTypeOrNull()
+                        },
+                            file
+                        ))
+                    i++
+                }
+                val build = body.build()
+                val request: Request = Request.Builder()
+                    .url(APIServices.SERVICE_URL + APIServices.CREATE_PPV)
+                    .method("POST", build)
+                    .addHeader("App-Secret-Key",
+                        SPHelper(BaseActivity.getActivity()).getLoginAppSecretKey())
+                    .addHeader("Authorization_token",
+                        "eyJ0eXA1iOi0JKV1QiL8CJhb5GciTWvLUzI1NiJ9IiRk2YXRh8Ig")
+                    .addHeader("Authorization", "Basic YWRtaW46MTIzNA==")
+                    .build()
+                try {
+                    val response: Response = client.newCall(request).execute()
+                    Common.dismissProgress()
+                    if (response.code == 200) {
+                        moveToHome()
+                    } else {
+                        activity?.let { Common.showToast(it, "Unable to add post") }
+                    }
+                } catch (e: Exception) {
+                    Common.dismissProgress()
+                    activity?.let { e.message?.let { it1 -> Common.showToast(it, it1) } }
+                }
+            }
+        }
+    }
+
 
     private fun checkValidation(): Boolean {
         val contentString = etPostMessage.text.toString()
@@ -209,6 +254,14 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener {
             return false
         }
         return true
+    }
+
+    override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
+        if (p1 == R.id.rbFree) {
+            layPPVAmount.visibility = View.GONE
+        } else if (p1 == R.id.rbPaid) {
+            layPPVAmount.visibility = View.VISIBLE
+        }
     }
 
 }

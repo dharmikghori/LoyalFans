@@ -29,7 +29,8 @@ class BaseViewModel : ViewModel() {
             loginRequestData.fcm_token,
             loginRequestData.type,
             loginRequestData.google_id,
-            loginRequestData.fb_id
+            loginRequestData.fb_id,
+            loginRequestData.name
         )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
             override fun onResponse(response: Any) {
                 val loginResponse = response as LoginResponse
@@ -360,6 +361,7 @@ class BaseViewModel : ViewModel() {
             updateProfileRequest.website,
             updateProfileRequest.profile_img,
             updateProfileRequest.banner_img,
+            updateProfileRequest.username
         )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
             override fun onResponse(response: Any) {
                 val updateProfileResponse = response as BaseResponse
@@ -478,6 +480,74 @@ class BaseViewModel : ViewModel() {
             }
         }))
         return favouriteData
+    }
+
+
+    fun getPPVHistory(
+        profileDetailRequest: ProfileDetailRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<PpvHistoryResponse> {
+        val apiName = APIServices.PPV_HISTORY
+        val historyData: MutableLiveData<PpvHistoryResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        profileDetailRequest.user_id = Common.getUserId()
+        printStrRequestJson(profileDetailRequest, apiName)
+        apiServices?.ppvHistory(
+            profileDetailRequest.user_id, profileDetailRequest.profile_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val ppvHistoryResponse = response as PpvHistoryResponse
+                printStrJson(ppvHistoryResponse, apiName)
+                historyData.value = ppvHistoryResponse
+            }
+        }))
+        return historyData
+    }
+
+
+    fun getCommentsByPostId(
+        postDetailRequest: PostDetailRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<CommentResponse> {
+        val apiName = APIServices.GET_COMMENTS
+        val commentData: MutableLiveData<CommentResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        postDetailRequest.user_id = Common.getUserId()
+        printStrRequestJson(postDetailRequest, apiName)
+        apiServices?.getCommentsByPostId(
+            postDetailRequest.user_id, postDetailRequest.post_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val commentResponse = response as CommentResponse
+                printStrJson(commentResponse, apiName)
+                commentData.value = commentResponse
+            }
+        }))
+        return commentData
+    }
+
+    fun addComments(
+        addCommentRequest: AddCommentRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.ADD_COMMENTS
+        val addCommentData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        addCommentRequest.user_id = Common.getUserId()
+        printStrRequestJson(addCommentRequest, apiName)
+        apiServices?.addComments(
+            addCommentRequest.user_id, addCommentRequest.post_id, addCommentRequest.comment
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val baseResponse = response as BaseResponse
+                printStrJson(baseResponse, apiName)
+                addCommentData.value = baseResponse
+            }
+        }))
+        return addCommentData
     }
 
     private fun printStrRequestJson(request: Any, apiName: String) {

@@ -11,15 +11,15 @@ import com.calendar.loyalfans.R
 import com.calendar.loyalfans.fragments.profile.FansTypeListFragment
 
 @SuppressLint("WrongConstant")
-class FansTabPagerAdapter(context: Context, fm: FragmentManager) :
+class FansTabPagerAdapter(context: Context, fm: FragmentManager, val profileId: String) :
     FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val mContext = context
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> FansTypeListFragment.newInstance("1")
-            1 -> FansTypeListFragment.newInstance("0")
-            2 -> FansTypeListFragment.newInstance("2")
-            else -> FansTypeListFragment.newInstance("")
+            0 -> FansTypeListFragment.newInstance("1", profileId)
+            1 -> FansTypeListFragment.newInstance("0", profileId)
+            2 -> FansTypeListFragment.newInstance("2", profileId)
+            else -> FansTypeListFragment.newInstance("", profileId)
         }
     }
 

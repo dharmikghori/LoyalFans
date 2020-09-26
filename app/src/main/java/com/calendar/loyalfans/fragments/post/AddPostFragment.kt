@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.SelectedFileAdapter
 import com.calendar.loyalfans.model.SelectedFileData
 import com.calendar.loyalfans.retrofit.APIServices
-import com.calendar.loyalfans.activities.BaseActivity
-import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.ImageSaver
 import com.calendar.loyalfans.utils.SPHelper

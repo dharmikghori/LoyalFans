@@ -8,14 +8,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.viewpager.FansTabPagerAdapter
 import kotlinx.android.synthetic.main.fragment_fans.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.*
 
-class FansFragment : Fragment(), View.OnClickListener {
+class FansFragment(private val profileId: String) : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() = FansFragment()
+        fun newInstance(profileId: String) = FansFragment(profileId)
+        fun newInstance() = FansFragment(Common.getUserId())
     }
 
 
@@ -37,7 +39,7 @@ class FansFragment : Fragment(), View.OnClickListener {
         val supportFragmentManager = activity?.supportFragmentManager
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
-                FansTabPagerAdapter(requireActivity(), supportFragmentManager)
+                FansTabPagerAdapter(requireActivity(), supportFragmentManager, profileId)
             viewPagerFans.offscreenPageLimit = 4
             viewPagerFans.adapter = tabsPagerAdapter
             tabFansLayout.setupWithViewPager(viewPagerFans)

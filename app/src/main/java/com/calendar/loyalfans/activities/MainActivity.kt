@@ -6,10 +6,14 @@ import android.os.Looper
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.fragments.post.EditPostFragment
+import com.calendar.loyalfans.model.request.ProfileDetailRequest
 import com.calendar.loyalfans.model.response.PostData
+import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.SPHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom.*
 
@@ -28,7 +32,7 @@ class MainActivity : BaseActivity() {
         val fragmentToBeLoad = Common.getFragmentBasedOnType(type)
         val fragmentToTag = Common.getTagBasedOnType(type)
         Common.manageBottomVisibilitiesAndSelectionBasedOnType(
-            type, imgHome, imgSearch, imgNotification, imgProfile,
+            type, imgHome, imgSearch, imgNotification,
             resources, theme
         )
         closeDrawer()
@@ -41,6 +45,19 @@ class MainActivity : BaseActivity() {
         }
     }
 
+
+//paramsId = will be userID, PostId
+    fun loadFragment(type: Int, paramsId: String) {
+        val fragmentToBeLoad = Common.getFragmentBasedOnType(type, paramsId)
+        val fragmentToTag = Common.getTagBasedOnType(type)
+        if (fragmentToBeLoad != null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.layFrame, fragmentToBeLoad, fragmentToTag)
+                .addToBackStack(fragmentToTag)
+                .commit()
+        }
+    }
     fun loadFragmentWithEditPostListener(
         type: Int,
         postData: PostData,
@@ -48,7 +65,7 @@ class MainActivity : BaseActivity() {
     ) {
         val fragmentToTag = Common.getTagBasedOnType(type)
         Common.manageBottomVisibilitiesAndSelectionBasedOnType(
-            type, imgHome, imgSearch, imgNotification, imgProfile,
+            type, imgHome, imgSearch, imgNotification,
             resources, theme
         )
         closeDrawer()
@@ -153,4 +170,25 @@ class MainActivity : BaseActivity() {
         loadFragment(14)
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        getProfile()
+    }
+
+
+    private fun getProfile() {
+        val postDetailRequest = ProfileDetailRequest(Common.getUserId())
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.getProfile(
+            postDetailRequest, false
+        ).observe(this, {
+            if (it.status) {
+                SPHelper(this).saveProfileData(it.data)
+                tvUserNameMenu.text = it.data.username
+                Common.loadImageUsingURL(imgProfileBottom, it.data.profile_img, this)
+            }
+        })
+
+    }
 }

@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import android.media.ExifInterface
 import android.media.MediaMetadataRetriever
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -23,6 +22,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,17 +30,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.LoginActivity
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.fragments.home.HomeFragment
 import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
 import com.calendar.loyalfans.fragments.payment.AddCardFragment
 import com.calendar.loyalfans.fragments.post.AddPostFragment
+import com.calendar.loyalfans.fragments.post.CommentsFragment
+import com.calendar.loyalfans.fragments.ppv.AddPpvPostFragment
+import com.calendar.loyalfans.fragments.ppv.PPVFragment
 import com.calendar.loyalfans.fragments.profile.*
 import com.calendar.loyalfans.fragments.searchFragment.SearchFragment
 import com.calendar.loyalfans.fragments.setting.NotificationSettingFragment
 import com.calendar.loyalfans.fragments.setting.SecuritySettingFragment
-import com.calendar.loyalfans.activities.BaseActivity
-import com.calendar.loyalfans.activities.LoginActivity
-import com.calendar.loyalfans.activities.MainActivity
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import java.io.*
@@ -107,6 +110,15 @@ class Common {
                 14 -> {
                     "SubscriptionPlan"
                 }
+                15 -> {
+                    "PPVFragment"
+                }
+                16 -> {
+                    "AddPpvPostFragment"
+                }
+                17 -> {
+                    "CommentFragment"
+                }
                 else -> ""
             }
         }
@@ -135,7 +147,7 @@ class Common {
                     FollowingFragment.newInstance()
                 }
                 8 -> {
-                    FavoritesFragment.newInstance()
+                    FavoriteFragment.newInstance()
                 }
                 9 -> {
                     ChangePasswordFragment.newInstance()
@@ -155,6 +167,33 @@ class Common {
                 14 -> {
                     SubscriptionFragment.newInstance()
                 }
+                15 -> {
+                    PPVFragment.newInstance()
+                }
+                16 -> {
+                    AddPpvPostFragment.newInstance()
+                }
+                else -> null
+            }
+        }
+
+        fun getFragmentBasedOnType(type: Int, profileId: String): Fragment? {
+            return when (type) {
+                5 -> {
+                    MyProfileFragment.newInstance(profileId)
+                }
+                6 -> {
+                    FansFragment.newInstance(profileId)
+                }
+                7 -> {
+                    FollowingFragment.newInstance(profileId)
+                }
+                8 -> {
+                    FavoriteFragment.newInstance(profileId)
+                }
+                17 -> {
+                    CommentsFragment.newInstance(profileId)
+                }
                 else -> null
             }
         }
@@ -164,7 +203,6 @@ class Common {
             imgHome: ImageView,
             imgSearch: ImageView,
             imgNotification: ImageView,
-            imgProfile: ImageView,
             resources: Resources,
             theme: Resources.Theme,
         ) {
@@ -576,21 +614,47 @@ class Common {
         }
 
         fun getBase64FromBitmap(path: String): String {
-            var base64: String? = ""
+            val base64: String?
             val file = File(path)
             val buffer = ByteArray(file.length().toInt() + 100)
-            val length = FileInputStream(file).read(buffer)
+            lateinit var inputStream: FileInputStream
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val parcelFileDescriptor =
+                    BaseActivity.getActivity().contentResolver.openFileDescriptor(Uri.fromFile(file),
+                        "r",
+                        null)
+
+                if (parcelFileDescriptor != null) {
+                    inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+                }
+            } else {
+                inputStream = FileInputStream(file)
+            }
+            val length = inputStream.read(buffer)
             base64 = Base64.encodeToString(buffer, 0, length,
                 Base64.DEFAULT)
             return base64
         }
 
-        var yyyyHHmmssFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        var ddMMYYFormat = SimpleDateFormat("dd MMM, yyyy", Locale.US)
+        private var serverFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        private var serverFullDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US)
+        var localDateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.US)
+        var localTimeFormat = SimpleDateFormat("HH:mm a", Locale.US)
 
         fun formatDate(strDate: String): String {
-            val format = yyyyHHmmssFormat.parse(strDate)
-            return ddMMYYFormat.format(format)
+            val format = serverFormat.parse(strDate)
+            if (format != null) {
+                return localDateFormat.format(format)
+            }
+            return ""
+        }
+
+        fun formatTime(strDate: String): String {
+            val format = serverFullDateFormat.parse(strDate)
+            if (format != null) {
+                return localTimeFormat.format(format)
+            }
+            return ""
         }
     }
 }

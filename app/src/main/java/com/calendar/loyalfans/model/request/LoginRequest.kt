@@ -10,4 +10,5 @@ open class LoginRequest(
     var type: String = "",
     var google_id: String = "",
     var fb_id: String = "",
+    var name: String = "",
 )

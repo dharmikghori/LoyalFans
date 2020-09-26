@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvComments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_10sdp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/edittext_comment_background"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etComment"
+            style="@style/BaseCommentEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/write_comment"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/cambria"
+            android:text="@string/post"
+            android:textAllCaps="true"
+            android:id="@+id/tvPostComment"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_13sdp" />
+    </LinearLayout>
+
+</RelativeLayout>

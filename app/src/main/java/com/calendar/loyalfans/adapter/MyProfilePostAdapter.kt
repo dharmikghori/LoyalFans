@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.response.PostData
-import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.utils.Common
-import com.calendar.loyalfans.utils.SPHelper
 import com.google.android.material.tabs.TabLayout
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_like_comment_bottom_view.view.*
@@ -28,7 +26,6 @@ class MyProfilePostAdapter(
 ) :
     RecyclerView.Adapter<MyProfilePostAdapter.HomePostViewHolder>() {
     var onPostAction: OnPostAction? = null
-    var profileData = SPHelper(BaseActivity.getActivity()).getProfileData()
 
 
     interface OnPostAction {
@@ -63,8 +60,8 @@ class MyProfilePostAdapter(
         val postData = getItem(position)
         holder.btnSendTip.setOnClickListener { activity?.let { Common.showSendDialog(it) } }
         holder.tvActivityMessage.text = postData.content
-        holder.tvProfileName.text = profileData?.display_name
-        holder.tvUserName.text = profileData?.username
+        holder.tvProfileName.text = postData.display_name
+        holder.tvUserName.text = postData.username
         holder.tvTotalComment.text = postData.comments + " Comments"
         holder.tvTotalLike.text = postData.likes + " Likes"
         activity?.let {
@@ -76,7 +73,7 @@ class MyProfilePostAdapter(
                     if (postData.images.size > 1) {
                         holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
                         holder.tabLayout.visibility = View.VISIBLE
-                    }else{
+                    } else {
                         holder.tabLayout.visibility = View.VISIBLE
                     }
                 }
@@ -95,7 +92,7 @@ class MyProfilePostAdapter(
 
         activity?.let {
             Common.loadImageUsingURL(holder.imgProfilePic,
-                profileData?.profile_img, it, true)
+                postData.profile_img, it, true)
         }
         holder.cbLikeUnlike.setOnCheckedChangeListener(null)
         holder.cbLikeUnlike.isChecked = when (postData.is_likes) {

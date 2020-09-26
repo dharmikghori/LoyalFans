@@ -110,8 +110,15 @@ class LoginActivity : BaseActivity() {
                     val user = auth.currentUser
                     if (user != null && user.email != null) {
                         val loginRequest =
-                            LoginRequest(user.email.toString(), "",
-                                imei, "1", firebaseToken, "1", user.uid.toString(), "")
+                            LoginRequest(user.email.toString(),
+                                "",
+                                imei,
+                                "1",
+                                firebaseToken,
+                                "1",
+                                user.uid,
+                                "",
+                                user.displayName.toString())
                         loginAPICallAndUpdateUI(loginRequest)
                     } else {
                         Common.showToast(this@LoginActivity, "Unable to login")
@@ -155,8 +162,15 @@ class LoginActivity : BaseActivity() {
                     val currentUser = auth.currentUser
                     if (currentUser != null && currentUser.email != null) {
                         val loginRequest =
-                            LoginRequest(currentUser.email.toString(), "",
-                                imei, "1", firebaseToken, "0", "", currentUser.uid.toString())
+                            LoginRequest(currentUser.email.toString(),
+                                "",
+                                imei,
+                                "1",
+                                firebaseToken,
+                                "0",
+                                "",
+                                currentUser.uid,
+                                currentUser.displayName.toString())
                         loginAPICallAndUpdateUI(loginRequest)
                     } else {
                         Common.showToast(baseContext, "Unable to login")

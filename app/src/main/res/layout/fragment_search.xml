@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,78 +7,114 @@
     android:paddingLeft="@dimen/_20sdp"
     android:paddingTop="@dimen/_20sdp"
     android:paddingRight="@dimen/_20sdp"
+    android:scrollbars="none"
     tools:context=".fragments.home.HomeFragment">
 
-    <include
-        android:id="@+id/layoutToolbar"
-        layout="@layout/layout_toolbar_textview"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/laySearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/et_bottom_line_background"
-        app:layout_constraintTop_toBottomOf="@+id/layoutToolbar">
+        <include
+            android:id="@+id/layoutToolbar"
+            layout="@layout/layout_toolbar_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/etSearch"
-            style="@style/BaseSearchEditText"
+        <RelativeLayout
+            android:id="@+id/laySearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/imgRemove"
-            android:background="@color/transparent"
-            android:hint="@string/search"
-            android:imeOptions="actionSearch"
-            android:importantForAutofill="no"
-            android:inputType="text" />
+            android:background="@drawable/et_bottom_line_background"
+            app:layout_constraintTop_toBottomOf="@+id/layoutToolbar">
 
-        <ImageView
-            android:id="@+id/imgRemove"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@mipmap/ic_close"
-            android:visibility="invisible" />
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/etSearch"
+                style="@style/BaseSearchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/imgRemove"
+                android:background="@color/transparent"
+                android:hint="@string/search"
+                android:imeOptions="actionSearch"
+                android:importantForAutofill="no"
+                android:inputType="text" />
 
-    <TextView
-        android:id="@+id/tvRecentSearch"
-        style="@style/BaseTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="@string/recent_search"
-        android:textAllCaps="false"
-        android:textColor="@color/blue_color"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintTop_toBottomOf="@+id/laySearch" />
+            <ImageView
+                android:id="@+id/imgRemove"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/app_name"
+                android:src="@mipmap/ic_close"
+                android:visibility="invisible" />
+        </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRecentSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/tvRecentSearch"
-        tools:itemCount="10"
-        tools:listitem="@layout/layout_search" />
+        <TextView
+            android:id="@+id/tvRecentSearch"
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/recent_search"
+            android:textAllCaps="false"
+            android:textColor="@color/blue_color"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintTop_toBottomOf="@+id/laySearch" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearchResult"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvRecentSearch"
-        tools:itemCount="10"
-        tools:listitem="@layout/layout_search" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecentSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/tvRecentSearch"
+            tools:itemCount="10"
+            tools:listitem="@layout/layout_search" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutSearchResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/rvRecentSearch">
+
+            <View
+                android:id="@+id/searchResultView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/theme_black"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvRecentSearchResult"
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/search_result"
+                android:textAllCaps="false"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintTop_toBottomOf="@+id/searchResultView" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvRecentSearchResult"
+                tools:itemCount="10"
+                tools:listitem="@layout/layout_search" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

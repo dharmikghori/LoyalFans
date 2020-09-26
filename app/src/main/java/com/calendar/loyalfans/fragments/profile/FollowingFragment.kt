@@ -8,16 +8,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import com.calendar.loyalfans.R
-import com.calendar.loyalfans.viewpager.FansTabPagerAdapter
+import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.viewpager.FollowingTabPagerAdapter
 import kotlinx.android.synthetic.main.fragment_fans.*
-import kotlinx.android.synthetic.main.layout_toolbar_back.*
-import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
+import kotlinx.android.synthetic.main.layout_toolbar_textview.*
 
-class FollowingFragment : Fragment(), View.OnClickListener {
+class FollowingFragment(private val profileId: String) : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() = FollowingFragment()
+        fun newInstance(profileId: String) = FollowingFragment(profileId)
+        fun newInstance() = FollowingFragment(Common.getUserId())
     }
 
 
@@ -39,7 +39,7 @@ class FollowingFragment : Fragment(), View.OnClickListener {
         val supportFragmentManager = activity?.supportFragmentManager
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
-                FollowingTabPagerAdapter(requireActivity(), supportFragmentManager)
+                FollowingTabPagerAdapter(requireActivity(), supportFragmentManager, profileId)
             viewPagerFans.offscreenPageLimit = 3
             viewPagerFans.adapter = tabsPagerAdapter
             tabFansLayout.setupWithViewPager(viewPagerFans)

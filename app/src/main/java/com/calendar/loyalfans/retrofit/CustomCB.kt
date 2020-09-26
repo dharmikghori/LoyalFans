@@ -1,7 +1,7 @@
 package com.calendar.loyalfans.retrofit
 
-import com.calendar.loyalfans.model.response.BaseResponse
 import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.model.response.BaseResponse
 import com.calendar.loyalfans.utils.Common
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -47,13 +47,10 @@ class CustomCB<T>(isShowProgressDialog: Boolean, onAPIResponse: OnAPIResponse) :
                 if (errorResponse != null && errorResponse.msg.isNotEmpty()) {
                     Common.showToast(BaseActivity.getActivity(), errorResponse.msg)
                 }
-                if (errorResponse != null) {
-                    if ((response.code() == HTTP_NOT_FOUND && errorResponse.msg.equals(
-                            "Unauthorized"))
-                    ) {
-                        Common.automaticallyLogoutOnUnauthorizedOrForbidden()
-                    }
-                } else if (response.code() == HTTP_UNAUTHORIZED) {
+
+                if (response.code() == HTTP_UNAUTHORIZED || response.code() == HTTP_FORBIDDEN) {
+                    Common.automaticallyLogoutOnUnauthorizedOrForbidden()
+                } else if (errorResponse != null && response.code() == HTTP_NOT_FOUND && errorResponse.msg == "Unauthorized") {
                     Common.automaticallyLogoutOnUnauthorizedOrForbidden()
                 }
             } catch (e: Exception) {

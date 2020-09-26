@@ -1,5 +1,6 @@
 package com.calendar.loyalfans.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -9,13 +10,17 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.OtherProfileActivity
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.RequestParams
 import com.google.android.material.tabs.TabLayout
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.layout_home_post.view.*
 import kotlinx.android.synthetic.main.layout_like_comment_bottom_view.view.*
 import kotlinx.android.synthetic.main.layout_post_message_and_photos.view.*
 import kotlinx.android.synthetic.main.layout_post_top_view.view.*
+import kotlinx.android.synthetic.main.layout_suggestion.view.*
 import java.util.*
 
 
@@ -63,6 +68,11 @@ class HomePostAdapter(
         holder.tvUserName.text = postData.username
         holder.tvTotalComment.text = postData.comments + " Comments"
         holder.tvTotalLike.text = postData.likes + " Likes"
+        holder.viewProfile.setOnClickListener {
+            activity?.startActivity(Intent(activity, OtherProfileActivity::class.java).putExtra(
+                RequestParams.PROFILE_ID,
+                postData.user_id))
+        }
         activity?.let {
             holder.photos_viewpager.adapter = PostImageVideoPagerAdapter(it, postData.images)
             if (postData.images.size > 1) {
@@ -123,6 +133,28 @@ class HomePostAdapter(
             holder.btnSendTip.visibility = View.VISIBLE
         }
 
+        if (!postData.suggestions.isNullOrEmpty()) {
+            holder.laySuggestion.visibility = View.VISIBLE
+            holder.suggestionViewPager.adapter =
+                activity?.let {
+                    val suggestionPagerAdapter =
+                        SuggestionPagerAdapter(it, postData.suggestions)
+                    suggestionPagerAdapter
+
+                }
+            holder.imgNextSuggestion.setOnClickListener {
+                holder.suggestionViewPager.currentItem = holder.suggestionViewPager.currentItem++
+            }
+            holder.imgPrevSuggestion.setOnClickListener {
+                holder.suggestionViewPager.currentItem = holder.suggestionViewPager.currentItem--
+            }
+        } else {
+            holder.laySuggestion.visibility = View.GONE
+        }
+        holder.tvTotalComment.setOnClickListener{
+            onPostAction?.onComment(postData,position)
+        }
+
     }
 
     class HomePostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -138,6 +170,12 @@ class HomePostAdapter(
         val tabLayout: TabLayout = view.tabLayout
         val photos_viewpager: ViewPager = view.photos_viewpager
         val imgMoreOption: ImageView = view.imgMoreOption
+        val viewProfile: LinearLayout = view.viewProfile
+        val suggestionViewPager: ViewPager = view.suggestionViewPager
+        val laySuggestion: View = view.laySuggestion
+        val suggestionTabLayout: TabLayout = view.suggestionTabLayout
+        val imgPrevSuggestion: ImageView = view.imgPrevSuggestion
+        val imgNextSuggestion: ImageView = view.imgNextSuggestion
     }
 
     private fun openOptionMenu(view: View, postData: PostData, position: Int) {

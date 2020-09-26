@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.adapter.FansListAdapter
 import com.calendar.loyalfans.model.request.FansFollowingRequest
@@ -15,11 +14,12 @@ import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_fans_list.*
 
-class FansTypeListFragment(val fansType: String) : Fragment() {
+class FansTypeListFragment(private val fansType: String, private val profileId: String) :
+    Fragment() {
 
     companion object {
-        fun newInstance(fansTpe: String): Fragment {
-            return FansTypeListFragment(fansTpe)
+        fun newInstance(fansTpe: String, profileId: String): Fragment {
+            return FansTypeListFragment(fansTpe, profileId)
         }
     }
 
@@ -39,7 +39,7 @@ class FansTypeListFragment(val fansType: String) : Fragment() {
     private fun getFansByType(fansType: String) {
         val fansFollowingRequest =
             FansFollowingRequest(fansType,
-                Common.getUserId())
+                profileId)
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.getFansByType(
             fansFollowingRequest,
@@ -54,8 +54,7 @@ class FansTypeListFragment(val fansType: String) : Fragment() {
     }
 
     private fun setUpFansAdapter(fansList: ArrayList<FansData>) {
-        rvFans?.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        Common.setupVerticalRecyclerView(rvFans, activity)
         rvFans.adapter = FansListAdapter(fansList, activity)
     }
 

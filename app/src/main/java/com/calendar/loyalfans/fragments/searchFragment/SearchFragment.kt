@@ -58,12 +58,17 @@ class SearchFragment : Fragment(), TextWatcher, View.OnClickListener {
 
     private fun setUpRecentSearchAdapter(searchUserList: ArrayList<SearchUsers>) {
         Common.setupVerticalRecyclerView(rvRecentSearch, activity)
-        rvRecentSearch.adapter = SearchAdapter(searchUserList, activity)
+        rvRecentSearch.adapter = SearchAdapter(searchUserList, activity, true)
     }
 
     private fun setUpSearchResultAdapter(searchUserList: ArrayList<SearchUsers>) {
+        if (searchUserList.isNotEmpty()) {
+            layoutSearchResult.visibility = View.VISIBLE
+        } else {
+            layoutSearchResult.visibility = View.GONE
+        }
         Common.setupVerticalRecyclerView(rvSearchResult, activity)
-        rvSearchResult.adapter = SearchAdapter(searchUserList, activity)
+        rvSearchResult.adapter = SearchAdapter(searchUserList, activity, false)
     }
 
     private fun searchUserByName(searchName: String) {
@@ -86,6 +91,7 @@ class SearchFragment : Fragment(), TextWatcher, View.OnClickListener {
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         if (etSearch.text.isNotEmpty()) {
             imgRemove.visibility = View.VISIBLE
+            searchUserByName(etSearch.text.toString())
         } else {
             imgRemove.visibility = View.INVISIBLE
         }

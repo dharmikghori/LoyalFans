@@ -39,7 +39,7 @@
     <string name="logout">Logout</string>
     <string name="search">Search</string>
     <string name="recent_search">Recent Search</string>
-    <string name="henry_mark">henry_mark</string>
+    <string name="henry_mark">Henry Mark</string>
     <string name="henry_mark_name">Henry Mark</string>
     <string name="select_media_files">Please select media files</string>
 
@@ -55,7 +55,7 @@
     <string name="profile_post">POST</string>
     <string name="profile_image">IMAGE</string>
     <string name="profile_video">VIDEO</string>
-    <string name="lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum">Lorem ipsum ipsum ipsuipsum ipsum ipsum m ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum</string>
+    <string name="lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum" />
     <string name="till_20_sep_2020" />
     <string name="blocked">BLOCKED</string>
     <string name="active">ACTIVE</string>
@@ -142,8 +142,9 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="edit_post">Edit Post</string>
-    <string name="display_text_Validation">Display text is required</string>
+    <string name="display_text_Validation">Display name is required</string>
     <string name="about_Validation">About is required</string>
+    <string name="username_Validation">Username is required</string>
     <string name="location_Validation">Location is required</string>
     <string name="website_Validation">Website URL is required</string>
     <string name="add_edit_subscription">Add/Edit Subscription</string>
@@ -154,5 +155,21 @@
     <string name="enter_amount">Enter Amount</string>
     <string name="update">Update</string>
     <string name="ppv_send">PPV Send</string>
+    <string name="ppv_history">PPV History</string>
+    <string name="profile_caps">PROFILE</string>
+    <string name="free">Free</string>
+    <string name="paid">Paid</string>
+
+    <string name="my_message">MY MESSAGE</string>
+    <string name="other_message">OTHER MESSAGE</string>
+    <string name="all_subscribers">All Subscribers</string>
+    <string name="total_purchases">Total Purchases:\ </string>
+    <string name="seen">Seen :</string>
+    <string name="send_ppv_message">Send PPV Message</string>
+    <string name="search_result">Search Result</string>
+    <string name="suggestion_for_you">Suggestion For You</string>
+    <string name="write_comment">Write Comment</string>
+    <string name="reply">Reply</string>
+    <string name="add_comment_validation">Please add comment</string>
 
 </resources>

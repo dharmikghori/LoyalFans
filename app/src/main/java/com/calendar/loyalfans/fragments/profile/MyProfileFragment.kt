@@ -2,6 +2,7 @@ package com.calendar.loyalfans.fragments.profile
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,21 +10,23 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.MainActivity
+import com.calendar.loyalfans.activities.OtherProfileActivity
 import com.calendar.loyalfans.model.request.ProfileDetailRequest
 import com.calendar.loyalfans.model.response.ProfileData
 import com.calendar.loyalfans.retrofit.BaseViewModel
-import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
 import com.calendar.loyalfans.viewpager.ProfileTabPagerAdapter
-import kotlinx.android.synthetic.main.layout_profile_body.*
+import kotlinx.android.synthetic.main.fragment_myprofile.*
 import kotlinx.android.synthetic.main.layout_profile_top_view.*
 
 
-class MyProfileFragment : Fragment(), View.OnClickListener {
+class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() = MyProfileFragment()
+        fun newInstance() = MyProfileFragment(Common.getUserId())
+        fun newInstance(profileId: String) = MyProfileFragment(profileId)
     }
 
 
@@ -42,6 +45,20 @@ class MyProfileFragment : Fragment(), View.OnClickListener {
         layFollowing.setOnClickListener(this)
         layFavorites.setOnClickListener(this)
         imgEditProfile.setOnClickListener(this)
+        setViewPagerHeight()
+    }
+
+    private fun setViewPagerHeight() {
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        val totalHeight = displayMetrics.heightPixels
+        val topViewHeight = layProfileTop.measuredHeight
+        val tabLayoutHeight = tabLayout.measuredHeight
+        val heightForViewPager = totalHeight - (topViewHeight + tabLayoutHeight)
+        val layoutParams = viewPager.layoutParams
+        layoutParams.height = heightForViewPager
+        viewPager.layoutParams = layoutParams
+
     }
 
     override fun onResume() {
@@ -50,7 +67,7 @@ class MyProfileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun getProfile() {
-        val postDetailRequest = ProfileDetailRequest(Common.getUserId())
+        val postDetailRequest = ProfileDetailRequest(profileId)
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.getProfile(
             postDetailRequest, true
@@ -77,9 +94,10 @@ class MyProfileFragment : Fragment(), View.OnClickListener {
         val supportFragmentManager = activity?.supportFragmentManager
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
-                ProfileTabPagerAdapter(requireActivity(), supportFragmentManager)
+                ProfileTabPagerAdapter(requireActivity(), supportFragmentManager, profileId)
             viewPager.offscreenPageLimit = 3
             viewPager.adapter = tabsPagerAdapter
+            viewPager.isSaveFromParentEnabled = true
             tabLayout.setupWithViewPager(viewPager)
             for (i in 0 until tabLayout.tabCount) {
                 val tabViewAt = tabLayout.getTabAt(i)?.view
@@ -109,24 +127,36 @@ class MyProfileFragment : Fragment(), View.OnClickListener {
                     if (activity is MainActivity) {
                         val mainActivity = activity as MainActivity
                         mainActivity.loadFragment(6)
+                    } else if (activity is OtherProfileActivity) {
+                        val otherProfileActivity = activity as OtherProfileActivity
+                        otherProfileActivity.loadFragment(6, otherProfileActivity.otherProfileId)
                     }
                 }
                 R.id.layFollowing -> {
                     if (activity is MainActivity) {
                         val mainActivity = activity as MainActivity
                         mainActivity.loadFragment(7)
+                    } else if (activity is OtherProfileActivity) {
+                        val otherProfileActivity = activity as OtherProfileActivity
+                        otherProfileActivity.loadFragment(7, otherProfileActivity.otherProfileId)
                     }
                 }
                 R.id.layFavorites -> {
                     if (activity is MainActivity) {
                         val mainActivity = activity as MainActivity
                         mainActivity.loadFragment(8)
+                    } else if (activity is OtherProfileActivity) {
+                        val otherProfileActivity = activity as OtherProfileActivity
+                        otherProfileActivity.loadFragment(8, otherProfileActivity.otherProfileId)
                     }
                 }
                 R.id.imgEditProfile -> {
                     if (activity is MainActivity) {
                         val mainActivity = activity as MainActivity
                         mainActivity.loadFragment(10)
+                    } else if (activity is OtherProfileActivity) {
+                        val otherProfileActivity = activity as OtherProfileActivity
+                        otherProfileActivity.loadFragment(10, otherProfileActivity.otherProfileId)
                     }
                 }
                 else -> {

@@ -27,7 +27,7 @@
                 android:background="@drawable/edittext_round_border">
 
                 <ImageView
-                    android:id="@+id/imgCover"
+                    android:id="@+id/imgCoverProfile"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
                     android:contentDescription="@string/app_name"
@@ -48,7 +48,7 @@
                     style="@style/BaseColorRoundedGradientButton"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_20sdp"
-                    android:layout_below="@+id/imgCover"
+                    android:layout_below="@+id/imgCoverProfile"
                     android:layout_alignParentEnd="true"
                     android:layout_margin="@dimen/_10sdp"
                     android:paddingStart="@dimen/_5sdp"
@@ -61,7 +61,7 @@
                     style="@style/BaseColorRoundedGradientButton"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_20sdp"
-                    android:layout_alignBottom="@+id/imgCover"
+                    android:layout_alignBottom="@+id/imgCoverProfile"
                     android:layout_alignParentEnd="true"
                     android:layout_margin="@dimen/_10sdp"
                     android:paddingStart="@dimen/_5sdp"
@@ -85,8 +85,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:editable="false"
-                android:enabled="false"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 tools:ignore="LabelFor" />
@@ -118,7 +116,8 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/subscription_duration"
                 android:textAllCaps="true"
-                android:textColor="@color/theme_black" />
+                android:textColor="@color/theme_black"
+                android:visibility="gone" />
 
             <EditText
                 style="@style/FullBorderEditText"
@@ -127,6 +126,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:importantForAutofill="no"
                 android:inputType="text"
+                android:visibility="gone"
                 tools:ignore="LabelFor" />
 
             <TextView

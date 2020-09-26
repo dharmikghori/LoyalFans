@@ -19,6 +19,7 @@ import java.util.*
 class SearchAdapter(
     private var searchListData: ArrayList<SearchUsers>,
     private val activity: Context?,
+    private val isCloseVisible: Boolean,
 ) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
@@ -55,6 +56,11 @@ class SearchAdapter(
                 val spHelper = SPHelper(it1)
                 spHelper.saveRecentSearch(searchItem)
             }
+        }
+        if (isCloseVisible) {
+            holder.imgRemove.visibility = View.VISIBLE
+        } else {
+            holder.imgRemove.visibility = View.GONE
         }
         holder.imgRemove.setOnClickListener {
             activity?.let { it1 ->

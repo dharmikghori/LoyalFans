@@ -2,7 +2,6 @@ package com.calendar.loyalfans.activities
 
 
 import android.Manifest.permission
-import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -91,12 +90,12 @@ open class BaseActivity : AppCompatActivity() {
     companion object {
         var firebaseToken = ""
         var imei = ""
-        private lateinit var activity: Activity
-        fun getActivity(): Activity {
+        private lateinit var activity: AppCompatActivity
+        fun getActivity(): AppCompatActivity {
             return activity
         }
 
-        fun setActivity(cntActivity: Activity) {
+        fun setActivity(cntActivity: AppCompatActivity) {
             activity = cntActivity
         }
 

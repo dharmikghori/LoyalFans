@@ -14,12 +14,14 @@ import com.calendar.loyalfans.model.response.FansData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_fans_list.*
+import kotlinx.android.synthetic.main.fragment_profile_post.*
 
-class FollowingTypeListFragment(val fansType: String) : Fragment() {
+class FollowingTypeListFragment(private val fansType: String, private val profileId: String) :
+    Fragment() {
 
     companion object {
-        fun newInstance(fansTpe: String): Fragment {
-            return FollowingTypeListFragment(fansTpe)
+        fun newInstance(fansTpe: String, profileId: String): Fragment {
+            return FollowingTypeListFragment(fansTpe, profileId)
         }
     }
 
@@ -39,7 +41,7 @@ class FollowingTypeListFragment(val fansType: String) : Fragment() {
     private fun getFansByType(fansType: String) {
         val fansFollowingRequest =
             FansFollowingRequest(fansType,
-                Common.getUserId())
+                profileId)
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.getFollowingByType(
             fansFollowingRequest,
@@ -54,8 +56,7 @@ class FollowingTypeListFragment(val fansType: String) : Fragment() {
     }
 
     private fun setUpFansAdapter(fansList: ArrayList<FansData>) {
-        rvFans?.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        Common.setupVerticalRecyclerView(rvFans, activity)
         rvFans.adapter = FansListAdapter(fansList, activity)
     }
 

@@ -9,17 +9,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.model.request.ProfileDetailRequest
 import com.calendar.loyalfans.model.request.UpdateProfileRequest
 import com.calendar.loyalfans.model.response.ProfileData
 import com.calendar.loyalfans.retrofit.BaseViewModel
-import com.calendar.loyalfans.activities.BaseActivity
-import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 
 class EditProfileFragment : Fragment(), View.OnClickListener {
+    var userName = ""
 
     companion object {
         fun newInstance() = EditProfileFragment()
@@ -48,7 +49,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.getEditProfile(
             postDetailRequest, true
-        ).observe(viewLifecycleOwner, { it ->
+        ).observe(viewLifecycleOwner, {
             if (it.status) {
                 setUpProfileData(it.data)
             }
@@ -57,13 +58,14 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setUpProfileData(data: ProfileData) {
+        userName = data.username
         etUserName.setText(data.username)
         etDisplayName.setText(data.display_name)
         etAbout.setText(data.about)
         etLocation.setText(data.location)
         etWebsiteURL.setText(data.website)
         activity?.let { Common.loadImageUsingURL(imgEditProfile, data.profile_img, it) }
-        activity?.let { Common.loadImageUsingURL(imgCover, data.cover_img, it) }
+        activity?.let { Common.loadImageUsingURL(imgCoverProfile, data.cover_img, it) }
     }
 
     var profilePicBase64 = ""
@@ -87,6 +89,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
                                 imagePath: String?,
                                 imageUri: Uri?,
                             ) {
+                                imgEditProfile.setImageBitmap(bitmap)
                                 imagePath?.let {
                                     profilePicBase64 =
                                         Common.getBase64FromBitmap(it)
@@ -107,6 +110,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
                                 imagePath: String?,
                                 imageUri: Uri?,
                             ) {
+                                imgCoverProfile.setImageBitmap(bitmap)
                                 imagePath?.let {
                                     coverPicBase64 =
                                         Common.getBase64FromBitmap(it)
@@ -124,6 +128,15 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
         if (checkValidation()) {
             val updateProfileRequest = UpdateProfileRequest()
             updateProfileRequest.display_name = etDisplayName.text.toString()
+            updateProfileRequest.username =
+                when (etUserName.text.toString()) {
+                    "" -> {
+                        userName
+                    }
+                    else -> {
+                        etUserName.text.toString()
+                    }
+                }
             updateProfileRequest.about = etAbout.text.toString()
             updateProfileRequest.location = etLocation.text.toString()
             updateProfileRequest.website = etWebsiteURL.text.toString()
@@ -147,20 +160,12 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
 
     private fun checkValidation(): Boolean {
         when {
+            etUserName.text.isEmpty() -> {
+                activity?.let { Common.showToast(it, getString(R.string.username_Validation)) }
+                return false
+            }
             etDisplayName.text.isEmpty() -> {
                 activity?.let { Common.showToast(it, getString(R.string.display_text_Validation)) }
-                return false
-            }
-            etAbout.text.isEmpty() -> {
-                activity?.let { Common.showToast(it, getString(R.string.about_Validation)) }
-                return false
-            }
-            etLocation.text.isEmpty() -> {
-                activity?.let { Common.showToast(it, getString(R.string.location_Validation)) }
-                return false
-            }
-            etWebsiteURL.text.isEmpty() -> {
-                activity?.let { Common.showToast(it, getString(R.string.website_Validation)) }
                 return false
             }
         }

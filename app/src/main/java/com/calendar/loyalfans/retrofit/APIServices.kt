@@ -20,6 +20,7 @@ interface APIServices {
         const val LIKE_POST = "auth/likepost"
         const val SEARCH_USER = "auth/searchuser"
         const val NEW_POST = "auth/newpost"
+        const val CREATE_PPV = "auth/createppv"
         const val POST_LIST = "auth/postlist"
         const val PROFILE_POST = "auth/getpostdata"
         const val UPDATE_POST = "auth/updatepost"
@@ -31,6 +32,9 @@ interface APIServices {
         const val GET_FANS = "auth/getfans"
         const val GET_FOLLOWING = "auth/getfollowings"
         const val GET_FAVORITE = "auth/favoritelist"
+        const val PPV_HISTORY = "auth/ppvhistory"
+        const val GET_COMMENTS = "auth/getcomments"
+        const val ADD_COMMENTS = "auth/addcomment"
     }
 
     @FormUrlEncoded
@@ -44,6 +48,7 @@ interface APIServices {
         @Field("type") type: String,
         @Field("google_id") google_id: String,
         @Field("fb_id") fb_id: String,
+        @Field("name") name: String,
     ): Call<LoginResponse>
 
     @FormUrlEncoded
@@ -172,6 +177,7 @@ interface APIServices {
         @Field("website") website: String,
         @Field("profile_img") profile_img: String,
         @Field("banner_img") banner_img: String,
+        @Field("username") username: String,
     ): Call<ProfileResponse>
 
     @FormUrlEncoded
@@ -210,6 +216,29 @@ interface APIServices {
         @Field("user_id") user_id: String,
         @Field("type") type: String,
     ): Call<FavouriteResponse>
+
+
+    @FormUrlEncoded
+    @POST(PPV_HISTORY)
+    fun ppvHistory(
+        @Field("user_id") user_id: String,
+        @Field("profile_id") profile_id: String,
+    ): Call<PpvHistoryResponse>
+
+    @FormUrlEncoded
+    @POST(GET_COMMENTS)
+    fun getCommentsByPostId(
+        @Field("user_id") user_id: String,
+        @Field("post_id") post_id: String,
+    ): Call<CommentResponse>
+
+    @FormUrlEncoded
+    @POST(ADD_COMMENTS)
+    fun addComments(
+        @Field("user_id") user_id: String,
+        @Field("post_id") post_id: String,
+        @Field("comment") comment: String,
+    ): Call<BaseResponse>
 
 
 }

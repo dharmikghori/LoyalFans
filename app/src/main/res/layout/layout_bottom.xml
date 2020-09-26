@@ -61,14 +61,14 @@
             android:layout_height="@dimen/_25sdp"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_toStartOf="@+id/imgProfile"
+            android:layout_toStartOf="@+id/imgProfileBottom"
             android:layout_toEndOf="@+id/tempImgPost"
             android:contentDescription="@string/app_name"
             android:onClick="onNotification"
             android:src="@mipmap/ic_notification_unselect" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgProfile"
+            android:id="@+id/imgProfileBottom"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_alignParentEnd="true"
