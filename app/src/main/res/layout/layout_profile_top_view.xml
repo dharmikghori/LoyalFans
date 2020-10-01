@@ -15,7 +15,7 @@
             android:id="@+id/imgProfilePic"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
-            android:src="@drawable/model" />
+            android:src="@drawable/place_holder" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -45,6 +45,18 @@
                         android:layout_marginBottom="@dimen/_3sdp"
                         android:text="@string/henry_mark_name"
                         android:textColor="@color/theme_black" />
+
+
+                    <CheckBox
+                        android:id="@+id/cbFavorite"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_gravity="center"
+                        android:button="@drawable/checkbox_like_unlike_background"
+                        android:contentDescription="@string/app_name"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
@@ -169,8 +181,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:maxLines="5"
-        android:text="@string/lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum"
         android:textColor="@color/theme_black" />
+
+    <include
+        android:id="@+id/layProfileSubscription"
+        layout="@layout/layout_profile_subscription"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"

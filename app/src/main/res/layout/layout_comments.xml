@@ -7,16 +7,15 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgProfilePic"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_margin="@dimen/_10sdp"
-        android:src="@drawable/model" />
+        android:src="@drawable/place_holder" />
 
     <LinearLayout
-        android:id="@+id/viewProfile"
+        android:id="@+id/profileAndCommentData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_6sdp"
@@ -41,7 +40,6 @@
             style="@style/BaseTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_marginBottom="@dimen/_3sdp"
             android:textAllCaps="true"
             android:textColor="@color/theme_black"
@@ -70,19 +68,17 @@
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center"
-                android:button="@drawable/checkbox_like_unlike_background"
+                android:button="@drawable/comment_selector_bg"
                 android:contentDescription="@string/app_name"
                 android:gravity="center"
-                android:src="@drawable/ic_like"
                 tools:ignore="ContentDescription" />
-
 
             <TextView
                 android:id="@+id/tvCommentLikeCount"
                 style="@style/BaseTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_4sdp"
                 android:text="@string/_0"
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
@@ -96,8 +92,21 @@
                 android:text="@string/reply"
                 android:textAllCaps="false"
                 android:textColor="@color/theme_black" />
-
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@color/border_color" />
+
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvReplyComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileAndCommentData"
+        android:layout_marginStart="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_5sdp" />
 </RelativeLayout>

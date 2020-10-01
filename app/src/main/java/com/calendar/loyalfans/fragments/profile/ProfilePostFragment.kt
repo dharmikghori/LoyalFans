@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.MainActivity
+import com.calendar.loyalfans.activities.OtherProfileActivity
 import com.calendar.loyalfans.adapter.MyProfilePostAdapter
 import com.calendar.loyalfans.fragments.post.EditPostFragment
 import com.calendar.loyalfans.model.request.PostDetailRequest
@@ -19,15 +19,16 @@ import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_profile_post.*
 
-class ProfilePostFragment(private val profileId: String) : Fragment() {
+class ProfilePostFragment(private val profileId: String, val isProfileVisible: Boolean) :
+    Fragment() {
 
     private var limit = 10
     private var offset = 0
 
     companion object {
-        fun newInstance(profileId: String) = ProfilePostFragment(profileId)
+        fun newInstance(profileId: String, isProfileVisible: Boolean) =
+            ProfilePostFragment(profileId, isProfileVisible)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +69,10 @@ class ProfilePostFragment(private val profileId: String) : Fragment() {
     private fun setUpAdapter(lastPostList: ArrayList<PostData>) {
         Common.setupVerticalRecyclerView(rvHomePost, activity)
         this.postList.addAll(lastPostList)
-        myProfilePostAdapter = MyProfilePostAdapter(this.postList, activity, true)
+        myProfilePostAdapter = MyProfilePostAdapter(this.postList,
+            activity,
+            profileId == Common.getUserId(),
+            isProfileVisible)
         rvHomePost.adapter = myProfilePostAdapter
         myProfilePostAdapter!!.onPostAction = object : MyProfilePostAdapter.OnPostAction {
             override fun onBottomReached(position: Int) {
@@ -84,14 +88,15 @@ class ProfilePostFragment(private val profileId: String) : Fragment() {
 
             override fun onComment(postData: PostData, position: Int) {
                 if (activity is MainActivity) {
-                    if (postData.comments != "0" && postData.comments != "") {
-                        (activity as MainActivity).loadFragment(17, postData.id)
-                    } else {
-                        Common.showToast(activity as MainActivity, "No comments")
-                    }                }            }
+                    (activity as MainActivity).loadFragment(17, postData.id)
+                } else if (activity is OtherProfileActivity) {
+                    (activity as OtherProfileActivity).loadFragment(17, postData.id)
+                }
+
+            }
 
             override fun onBookmark(postData: PostData, position: Int) {
-                TODO("Not yet implemented")
+                onFavouriteUnFavoritePost(postData)
             }
 
             override fun onEditPost(postData: PostData, position: Int) {
@@ -124,6 +129,20 @@ class ProfilePostFragment(private val profileId: String) : Fragment() {
                 }
             }
         }
+    }
+
+    private fun onFavouriteUnFavoritePost(postData: PostData) {
+        val postDetailRequest = PostDetailRequest(postData.id)
+        postDetailRequest.user_id = Common.getUserId()
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.favUnFavPost(
+            postDetailRequest, false
+        )
+            .observe(viewLifecycleOwner, {
+                if (it.status) {
+                    Common.showToast(BaseActivity.getActivity(), it.msg)
+                }
+            })
     }
 
     private fun onLikeUnLikeAPI(postData: PostData, position: Int) {

@@ -12,10 +12,10 @@
         android:id="@+id/imgProfilePic"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
-        android:src="@drawable/model" />
+        android:src="@drawable/place_holder" />
 
     <LinearLayout
-        android:id="@+id/viewProfile"
+        android:id="@+id/profileAndCommentData"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

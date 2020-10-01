@@ -20,6 +20,7 @@
             android:layout_weight="1" />
 
         <include
+            android:id="@+id/layBottomNavigation"
             layout="@layout/layout_bottom"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_55sdp" />

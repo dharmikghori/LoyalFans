@@ -15,4 +15,6 @@
     <color name="blue_color">#767b91</color>
     <color name="hint_color">#b3b3b3</color>
     <color name="profile_hint_color">#a0a0a0</color>
+    <color name="cancel_start">#eb545a</color>
+    <color name="cancel_end">#eb5691</color>
 </resources>

@@ -98,6 +98,7 @@
                 style="@style/SideMenuBaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onBankAdd"
                 android:layout_below="@+id/tvYourCards"
                 android:text="@string/add_bank_to_earn" />
 

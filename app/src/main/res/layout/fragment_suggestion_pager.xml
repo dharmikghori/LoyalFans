@@ -14,7 +14,7 @@
         android:contentDescription="@string/app_name"
         android:foreground="#50000000"
         android:scaleType="centerCrop"
-        android:src="@drawable/model" />
+        android:src="@drawable/place_holder" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgProfilePic"
@@ -22,10 +22,10 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_15sdp"
-        android:src="@drawable/model" />
+        android:src="@drawable/place_holder" />
 
     <LinearLayout
-        android:id="@+id/viewProfile"
+        android:id="@+id/profileAndCommentData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"

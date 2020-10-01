@@ -53,7 +53,7 @@ class FavoritePostAdapter(
 
     override fun onBindViewHolder(holder: HomePostViewHolder, position: Int) {
         val postData = getItem(position)
-        holder.btnSendTip.setOnClickListener { activity?.let { Common.showSendDialog(it) } }
+//        holder.btnSendTip.setOnClickListener { activity?.let { Common.showSendDialog(it, postData) } }
         holder.tvActivityMessage.text = postData.content
         holder.tvProfileName.text = postData.display_name
         holder.tvUserName.text = postData.username

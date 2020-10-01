@@ -13,14 +13,19 @@ import com.calendar.loyalfans.fragments.profile.ProfilePostFragment
 import com.calendar.loyalfans.fragments.profile.ProfileVideosFragment
 
 @SuppressLint("WrongConstant")
-class ProfileTabPagerAdapter(context: Context, fm: FragmentManager,val profileId: String) :
+class ProfileTabPagerAdapter(
+    context: Context,
+    fm: FragmentManager,
+    val profileId: String,
+    private val isProfileVisible: Boolean,
+) :
     FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val mContext = context
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> ProfilePostFragment.newInstance(profileId)
-            1 -> ProfilePhotosFragment.newInstance(profileId)
-            else -> ProfileVideosFragment.newInstance(profileId)
+            0 -> ProfilePostFragment.newInstance(profileId, isProfileVisible)
+            1 -> ProfilePhotosFragment.newInstance(profileId, isProfileVisible)
+            else -> ProfileVideosFragment.newInstance(profileId, isProfileVisible)
         }
     }
 

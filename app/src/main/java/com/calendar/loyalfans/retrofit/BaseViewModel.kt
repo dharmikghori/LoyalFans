@@ -442,7 +442,7 @@ class BaseViewModel : ViewModel() {
         fansFollowingRequest: FansFollowingRequest,
         progressShow: Boolean,
     ): MutableLiveData<FansResponse> {
-        val apiName = APIServices.GET_FANS
+        val apiName = APIServices.GET_FOLLOWING
         val fansData: MutableLiveData<FansResponse> =
             MutableLiveData()
         val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
@@ -538,16 +538,230 @@ class BaseViewModel : ViewModel() {
         val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
         addCommentRequest.user_id = Common.getUserId()
         printStrRequestJson(addCommentRequest, apiName)
-        apiServices?.addComments(
-            addCommentRequest.user_id, addCommentRequest.post_id, addCommentRequest.comment
+        if (addCommentRequest.comment_id == "") {
+            apiServices?.addComments(
+                addCommentRequest.user_id, addCommentRequest.post_id, addCommentRequest.comment
+            )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+                override fun onResponse(response: Any) {
+                    val baseResponse = response as BaseResponse
+                    printStrJson(baseResponse, apiName)
+                    addCommentData.value = baseResponse
+                }
+            }))
+        } else {
+            apiServices?.replyComment(
+                addCommentRequest.user_id,
+                addCommentRequest.post_id,
+                addCommentRequest.comment,
+                addCommentRequest.comment_id
+            )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+                override fun onResponse(response: Any) {
+                    val baseResponse = response as BaseResponse
+                    printStrJson(baseResponse, apiName)
+                    addCommentData.value = baseResponse
+                }
+            }))
+        }
+        return addCommentData
+    }
+
+    fun likeUnLikeComment(
+        commentRequest: CommentRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.LIKE_COMMENT
+        val likeCommentData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        commentRequest.user_id = Common.getUserId()
+        printStrRequestJson(commentRequest, apiName)
+        apiServices?.likeComment(
+            commentRequest.user_id,
+            commentRequest.post_id,
+            commentRequest.comment_id,
+            commentRequest.type
         )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
             override fun onResponse(response: Any) {
                 val baseResponse = response as BaseResponse
                 printStrJson(baseResponse, apiName)
-                addCommentData.value = baseResponse
+                likeCommentData.value = baseResponse
             }
         }))
-        return addCommentData
+        return likeCommentData
+    }
+
+    fun sendTip(
+        sendTipRequest: SendTipRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.SEND_TIP
+        val sendTipData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        sendTipRequest.user_id = Common.getUserId()
+        printStrRequestJson(sendTipRequest, apiName)
+        apiServices?.sendTip(
+            sendTipRequest.user_id,
+            sendTipRequest.owner_id,
+            sendTipRequest.amount,
+            sendTipRequest.post_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val baseResponse = response as BaseResponse
+                printStrJson(baseResponse, apiName)
+                sendTipData.value = baseResponse
+            }
+        }))
+        return sendTipData
+    }
+
+    fun followUser(
+        profileDetailRequest: ProfileDetailRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.FOLLOW_USER
+        val followUserData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        profileDetailRequest.user_id = Common.getUserId()
+        printStrRequestJson(profileDetailRequest, apiName)
+        apiServices?.followUser(
+            profileDetailRequest.user_id, profileDetailRequest.profile_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val followResponse = response as BaseResponse
+                printStrJson(followResponse, apiName)
+                followUserData.value = followResponse
+            }
+        }))
+        return followUserData
+    }
+
+    fun addCard(
+        addCardRequest: AddCardRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.ADD_CARD
+        val addCardData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        addCardRequest.user_id = Common.getUserId()
+        printStrRequestJson(addCardRequest, apiName)
+        apiServices?.addCard(
+            addCardRequest.user_id,
+            addCardRequest.street,
+            addCardRequest.city,
+            addCardRequest.state,
+            addCardRequest.zip,
+            addCardRequest.country,
+            addCardRequest.name,
+            addCardRequest.card_num,
+            addCardRequest.exp_year,
+            addCardRequest.exp_month,
+            addCardRequest.cvv,
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val addCardResponse = response as BaseResponse
+                printStrJson(addCardResponse, apiName)
+                addCardData.value = addCardResponse
+            }
+        }))
+        return addCardData
+    }
+
+    fun followPaidUser(
+        paidSubscriptionRequest: PaidSubscriptionRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.PAID_SUBSCRIPTION
+        val paidSubscription: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        paidSubscriptionRequest.user_id = Common.getUserId()
+        printStrRequestJson(paidSubscriptionRequest, apiName)
+        apiServices?.followPaidUser(
+            paidSubscriptionRequest.user_id,
+            paidSubscriptionRequest.plan_id,
+            paidSubscriptionRequest.month,
+            paidSubscriptionRequest.price,
+            paidSubscriptionRequest.owner_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val paidSubscriptionResponse = response as BaseResponse
+                printStrJson(paidSubscriptionResponse, apiName)
+                paidSubscription.value = paidSubscriptionResponse
+            }
+        }))
+        return paidSubscription
+    }
+
+    fun unFollowPaidUser(
+        paidSubscriptionRequest: PaidSubscriptionRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.CANCEL_PAID_SUBSCRIPTION
+        val paidSubscription: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        paidSubscriptionRequest.user_id = Common.getUserId()
+        printStrRequestJson(paidSubscriptionRequest, apiName)
+        apiServices?.unFollowPaidUser(
+            paidSubscriptionRequest.user_id,
+            paidSubscriptionRequest.owner_id,
+            paidSubscriptionRequest.subscription_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val paidSubscriptionResponse = response as BaseResponse
+                printStrJson(paidSubscriptionResponse, apiName)
+                paidSubscription.value = paidSubscriptionResponse
+            }
+        }))
+        return paidSubscription
+    }
+
+
+    fun stateList(
+        progressShow: Boolean,
+    ): MutableLiveData<StateCityResponse> {
+        val apiName = APIServices.CANCEL_PAID_SUBSCRIPTION
+        val stateCityResponseData: MutableLiveData<StateCityResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        val baseRequest = BaseRequest()
+        baseRequest.user_id = Common.getUserId()
+        printStrRequestJson(baseRequest, apiName)
+        apiServices?.stateList(
+            baseRequest.user_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val stateCityResponse = response as StateCityResponse
+                printStrJson(stateCityResponse, apiName)
+                stateCityResponseData.value = stateCityResponse
+            }
+        }))
+        return stateCityResponseData
+    }
+
+    fun cityList(
+        cityRequest: CityRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<StateCityResponse> {
+        val apiName = APIServices.CANCEL_PAID_SUBSCRIPTION
+        val stateCityResponseData: MutableLiveData<StateCityResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        cityRequest.user_id = Common.getUserId()
+        printStrRequestJson(cityRequest, apiName)
+        apiServices?.cityList(
+            cityRequest.user_id, cityRequest.state_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val stateCityResponse = response as StateCityResponse
+                printStrJson(stateCityResponse, apiName)
+                stateCityResponseData.value = stateCityResponse
+            }
+        }))
+        return stateCityResponseData
     }
 
     private fun printStrRequestJson(request: Any, apiName: String) {

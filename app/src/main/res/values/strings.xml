@@ -39,8 +39,8 @@
     <string name="logout">Logout</string>
     <string name="search">Search</string>
     <string name="recent_search">Recent Search</string>
-    <string name="henry_mark">Henry Mark</string>
-    <string name="henry_mark_name">Henry Mark</string>
+    <string name="henry_mark" />
+    <string name="henry_mark_name" />
     <string name="select_media_files">Please select media files</string>
 
     <string name="permission_error">Permission must be granted in order to access</string>
@@ -55,7 +55,9 @@
     <string name="profile_post">POST</string>
     <string name="profile_image">IMAGE</string>
     <string name="profile_video">VIDEO</string>
-    <string name="lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum" />
+    <string name="lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum">
+    lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum
+    </string>
     <string name="till_20_sep_2020" />
     <string name="blocked">BLOCKED</string>
     <string name="active">ACTIVE</string>
@@ -168,8 +170,43 @@
     <string name="send_ppv_message">Send PPV Message</string>
     <string name="search_result">Search Result</string>
     <string name="suggestion_for_you">Suggestion For You</string>
-    <string name="write_comment">Write Comment</string>
+    <string name="write_comment">Write a Comment</string>
     <string name="reply">Reply</string>
+    <string name="cancel_reply">Cancel Reply</string>
     <string name="add_comment_validation">Please add comment</string>
+    <string name="comments_header">Comments</string>
+    <string name="enter_tip_amount_validation">Please enter tip amount</string>
+    <string name="no_data">No Data</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="phone">Phone*</string>
+    <string name="phone_hint">PHONE</string>
+    <string name="tax_id_or_social_security_number">Tax ID or Social Security Number*</string>
+    <string name="ssn_hint">TAX ID OR SSN</string>
+    <string name="usa">USA</string>
+    <string name="state_province">State/Province*</string>
+    <string name="state_province_hint">STATE/PROVINCE</string>
+    <string name="select_document">SELECT DOCUMENTS*</string>
+    <string name="select_document_hint">SELECT DOCUMENTS</string>
+    <string name="choose_file">Choose File</string>
+    <string name="unable_post_bank">Unable to add bank details</string>
+    <string name="bank_details_added">Bank details added</string>
+    <string name="firstname_bank">Please enter firstname</string>
+    <string name="lastname_bank">Please enter lastname</string>
+    <string name="phone_bank">Please enter phone</string>
+    <string name="taxid_validation">Please enter taxID or SSN</string>
+    <string name="country_validation">Please select country</string>
+    <string name="street_validation">Please enter street</string>
+    <string name="state_validation">Please select state</string>
+    <string name="city_validation">Please select city</string>
+    <string name="zipcode_validation">Please enter zipcode</string>
+    <string name="dob_validation">Please select DOB</string>
+    <string name="selfie_image_validation">Please select selfie image</string>
+    <string name="id_image_validation">Please select ID image</string>
+    <string name="id_expiration_date">Id Expiration Date</string>
+    <string name="id_expiration_validation">Please select id expiration date</string>
+    <string name="passport">Passport</string>
+    <string name="driver_licence">Driver Licence</string>
+    <string name="state_id_card">State issued ID Card</string>
 
 </resources>

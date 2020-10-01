@@ -15,6 +15,7 @@ import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.layout_bottom.*
 
 
@@ -46,7 +47,7 @@ class MainActivity : BaseActivity() {
     }
 
 
-//paramsId = will be userID, PostId
+    //paramsId = will be userID, PostId
     fun loadFragment(type: Int, paramsId: String) {
         val fragmentToBeLoad = Common.getFragmentBasedOnType(type, paramsId)
         val fragmentToTag = Common.getTagBasedOnType(type)
@@ -58,6 +59,7 @@ class MainActivity : BaseActivity() {
                 .commit()
         }
     }
+
     fun loadFragmentWithEditPostListener(
         type: Int,
         postData: PostData,
@@ -80,6 +82,7 @@ class MainActivity : BaseActivity() {
     var doubleBackToExitPressedOnce = false
 
     override fun onBackPressed() {
+        manageBottomNavigationVisibility(true)
         val isMainFragment = checkMainLastFragmentOrNot()
         if (isMainFragment) {
             if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -93,6 +96,14 @@ class MainActivity : BaseActivity() {
                 2000)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    public fun manageBottomNavigationVisibility(isVisible: Boolean) {
+        if (isVisible) {
+            layBottomNavigation.visibility = View.VISIBLE
+        } else {
+            layBottomNavigation.visibility = View.GONE
         }
     }
 
@@ -168,6 +179,10 @@ class MainActivity : BaseActivity() {
 
     fun onSubscriptionPlan(view: View) {
         loadFragment(14)
+    }
+
+    fun onBankAdd(view: View) {
+        loadFragment(18)
     }
 
 

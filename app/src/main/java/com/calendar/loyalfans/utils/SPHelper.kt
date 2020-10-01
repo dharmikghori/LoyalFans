@@ -13,14 +13,12 @@ import com.google.gson.Gson
 
 class SPHelper(mContext: Context) {
 
-
     private val defString: String = ""
     private val sp: SharedPreferences
 
     init {
         sp = SharedPreferences(mContext)
     }
-
 
     operator fun get(key: String, defValue: Boolean): Boolean {
         return sp.read(key, defValue)
@@ -76,7 +74,6 @@ class SPHelper(mContext: Context) {
         }
     }
 
-
     //  Save login object
     fun saveUserPassword(password: String) {
         sp.save(RequestParams.USER_PASSWORD, password)
@@ -86,21 +83,10 @@ class SPHelper(mContext: Context) {
         return sp.read(RequestParams.USER_PASSWORD, "").toString()
     }
 
-
     //  Save Profile object
     fun saveProfileData(profileData: ProfileData) {
         val json = Gson().toJson(profileData)
         sp.save(RequestParams.PROFILE_DATA, json)
-    }
-
-    //GetProfile Object
-    fun getProfileData(): ProfileData? {
-        val json = sp.read(RequestParams.PROFILE_DATA, "")
-        return try {
-            Gson().fromJson(json, ProfileData::class.java)
-        } catch (e: Exception) {
-            null
-        }
     }
 
     fun saveRecentSearch(searchUserData: SearchUsers) {
@@ -140,12 +126,9 @@ class SPHelper(mContext: Context) {
 
     fun getLoginAppSecretKey(): String {
         val loginData = getLoginData()
-        var secretKey = ""
-        if (loginData != null) {
-            secretKey = loginData.appSecretKey
-        } else {
-            secretKey = APIServices.APP_SECRET_KEY
-        }
+        val secretKey: String
+        secretKey = //            secretKey = "Nc9iWN89ijAGQ6kX7H0iBKYLaAVEXIl88OEaeUIR"
+            loginData?.appSecretKey ?: APIServices.APP_SECRET_KEY
         Log.d("secretKey", secretKey)
         return secretKey
     }

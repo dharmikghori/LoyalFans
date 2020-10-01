@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.MutableLiveData
 import com.calendar.loyalfans.BuildConfig
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.utils.Common
@@ -90,6 +91,8 @@ open class BaseActivity : AppCompatActivity() {
     companion object {
         var firebaseToken = ""
         var imei = ""
+        val checkReplyOrNormalComment: MutableLiveData<String> =
+            MutableLiveData<String>()
         private lateinit var activity: AppCompatActivity
         fun getActivity(): AppCompatActivity {
             return activity
@@ -198,11 +201,7 @@ open class BaseActivity : AppCompatActivity() {
         try {
             pictureFile = getPictureFile()
         } catch (ex: Exception) {
-            Toast.makeText(
-                this,
-                "Photo file can't be created, please try again",
-                Toast.LENGTH_SHORT
-            ).show()
+            Common.showToast(this, "Photo file can't be created, please try again")
             return
         }
         try {
@@ -229,11 +228,7 @@ open class BaseActivity : AppCompatActivity() {
         try {
             videoFile = getVideoFile()
         } catch (ex: Exception) {
-            Toast.makeText(
-                this,
-                "Video file can't be created, please try again",
-                Toast.LENGTH_SHORT
-            ).show()
+            Common.showToast(this, "Video can't be created, please try again")
             return
         }
         try {

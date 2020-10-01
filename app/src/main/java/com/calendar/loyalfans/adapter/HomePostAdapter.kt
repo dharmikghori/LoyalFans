@@ -62,7 +62,12 @@ class HomePostAdapter(
 
     override fun onBindViewHolder(holder: HomePostViewHolder, position: Int) {
         val postData = getItem(position)
-        holder.btnSendTip.setOnClickListener { activity?.let { Common.showSendDialog(it) } }
+        holder.btnSendTip.setOnClickListener {
+            activity?.let {
+                Common.showSendDialog(it,
+                    postData)
+            }
+        }
         holder.tvActivityMessage.text = postData.content
         holder.tvProfileName.text = postData.display_name
         holder.tvUserName.text = postData.username
@@ -87,14 +92,29 @@ class HomePostAdapter(
             Common.loadImageUsingURL(holder.imgProfilePic,
                 postData.profile_img, it, true)
         }
-        holder.cbLikeUnlike.setOnCheckedChangeListener(null)
-        holder.cbLikeUnlike.isChecked = when (postData.is_likes) {
+        holder.cbBookmark.setOnCheckedChangeListener(null)
+        holder.cbBookmark.isChecked = when (postData.bookmark) {
             "0" -> false
             "1" -> true
             else ->
                 false
         }
-        holder.cbBookmark.isChecked = when (postData.bookmark) {
+        holder.cbBookmark.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
+            onPostAction?.onBookmark(postData, position)
+            postData.bookmark = when (isChecked) {
+                true -> {
+                    "1"
+                }
+                false -> {
+                    "0"
+                }
+            }
+            postListData[position] = postData
+            notifyItemChanged(position)
+        }
+
+        holder.cbLikeUnlike.setOnCheckedChangeListener(null)
+        holder.cbLikeUnlike.isChecked = when (postData.is_likes) {
             "0" -> false
             "1" -> true
             else ->
@@ -143,16 +163,22 @@ class HomePostAdapter(
 
                 }
             holder.imgNextSuggestion.setOnClickListener {
-                holder.suggestionViewPager.currentItem = holder.suggestionViewPager.currentItem++
+                var currentItem = holder.suggestionViewPager.currentItem
+                currentItem += 1
+                holder.suggestionViewPager.setCurrentItem(currentItem,
+                    true)
             }
             holder.imgPrevSuggestion.setOnClickListener {
-                holder.suggestionViewPager.currentItem = holder.suggestionViewPager.currentItem--
+                var currentItem = holder.suggestionViewPager.currentItem
+                currentItem -= 1
+                holder.suggestionViewPager.setCurrentItem(currentItem,
+                    true)
             }
         } else {
             holder.laySuggestion.visibility = View.GONE
         }
-        holder.tvTotalComment.setOnClickListener{
-            onPostAction?.onComment(postData,position)
+        holder.layComment.setOnClickListener {
+            onPostAction?.onComment(postData, position)
         }
 
     }
@@ -170,10 +196,10 @@ class HomePostAdapter(
         val tabLayout: TabLayout = view.tabLayout
         val photos_viewpager: ViewPager = view.photos_viewpager
         val imgMoreOption: ImageView = view.imgMoreOption
-        val viewProfile: LinearLayout = view.viewProfile
+        val viewProfile: LinearLayout = view.profileAndCommentData
         val suggestionViewPager: ViewPager = view.suggestionViewPager
         val laySuggestion: View = view.laySuggestion
-        val suggestionTabLayout: TabLayout = view.suggestionTabLayout
+        val layComment: LinearLayout = view.layComment
         val imgPrevSuggestion: ImageView = view.imgPrevSuggestion
         val imgNextSuggestion: ImageView = view.imgNextSuggestion
     }

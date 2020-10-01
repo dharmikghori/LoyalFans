@@ -13,6 +13,7 @@ import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.utils.Common
 import com.google.android.material.tabs.TabLayout
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.layout_home_post.view.*
 import kotlinx.android.synthetic.main.layout_like_comment_bottom_view.view.*
 import kotlinx.android.synthetic.main.layout_post_message_and_photos.view.*
 import kotlinx.android.synthetic.main.layout_post_top_view.view.*
@@ -23,6 +24,7 @@ class MyProfilePostAdapter(
     private var postListData: ArrayList<PostData>,
     private val activity: FragmentActivity?,
     private val isMyPost: Boolean = false,
+    private val isProfileVisible: Boolean,
 ) :
     RecyclerView.Adapter<MyProfilePostAdapter.HomePostViewHolder>() {
     var onPostAction: OnPostAction? = null
@@ -58,7 +60,17 @@ class MyProfilePostAdapter(
 
     override fun onBindViewHolder(holder: HomePostViewHolder, position: Int) {
         val postData = getItem(position)
-        holder.btnSendTip.setOnClickListener { activity?.let { Common.showSendDialog(it) } }
+        if (isProfileVisible) {
+            holder.imgPostVisible.visibility = View.GONE
+        } else {
+            holder.imgPostVisible.visibility = View.VISIBLE
+        }
+        holder.btnSendTip.setOnClickListener {
+            activity?.let {
+                Common.showSendDialog(it,
+                    postData)
+            }
+        }
         holder.tvActivityMessage.text = postData.content
         holder.tvProfileName.text = postData.display_name
         holder.tvUserName.text = postData.username
@@ -129,6 +141,9 @@ class MyProfilePostAdapter(
             onPostAction?.onBottomReached(position)
         }
 
+        holder.layComment.setOnClickListener {
+            onPostAction?.onComment(postData, position)
+        }
         if (isMyPost) {
             holder.imgMoreOption.visibility = View.VISIBLE
             holder.btnSendTip.visibility = View.GONE
@@ -155,6 +170,8 @@ class MyProfilePostAdapter(
         val tabLayout: TabLayout = view.tabLayout
         val photos_viewpager: ViewPager = view.photos_viewpager
         val imgMoreOption: ImageView = view.imgMoreOption
+        val layComment: LinearLayout = view.layComment
+        val imgPostVisible: ImageView = view.imgPostVisible
     }
 
     private fun openOptionMenu(view: View, postData: PostData, position: Int) {

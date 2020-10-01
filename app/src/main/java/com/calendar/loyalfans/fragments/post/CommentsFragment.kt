@@ -7,20 +7,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity.Companion.checkReplyOrNormalComment
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.CommentAdapter
 import com.calendar.loyalfans.model.request.AddCommentRequest
+import com.calendar.loyalfans.model.request.CommentRequest
 import com.calendar.loyalfans.model.request.PostDetailRequest
 import com.calendar.loyalfans.model.response.CommentData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_comment.*
+import kotlinx.android.synthetic.main.layout_toolbar_back.*
 
-class CommentsFragment(val postId: String) : Fragment(), View.OnClickListener {
+class CommentsFragment(private val postId: String) : Fragment(), View.OnClickListener {
+    private var replyCommentID = ""
 
     companion object {
         fun newInstance(
             postId: String,
         ): Fragment {
+
             return CommentsFragment(postId)
         }
     }
@@ -35,7 +41,25 @@ class CommentsFragment(val postId: String) : Fragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         tvPostComment.setOnClickListener(this)
+        imgBack.setOnClickListener(this)
         getComments()
+        checkReplyOrNormalComment.value = ""
+        tvToolBarName.text = getString(R.string.comments_header)
+        if (activity is MainActivity) {
+            (activity as MainActivity).manageBottomNavigationVisibility(false)
+            checkReplyOrNormalComment.removeObserver {}
+            checkReplyOrNormalComment.observe(viewLifecycleOwner, {
+                replyCommentID = ""
+                if (it == "") {
+                    etComment.hint = getString(R.string.write_comment)
+                } else {
+                    val replyCommentData = it.split(",")
+                    replyCommentID = replyCommentData[0]
+                    etComment.hint = "Reply to ${replyCommentData[1]}"
+                }
+            })
+        }
+
     }
 
     private fun getComments() {
@@ -55,13 +79,33 @@ class CommentsFragment(val postId: String) : Fragment(), View.OnClickListener {
 
     private fun setUpCommentsAdapter(comments: ArrayList<CommentData>) {
         Common.setupVerticalRecyclerView(rvComments, activity)
-        rvComments.adapter = CommentAdapter(comments, activity)
+        val commentAdapter = CommentAdapter(comments, activity, false, postId)
+        rvComments.adapter = commentAdapter
+        commentAdapter.onCommentLikeUnLike = object : CommentAdapter.OnCommentLikeUnLike {
+            override fun onLikeUnLikeComment(commentRequest: CommentRequest) {
+                makeLikeUnLikeComment(commentRequest)
+            }
+        }
+    }
+
+    private fun makeLikeUnLikeComment(commentRequest: CommentRequest) {
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.likeUnLikeComment(
+            commentRequest, true
+        ).observe(viewLifecycleOwner,
+            {
+                if (it.status) {
+                    activity?.let { it1 -> Common.showToast(it1, it.msg) }
+                }
+            })
     }
 
     override fun onClick(v: View?) {
         if (v != null) {
             if (v.id == R.id.tvPostComment) {
                 onPostComment()
+            } else if (v.id == R.id.imgBack) {
+                activity?.onBackPressed()
             }
         }
     }
@@ -69,7 +113,14 @@ class CommentsFragment(val postId: String) : Fragment(), View.OnClickListener {
     private fun onPostComment() {
         if (checkValidation()) {
             val addCommentRequest =
-                AddCommentRequest(postId, etComment.text.toString())
+                AddCommentRequest(postId, etComment.text.toString(), when (replyCommentID.length) {
+                    0 -> {
+                        ""
+                    }
+                    else -> {
+                        replyCommentID
+                    }
+                })
             val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
             baseViewModel.addComments(
                 addCommentRequest, true

@@ -78,7 +78,7 @@
             android:contentDescription="@string/app_name"
             android:onClick="onProfile"
             android:padding="@dimen/_1sdp"
-            android:src="@drawable/model" />
+            android:src="@drawable/place_holder" />
     </RelativeLayout>
 
     <ImageView

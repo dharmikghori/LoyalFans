@@ -19,7 +19,7 @@
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
             android:scaleType="centerCrop"
-            android:src="@drawable/model"
+            android:src="@drawable/place_holder"
             tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>
 </LinearLayout>

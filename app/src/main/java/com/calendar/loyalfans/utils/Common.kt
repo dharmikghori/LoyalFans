@@ -18,6 +18,8 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Base64
 import android.view.Window
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -25,6 +27,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -36,6 +39,7 @@ import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.fragments.home.HomeFragment
 import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
 import com.calendar.loyalfans.fragments.payment.AddCardFragment
+import com.calendar.loyalfans.fragments.payment.BankFragment
 import com.calendar.loyalfans.fragments.post.AddPostFragment
 import com.calendar.loyalfans.fragments.post.CommentsFragment
 import com.calendar.loyalfans.fragments.ppv.AddPpvPostFragment
@@ -44,6 +48,9 @@ import com.calendar.loyalfans.fragments.profile.*
 import com.calendar.loyalfans.fragments.searchFragment.SearchFragment
 import com.calendar.loyalfans.fragments.setting.NotificationSettingFragment
 import com.calendar.loyalfans.fragments.setting.SecuritySettingFragment
+import com.calendar.loyalfans.model.request.SendTipRequest
+import com.calendar.loyalfans.model.response.PostData
+import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import java.io.*
@@ -60,10 +67,30 @@ class Common {
         private val searchFragment = SearchFragment.newInstance()
         private val addPostFragment = AddPostFragment.newInstance()
 
-        fun showSendDialog(context: Context) {
+        fun showSendDialog(context: Context, postData: PostData) {
             val dialog = Dialog(context, R.style.FullScreenDialogStyle)
             dialog.setContentView(R.layout.layout_send_tip_dialog)
             dialog.show()
+            val etTipAmount = dialog.findViewById<EditText>(R.id.etTipAmount)
+            dialog.findViewById<Button>(R.id.btnSendTipDialog).setOnClickListener {
+                if (etTipAmount.length() > 0) {
+                    val sendTipRequest =
+                        SendTipRequest(postData.user_id, etTipAmount.text.toString(), postData.id)
+                    val baseViewModel =
+                        ViewModelProvider(BaseActivity.getActivity()).get(BaseViewModel::class.java)
+                    baseViewModel.sendTip(
+                        sendTipRequest, true
+                    ).observe(BaseActivity.getActivity(), {
+                        if (it.status) {
+                            showToast(context, it.msg)
+                            dialog.dismiss()
+                        }
+                    })
+                } else {
+                    showToast(context, context.getString(R.string.enter_tip_amount_validation))
+
+                }
+            }
         }
 
         fun getTagBasedOnType(type: Int): String {
@@ -119,6 +146,9 @@ class Common {
                 17 -> {
                     "CommentFragment"
                 }
+                18 -> {
+                    "BankFragment"
+                }
                 else -> ""
             }
         }
@@ -172,6 +202,9 @@ class Common {
                 }
                 16 -> {
                     AddPpvPostFragment.newInstance()
+                }
+                18 -> {
+                    BankFragment.newInstance()
                 }
                 else -> null
             }
@@ -362,10 +395,12 @@ class Common {
 
         fun showToast(context: Context, message: String, isLongMessage: Boolean = false) {
             BaseActivity.getActivity().runOnUiThread {
-                if (isLongMessage) {
-                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                if (message != "No data found") {
+                    if (isLongMessage) {
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

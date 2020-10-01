@@ -1,6 +1,7 @@
 package com.calendar.loyalfans.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.OtherProfileActivity
 import com.calendar.loyalfans.model.response.SearchUsers
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.RequestParams
 import com.calendar.loyalfans.utils.SPHelper
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_search.view.*
@@ -55,6 +58,9 @@ class SearchAdapter(
             activity?.let { it1 ->
                 val spHelper = SPHelper(it1)
                 spHelper.saveRecentSearch(searchItem)
+                activity.startActivity(Intent(activity, OtherProfileActivity::class.java)
+                    .putExtra(RequestParams.PROFILE_ID, searchItem.id))
+
             }
         }
         if (isCloseVisible) {

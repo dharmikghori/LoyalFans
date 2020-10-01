@@ -50,6 +50,7 @@
                     android:textColor="@color/theme_black" />
 
                 <EditText
+                    android:id="@+id/etTipAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
@@ -66,6 +67,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btnSendTipDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="end"

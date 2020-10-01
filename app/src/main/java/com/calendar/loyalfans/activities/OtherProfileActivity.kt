@@ -35,8 +35,9 @@ class OtherProfileActivity : BaseActivity() {
     override fun onBackPressed() {
         val backStackEntryCount = supportFragmentManager.backStackEntryCount
         supportFragmentManager.popBackStack()
-        if (backStackEntryCount==1){
-            finish()}
+        if (backStackEntryCount == 1) {
+            finish()
+        }
     }
 
 }

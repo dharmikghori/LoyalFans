@@ -12,8 +12,8 @@ open class CommentData {
     var is_like: String = ""
     var likes: String = ""
     var display_name: String = ""
+    var created_at: String = ""
     var profile_img: String = ""
-
+    var replay: ArrayList<CommentData>? = null
 }
-
 
