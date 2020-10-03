@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/_20sdp">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:nestedScrollingEnabled="false"
+        android:nestedScrollingEnabled="true"
         tools:ignore="UselessParent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,13 +17,19 @@
             android:orientation="vertical">
 
             <include
+                android:id="@+id/myProfileToolbar"
+                layout="@layout/layout_toolbar_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
                 android:id="@+id/layProfileTop"
                 layout="@layout/layout_profile_top_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/myProfileToolbar" />
 
 
             <com.google.android.material.tabs.TabLayout
@@ -38,7 +43,7 @@
                 app:tabSelectedTextColor="@color/colorAccent"
                 app:tabTextColor="@color/theme_black" />
 
-            <androidx.viewpager.widget.ViewPager
+            <com.calendar.loyalfans.utils.CustomViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

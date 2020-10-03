@@ -24,6 +24,7 @@ open class MyPPVDetailsData {
     var price: String = ""
     var status: String = ""
     var updated_at: String = ""
+    var created_at: String = ""
     var files: ArrayList<MyPPVFilesData> = ArrayList()
 }
 

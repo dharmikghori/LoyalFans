@@ -1,6 +1,8 @@
 package com.calendar.loyalfans.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,9 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.WebViewActivity
+import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.RequestParams
 
 
 class PostImageVideoPagerAdapter(
@@ -31,16 +36,35 @@ class PostImageVideoPagerAdapter(
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val imageData = imagesList[position]
         val inflater: LayoutInflater =
             context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view: View =
             inflater.inflate(R.layout.fragment_post_image_video_pager, container, false)
         val imgPostImageVideoPager = view.findViewById<ImageView>(R.id.imgPostImageVideoPager)
-        com.calendar.loyalfans.utils.Common.loadImageUsingURL(imgPostImageVideoPager,
-            imagesList[position],
+        val imgPlayVideo = view.findViewById<ImageView>(R.id.imgPlayVideo)
+        Common.loadImageUsingURL(imgPostImageVideoPager,
+            imageData,
             context, true)
         val viewPager = container as ViewPager
         viewPager.addView(view, 0)
+        if (Common.isVideo(imageData)) {
+            imgPlayVideo.visibility = View.VISIBLE
+        } else {
+            imgPlayVideo.visibility = View.GONE
+        }
+        imgPostImageVideoPager.setOnClickListener {
+            val imageURL =
+                if (Common.isVideo(imageData)) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(imageData))
+                    intent.setDataAndType(Uri.parse(imageData), "video/mp4")
+                    context.startActivity(intent)
+                } else {
+                    context.startActivity(Intent(context, WebViewActivity::class.java).putExtra(
+                        RequestParams.WEBVIEW_URL,
+                        imageData))
+                }
+        }
         return view
     }
 }

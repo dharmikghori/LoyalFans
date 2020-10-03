@@ -58,7 +58,18 @@
                         android:visibility="gone"
                         tools:ignore="ContentDescription" />
 
+                    <CheckBox
+                        android:id="@+id/cbFavouriteProfile"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:button="@drawable/favourite_background"
+                        android:contentDescription="@string/app_name"
+                        android:visibility="gone" />
+
                     <ImageView
+                        android:id="@+id/imgShare"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
                         android:layout_gravity="center"
@@ -179,7 +190,6 @@
         style="@style/BaseTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:maxLines="5"
         android:textColor="@color/theme_black" />
 

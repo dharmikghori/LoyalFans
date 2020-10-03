@@ -658,7 +658,7 @@ class BaseViewModel : ViewModel() {
             addCardRequest.card_num,
             addCardRequest.exp_year,
             addCardRequest.exp_month,
-            addCardRequest.cvv,
+            addCardRequest.cvv
         )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
             override fun onResponse(response: Any) {
                 val addCardResponse = response as BaseResponse
@@ -723,7 +723,7 @@ class BaseViewModel : ViewModel() {
     fun stateList(
         progressShow: Boolean,
     ): MutableLiveData<StateCityResponse> {
-        val apiName = APIServices.CANCEL_PAID_SUBSCRIPTION
+        val apiName = APIServices.STATE_LIST
         val stateCityResponseData: MutableLiveData<StateCityResponse> =
             MutableLiveData()
         val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
@@ -746,7 +746,7 @@ class BaseViewModel : ViewModel() {
         cityRequest: CityRequest,
         progressShow: Boolean,
     ): MutableLiveData<StateCityResponse> {
-        val apiName = APIServices.CANCEL_PAID_SUBSCRIPTION
+        val apiName = APIServices.CITY_LIST
         val stateCityResponseData: MutableLiveData<StateCityResponse> =
             MutableLiveData()
         val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
@@ -762,6 +762,134 @@ class BaseViewModel : ViewModel() {
             }
         }))
         return stateCityResponseData
+    }
+
+    fun bankList(
+        progressShow: Boolean,
+    ): MutableLiveData<BankListResponse> {
+        val apiName = APIServices.BANK_LIST
+        val bankListData: MutableLiveData<BankListResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        val baseRequest = BaseRequest()
+        baseRequest.user_id = Common.getUserId()
+        printStrRequestJson(baseRequest, apiName)
+        apiServices?.bankList(
+            baseRequest.user_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val bankListResponse = response as BankListResponse
+                printStrJson(bankListResponse, apiName)
+                bankListData.value = bankListResponse
+            }
+        }))
+        return bankListData
+    }
+
+    fun w9FormStatus(
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.W9_FORM_STATUS
+        val baseResponseData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        val baseRequest = BaseRequest()
+        baseRequest.user_id = Common.getUserId()
+        printStrRequestJson(baseRequest, apiName)
+        apiServices?.w9FormStatus(
+            baseRequest.user_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val baseResponse = response as BaseResponse
+                printStrJson(baseResponse, apiName)
+                baseResponseData.value = baseResponse
+            }
+        }))
+        return baseResponseData
+    }
+
+    fun bankTransfer(
+        bankTransferRequest: BankTransferRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.BANK_TRANSFER
+        val bankStransferData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        bankTransferRequest.user_id = Common.getUserId()
+        printStrRequestJson(bankTransferRequest, apiName)
+        apiServices?.bankTransfer(
+            bankTransferRequest.user_id,
+            bankTransferRequest.route_num,
+            bankTransferRequest.account_num,
+            bankTransferRequest.account_type,
+            bankTransferRequest.country,
+            bankTransferRequest.first_name,
+            bankTransferRequest.last_name,
+            bankTransferRequest.business_name,
+            bankTransferRequest.email
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val baseResponse = response as BaseResponse
+                printStrJson(baseResponse, apiName)
+                bankStransferData.value = baseResponse
+            }
+        }))
+        return bankStransferData
+    }
+
+    fun notificationSetting(
+        notificationType: NotificationSecurityRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<NotificationSecurityResponse> {
+        val apiName = APIServices.EMAIL_NOTIFICATION
+        val notificationSettingResponseData: MutableLiveData<NotificationSecurityResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        notificationType.user_id = Common.getUserId()
+        printStrRequestJson(notificationType, apiName)
+        val notificationSettingRequest = if (notificationType.sub_type == "") {
+            apiServices?.notificationSetting(
+                notificationType.user_id,
+                notificationType.type
+            )
+        } else {
+            apiServices?.notificationSetting(
+                notificationType.user_id,
+                notificationType.type,
+                notificationType.sub_type)
+        }
+        notificationSettingRequest?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val notificationResponse = response as NotificationSecurityResponse
+                printStrJson(notificationResponse, apiName)
+                notificationSettingResponseData.value = notificationResponse
+            }
+        }))
+        return notificationSettingResponseData
+    }
+
+    fun favoriteProfile(
+        profileDetailRequest: ProfileDetailRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.FAVORITE_PROFILE
+        val favoriteProfileData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        profileDetailRequest.user_id = Common.getUserId()
+        printStrRequestJson(profileDetailRequest, apiName)
+        apiServices?.favoriteProfile(
+            profileDetailRequest.user_id,
+            profileDetailRequest.profile_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val favoriteProfileResponse = response as BaseResponse
+                printStrJson(favoriteProfileResponse, apiName)
+                favoriteProfileData.value = favoriteProfileResponse
+            }
+        }))
+        return favoriteProfileData
     }
 
     private fun printStrRequestJson(request: Any, apiName: String) {

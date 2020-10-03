@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CompoundButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,9 +25,11 @@ import com.calendar.loyalfans.viewpager.ProfileTabPagerAdapter
 import kotlinx.android.synthetic.main.fragment_myprofile.*
 import kotlinx.android.synthetic.main.layout_profile_subscription.*
 import kotlinx.android.synthetic.main.layout_profile_top_view.*
+import kotlinx.android.synthetic.main.layout_toolbar_back.*
 
 
-class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClickListener {
+class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClickListener,
+    CompoundButton.OnCheckedChangeListener {
 
     companion object {
         fun newInstance() = MyProfileFragment(Common.getUserId())
@@ -43,6 +46,17 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        if (profileId != Common.getUserId()) {
+            tvToolBarName.text = getString(R.string.other_profile)
+            cbFavouriteProfile.visibility = View.VISIBLE
+            cbFavouriteProfile.setOnCheckedChangeListener(this)
+            imgBack.visibility = View.VISIBLE
+            imgBack.setOnClickListener(this)
+        } else {
+            cbFavouriteProfile.visibility = View.GONE
+            tvToolBarName.text = getString(R.string.myprofile)
+            imgBack.visibility = View.GONE
+        }
         getProfile(true)
         layFans.setOnClickListener(this)
         layFollowing.setOnClickListener(this)
@@ -101,7 +115,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
             activity?.let { SPHelper(it).saveProfileData(data) }
         }
         tvProfileName.text = data.display_name
-        tvUserName.text = data.username
+        tvUserName.text = "@" + data.username
         tvAbout.text = data.about
         tvTotalFansCount.text = data.fans
         tvFollowingCount.text = data.followers
@@ -337,6 +351,9 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
+                R.id.imgBack -> {
+                    activity?.onBackPressed()
+                }
                 R.id.layFans -> {
                     if (activity is MainActivity) {
                         val mainActivity = activity as MainActivity
@@ -377,5 +394,23 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                 }
             }
         }
+    }
+
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        favoriteUnFavoriteProfile()
+    }
+
+    private fun favoriteUnFavoriteProfile() {
+        val profileDetailRequest = ProfileDetailRequest(profileId)
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.favoriteProfile(
+            profileDetailRequest, true
+        )
+            .observe(viewLifecycleOwner,
+                {
+                    if (it.status) {
+                        activity?.let { it1 -> Common.showToast(it1, it.msg) }
+                    }
+                })
     }
 }

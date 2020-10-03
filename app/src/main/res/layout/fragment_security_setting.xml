@@ -37,7 +37,8 @@
                 android:text="@string/show_activity_status"
                 android:textColor="@color/theme_black" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchActivityStatus"
                 style="@style/SwitchStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -58,7 +59,8 @@
                 android:text="@string/show_subscriptions_offers"
                 android:textColor="@color/theme_black" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchSubsOffer"
                 style="@style/SwitchStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -74,23 +76,32 @@
             android:text="@string/receive_site_notifications_about"
             android:textColor="@color/theme_black" />
 
-        <RadioButton
-            style="@style/RadioButtonStyle"
+        <RadioGroup
+            android:id="@+id/rbSecurity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="@string/nobody" />
+            android:layout_height="wrap_content">
 
-        <RadioButton
-            style="@style/RadioButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/mutual_friends" />
+            <RadioButton
+                android:id="@+id/rbNobody"
+                style="@style/RadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/nobody" />
 
-        <RadioButton
-            style="@style/RadioButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/subscribe" />
+            <RadioButton
+                android:id="@+id/rbMutualFriend"
+                style="@style/RadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mutual_friends" />
+
+            <RadioButton
+                android:id="@+id/rbSubscribe"
+                style="@style/RadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe" />
+        </RadioGroup>
     </LinearLayout>
 </LinearLayout>

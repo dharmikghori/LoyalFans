@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.fragments.payment.BankTransferAndW9Fragment
 import com.calendar.loyalfans.fragments.post.EditPostFragment
 import com.calendar.loyalfans.model.request.ProfileDetailRequest
+import com.calendar.loyalfans.model.response.BankListData
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
@@ -60,6 +63,17 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    fun loadFragment(type: Int, bankList: BankListData) {
+        val fragmentToBeLoad = BankTransferAndW9Fragment.newInstance(bankList)
+        val fragmentToTag = Common.getTagBasedOnType(type)
+        closeDrawer()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.layFrame, fragmentToBeLoad, fragmentToTag)
+            .addToBackStack(fragmentToTag)
+            .commit()
+    }
+
     fun loadFragmentWithEditPostListener(
         type: Int,
         postData: PostData,
@@ -99,7 +113,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    public fun manageBottomNavigationVisibility(isVisible: Boolean) {
+    fun manageBottomNavigationVisibility(isVisible: Boolean) {
         if (isVisible) {
             layBottomNavigation.visibility = View.VISIBLE
         } else {
@@ -174,7 +188,20 @@ class MainActivity : BaseActivity() {
     }
 
     fun onLogout(view: View) {
-        Common.automaticallyLogoutOnUnauthorizedOrForbidden()
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.logout)
+        builder.setMessage(R.string.logout_message)
+        builder.setIcon(R.mipmap.ic_logout)
+        builder.setPositiveButton("Yes") { dialogInterface, which ->
+            Common.automaticallyLogoutOnUnauthorizedOrForbidden()
+        }
+        builder.setNegativeButton("Cancel") { dialogInterface, which ->
+            dialogInterface.dismiss()
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+
     }
 
     fun onSubscriptionPlan(view: View) {
@@ -182,7 +209,14 @@ class MainActivity : BaseActivity() {
     }
 
     fun onBankAdd(view: View) {
-        loadFragment(18)
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.bankList(true).observe(this, {
+            if (it.bank_status) {
+                loadFragment(19, it.data)
+            } else {
+                loadFragment(18)
+            }
+        })
     }
 
 

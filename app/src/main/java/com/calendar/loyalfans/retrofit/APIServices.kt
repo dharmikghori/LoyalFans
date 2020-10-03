@@ -8,6 +8,7 @@ import retrofit2.http.POST
 
 interface APIServices {
     companion object {
+        const val W9_FORM_WEB_URL = "https://www.loyalfansonly.com/welcome/w9form/"
         const val AUTH_TOKEN = "eyJ0eXA1iOi0JKV1QiL8CJhb5GciTWvLUzI1NiJ9IiRk2YXRh8Ig"
         const val APP_SECRET_KEY = "Mn2fKZG4M1170jDlVn6lOFTN6OE27f6UO99n9QDV"
         const val SERVICE_URL = "https://loyalfansonly.com/v1/"
@@ -44,6 +45,11 @@ interface APIServices {
         const val STATE_LIST = "auth/statelist"
         const val CITY_LIST = "auth/citylist"
         const val ADD_BANK = "auth/addbank"
+        const val BANK_LIST = "auth/banklist"
+        const val W9_FORM_STATUS = "auth/w9formstatus"
+        const val BANK_TRANSFER = "auth/banktransfer"
+        const val EMAIL_NOTIFICATION = "auth/emailnotification"
+        const val FAVORITE_PROFILE = "auth/favoriteprofile"
     }
 
     @FormUrlEncoded
@@ -329,5 +335,53 @@ interface APIServices {
         @Field("user_id") user_id: String,
         @Field("state_id") state_id: String,
     ): Call<StateCityResponse>
+
+    @FormUrlEncoded
+    @POST(BANK_LIST)
+    fun bankList(
+        @Field("user_id") user_id: String,
+    ): Call<BankListResponse>
+
+    @FormUrlEncoded
+    @POST(W9_FORM_STATUS)
+    fun w9FormStatus(
+        @Field("user_id") user_id: String,
+    ): Call<BankListResponse>
+
+    @FormUrlEncoded
+    @POST(BANK_TRANSFER)
+    fun bankTransfer(
+        @Field("user_id") user_id: String,
+        @Field("route_num") route_num: String,
+        @Field("account_num") account_num: String,
+        @Field("account_type") account_type: String,
+        @Field("country") country: String,
+        @Field("first_name") first_name: String,
+        @Field("last_name") last_name: String,
+        @Field("business_name") business_name: String,
+        @Field("email") email: String,
+    ): Call<BankListResponse>
+
+    @FormUrlEncoded
+    @POST(EMAIL_NOTIFICATION)
+    fun notificationSetting(
+        @Field("user_id") user_id: String,
+        @Field("type") type: String,
+    ): Call<NotificationSecurityResponse>
+
+    @FormUrlEncoded
+    @POST(EMAIL_NOTIFICATION)
+    fun notificationSetting(
+        @Field("user_id") user_id: String,
+        @Field("type") type: String,
+        @Field("sub_type") sub_type: String,
+    ): Call<NotificationSecurityResponse>
+
+    @FormUrlEncoded
+    @POST(FAVORITE_PROFILE)
+    fun favoriteProfile(
+        @Field("user_id") user_id: String,
+        @Field("owner_id") owner_id: String,
+    ): Call<BaseResponse>
 
 }

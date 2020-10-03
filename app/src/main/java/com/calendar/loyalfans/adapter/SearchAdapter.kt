@@ -49,7 +49,7 @@ class SearchAdapter(
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val searchItem = getItem(position)
         holder.tvProfileName.text = searchItem.display_name
-        holder.tvUserName.text = searchItem.username
+        holder.tvUserName.text = "@" + searchItem.username
         activity?.let {
             Common.loadImageUsingURL(holder.imgProfilePic,
                 searchItem.profile_img, it)

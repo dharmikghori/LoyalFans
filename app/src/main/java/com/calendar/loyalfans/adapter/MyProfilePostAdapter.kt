@@ -73,7 +73,7 @@ class MyProfilePostAdapter(
         }
         holder.tvActivityMessage.text = postData.content
         holder.tvProfileName.text = postData.display_name
-        holder.tvUserName.text = postData.username
+        holder.tvUserName.text = "@" +postData.username
         holder.tvTotalComment.text = postData.comments + " Comments"
         holder.tvTotalLike.text = postData.likes + " Likes"
         activity?.let {

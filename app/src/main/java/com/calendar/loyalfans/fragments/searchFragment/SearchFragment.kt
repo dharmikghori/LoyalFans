@@ -40,6 +40,7 @@ class SearchFragment : Fragment(), TextWatcher, View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         tvToolBarName.text = getString(R.string.search)
+        layoutRecentSearch.visibility = View.VISIBLE
         activity?.let { setUpRecentSearchAdapter(SPHelper(it).getRecentSearch()) }
         etSearch.addTextChangedListener(this)
         imgRemove.setOnClickListener(this)
@@ -76,11 +77,13 @@ class SearchFragment : Fragment(), TextWatcher, View.OnClickListener {
         searchUserRequest.user_id = Common.getUserId()
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.searchUser(
-            searchUserRequest, true
+            searchUserRequest, false
         )
             .observe(this, {
                 if (it.status) {
                     setUpSearchResultAdapter(it.data)
+                } else {
+                    setUpSearchResultAdapter(ArrayList())
                 }
             })
     }
@@ -92,8 +95,10 @@ class SearchFragment : Fragment(), TextWatcher, View.OnClickListener {
         if (etSearch.text.isNotEmpty()) {
             imgRemove.visibility = View.VISIBLE
             searchUserByName(etSearch.text.toString())
+            layoutRecentSearch.visibility = View.GONE
         } else {
             imgRemove.visibility = View.INVISIBLE
+            layoutRecentSearch.visibility = View.VISIBLE
         }
     }
 

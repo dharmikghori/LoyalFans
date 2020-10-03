@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.OtherProfileActivity">
+    android:orientation="vertical"
+    tools:context=".activities.ForgotPasswordActivity">
 
-    <FrameLayout
-        android:id="@+id/layFrame"
+    <include layout="@layout/layout_toolbar_back" />
+
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-
 </LinearLayout>

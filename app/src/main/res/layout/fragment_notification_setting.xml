@@ -29,9 +29,11 @@
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchNotificationEmail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:checked="false" />
 
         </LinearLayout>
 
@@ -57,22 +59,33 @@
             android:textSize="@dimen/_10sdp" />
 
         <CheckBox
+            android:id="@+id/cbNewComment"
             style="@style/CheckBoxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
             android:text="@string/new_comment" />
 
         <CheckBox
+            android:id="@+id/cbNewLike"
             style="@style/CheckBoxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/new_comment" />
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:text="@string/newlike" />
 
         <CheckBox
+            android:id="@+id/cbNewTips"
             style="@style/CheckBoxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/new_comment" />
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:text="@string/newtips" />
     </LinearLayout>
 </LinearLayout>

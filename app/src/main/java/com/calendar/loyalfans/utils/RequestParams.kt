@@ -8,6 +8,7 @@ class RequestParams {
         var RECENT_SEARCH_USER_DATA = "recentSearchUserData"
         var USER_PASSWORD = "userPassword"
         var PROFILE_ID = "profileID"
+        var WEBVIEW_URL = "webViewURL"
     }
 
 }

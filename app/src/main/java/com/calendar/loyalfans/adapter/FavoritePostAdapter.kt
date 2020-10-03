@@ -56,7 +56,7 @@ class FavoritePostAdapter(
 //        holder.btnSendTip.setOnClickListener { activity?.let { Common.showSendDialog(it, postData) } }
         holder.tvActivityMessage.text = postData.content
         holder.tvProfileName.text = postData.display_name
-        holder.tvUserName.text = postData.username
+        holder.tvUserName.text = "@" +postData.username
         activity?.let {
 
             when {

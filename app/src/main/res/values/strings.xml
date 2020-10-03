@@ -73,7 +73,7 @@
     <string name="about">About</string>
     <string name="website_url">Website Url</string>
     <string name="location">Location</string>
-    <string name="save_change">Save Change</string>
+    <string name="save_change">Save Changes</string>
     <string name="upload_profile_image">upload profile image</string>
     <string name="upload_cover_image">Upload cover image</string>
     <string name="edit_profile">Edit Profile</string>
@@ -184,6 +184,7 @@
     <string name="tax_id_or_social_security_number">Tax ID or Social Security Number*</string>
     <string name="ssn_hint">TAX ID OR SSN</string>
     <string name="usa">USA</string>
+    <string name="us">US</string>
     <string name="state_province">State/Province*</string>
     <string name="state_province_hint">STATE/PROVINCE</string>
     <string name="select_document">SELECT DOCUMENTS*</string>
@@ -208,5 +209,39 @@
     <string name="passport">Passport</string>
     <string name="driver_licence">Driver Licence</string>
     <string name="state_id_card">State issued ID Card</string>
+    <string name="w_9_form">W-9 Form</string>
+    <string name="bank_transfer">Bank Transfer</string>
+    <string name="upload_w9">UPLOAD FORM W-9</string>
+    <string name="your_account_has_been_approved">YOUR ACCOUNT HAS BEEN APPROVED</string>
+    <string name="set_the_subscription_price_in_settings_and_start_promoting_your_loyalfansonly_com_profile">Set the Subscription price in Settings and start promoting your Loyalfansonly.com Profile.</string>
+    <string name="selected_payout_system">Selected Payout System</string>
+    <string name="bank_transfer_title">Set the subscription price in Settings and start promoting your loyalfansonly.com profile.</string>
+    <string name="bank_account_data">YOUR BANK ACCOUNT DATA</string>
+    <string name="routing_number">Routing Number</string>
+    <string name="account_number">Account Number</string>
+    <string name="type_of_bank_account">Type Of Bank Account</string>
+    <string name="bussiness_name_if_applicable">BUSSINESS NAME (IF APPLICABLE)</string>
+    <string name="save_payout_details">Save Payout Details</string>
+    <string name="routing_number_validation">Please enter routing number</string>
+    <string name="account_number_validation">Please enter account number</string>
+    <string name="firstname_validation">Please enter firstname</string>
+    <string name="lastname_validation">Please enter lastname</string>
+    <string name="email_validation">Please enter email</string>
+    <string name="individual">Individual</string>
+    <string name="company">Company</string>
+    <string name="card_name_validation">Please enter name on the card</string>
+    <string name="card_number_validation">Please enter card number</string>
+    <string name="expy_month_validation">Please enter expiry month</string>
+    <string name="expy_year_validation">Please enter expiry year</string>
+    <string name="card_cvv_validation">Please enter card cvv</string>
+    <string name="month_validation">Enter valid expiry month</string>
+    <string name="year_validation">Enter valid expiry year</string>
+    <string name="newlike">New Like</string>
+    <string name="newtips">New Tips</string>
+    <string name="image_viewer">IMAGE VIEWER</string>
+    <string name="logout_message">Are you sure want to logout?</string>
+    <string name="at_rate">\@</string>
+    <string name="myprofile">My profile</string>
+    <string name="other_profile">Other Profile</string>
 
 </resources>

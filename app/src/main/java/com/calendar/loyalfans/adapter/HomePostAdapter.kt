@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -70,7 +71,7 @@ class HomePostAdapter(
         }
         holder.tvActivityMessage.text = postData.content
         holder.tvProfileName.text = postData.display_name
-        holder.tvUserName.text = postData.username
+        holder.tvUserName.text = "@" +postData.username
         holder.tvTotalComment.text = postData.comments + " Comments"
         holder.tvTotalLike.text = postData.likes + " Likes"
         holder.viewProfile.setOnClickListener {
@@ -154,6 +155,11 @@ class HomePostAdapter(
         }
 
         if (!postData.suggestions.isNullOrEmpty()) {
+            if (postData.id == "" && postData.user_id == "") {
+                holder.layPostTopCardView.visibility = View.GONE
+            } else {
+                holder.layPostTopCardView.visibility = View.VISIBLE
+            }
             holder.laySuggestion.visibility = View.VISIBLE
             holder.suggestionViewPager.adapter =
                 activity?.let {
@@ -202,6 +208,7 @@ class HomePostAdapter(
         val layComment: LinearLayout = view.layComment
         val imgPrevSuggestion: ImageView = view.imgPrevSuggestion
         val imgNextSuggestion: ImageView = view.imgNextSuggestion
+        val layPostTopCardView: CardView = view.layPostTopCardView
     }
 
     private fun openOptionMenu(view: View, postData: PostData, position: Int) {

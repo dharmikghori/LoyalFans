@@ -17,5 +17,10 @@
         android:left="@dimen/_1sdp"
         android:right="@dimen/_1sdp"
         android:top="@dimen/_1sdp" />
+    <corners
+        android:bottomLeftRadius="@dimen/_5sdp"
+        android:bottomRightRadius="@dimen/_5sdp"
+        android:topLeftRadius="@dimen/_5sdp"
+        android:topRightRadius="@dimen/_5sdp" />
 
 </shape>

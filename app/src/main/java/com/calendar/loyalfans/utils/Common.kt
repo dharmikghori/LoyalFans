@@ -40,6 +40,8 @@ import com.calendar.loyalfans.fragments.home.HomeFragment
 import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
 import com.calendar.loyalfans.fragments.payment.AddCardFragment
 import com.calendar.loyalfans.fragments.payment.BankFragment
+import com.calendar.loyalfans.fragments.payment.BankTransferFragment
+import com.calendar.loyalfans.fragments.payment.BankW9Fragment
 import com.calendar.loyalfans.fragments.post.AddPostFragment
 import com.calendar.loyalfans.fragments.post.CommentsFragment
 import com.calendar.loyalfans.fragments.ppv.AddPpvPostFragment
@@ -149,6 +151,15 @@ class Common {
                 18 -> {
                     "BankFragment"
                 }
+                19 -> {
+                    "BankTransferAndW9Fragment"
+                }
+                20 -> {
+                    "W9Fragment"
+                }
+                21 -> {
+                    "BankTransferFragment"
+                }
                 else -> ""
             }
         }
@@ -205,6 +216,12 @@ class Common {
                 }
                 18 -> {
                     BankFragment.newInstance()
+                }
+                20 -> {
+                    BankW9Fragment.newInstance()
+                }
+                21 -> {
+                    BankTransferFragment.newInstance()
                 }
                 else -> null
             }
@@ -499,15 +516,15 @@ class Common {
 
         private var progressDialog: Dialog? = null
         fun displayProgress(context: Context) {
-            val context1 = context as Activity
+            var context1 = context as Activity
             if (context1.isFinishing) {
-                return
+                context1 = BaseActivity.getActivity()
             }
             try {
-                if (progressDialog != null && progressDialog!!.isShowing()) {
+                if (progressDialog != null && progressDialog!!.isShowing) {
                     progressDialog!!.dismiss()
                 }
-                progressDialog = Dialog(context)
+                progressDialog = Dialog(context1)
                 progressDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 if (progressDialog!!.window != null) {
                     progressDialog!!.window?.setBackgroundDrawableResource(android.R.color.transparent)

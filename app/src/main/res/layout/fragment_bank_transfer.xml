@@ -25,17 +25,44 @@
                 style="@style/BaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/billing_details"
-                android:textAllCaps="false"
-                android:textColor="@color/black" />
-
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/your_account_has_been_approved"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
 
             <TextView
                 style="@style/BaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/we_are_fully_complaint_with_payment_card_industry_data_security_standards"
+                android:text="@string/bank_transfer_title"
+                android:textColor="@color/theme_black" />
+
+            <TextView
+                android:id="@+id/clickHereToDownloadW9"
+                style="@style/BaseColorGradientButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textAllCaps="true"
+                android:textColorLink="#000000" />
+
+            <TextView
+                android:id="@+id/clickHereToEditW9"
+                style="@style/BaseColorGradientButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textAllCaps="true"
+                android:textColorLink="#000000" />
+
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/bank_account_data"
+                android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
             <TextView
@@ -43,74 +70,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/street"
+                android:text="@string/routing_number"
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
             <EditText
-                android:id="@+id/etStreetCard"
+                android:id="@+id/etRoutingNumberBankTransfer"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:hint="@string/street_hint"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                tools:ignore="LabelFor" />
-
-            <TextView
-                style="@style/BaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/state"
-                android:textAllCaps="true"
-                android:textColor="@color/theme_black" />
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spStateCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_round_border"
-                android:hint="@string/state_province_hint"
-                android:padding="0dp" />
-
-
-            <TextView
-                style="@style/BaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/city"
-                android:textAllCaps="true"
-                android:textColor="@color/theme_black" />
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spCityCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_round_border"
-                android:hint="@string/state_province_hint"
-                android:padding="0dp" />
-
-            <TextView
-                style="@style/BaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/zip_postal_code"
-                android:textAllCaps="true"
-                android:textColor="@color/theme_black" />
-
-            <EditText
-                android:id="@+id/etZipCodeCard"
-                style="@style/FullBorderEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:hint="@string/zip_postal_code_hint"
+                android:hint="@string/routing_number"
                 android:importantForAutofill="no"
                 android:inputType="number"
                 tools:ignore="LabelFor" />
@@ -120,17 +90,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/country"
+                android:text="@string/account_number"
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
             <EditText
-                android:id="@+id/etCountryCard"
+                android:id="@+id/etAccountNumberBankTransfer"
+                style="@style/FullBorderEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="@string/account_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/type_of_bank_account"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spAccountType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/edittext_round_border"
+                android:hint="@string/city_hint"
+                android:padding="0dp"
+                android:prompt="@layout/custom_spinner_item" />
+
+
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/country_hint"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
+
+            <EditText
+                android:id="@+id/etCountryBankTransfer"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:enabled="false"
+                android:focusable="false"
                 android:hint="@string/country_hint"
                 android:importantForAutofill="no"
                 android:inputType="none"
@@ -142,47 +153,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/email"
+                android:text="@string/first_name_hint"
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
             <EditText
-                android:id="@+id/etEmailCard"
+                android:id="@+id/etFirstNameBankTransfer"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:hint="@string/email_hint"
-                android:importantForAutofill="no"
-                android:inputType="textEmailAddress"
-                tools:ignore="LabelFor" />
-
-
-            <TextView
-                style="@style/BaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:text="@string/card_details"
-                android:textAllCaps="false"
-                android:textColor="@color/black" />
-
-            <TextView
-                style="@style/BaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/name_in_card"
-                android:textAllCaps="true"
-                android:textColor="@color/theme_black" />
-
-            <EditText
-                android:id="@+id/etNameOnCardCard"
-                style="@style/FullBorderEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:hint="@string/name_in_card_hint"
+                android:hint="@string/first_name_hint"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 tools:ignore="LabelFor" />
@@ -192,116 +173,69 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/card_number"
+                android:text="@string/last_name_hint"
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
             <EditText
-                android:id="@+id/etCardNumberCard"
+                android:id="@+id/etLastNameBankTransfer"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:hint="@string/card_number"
+                android:hint="@string/last_name_hint"
                 android:importantForAutofill="no"
-                android:inputType="number"
-                android:maxLength="16"
+                android:inputType="text"
                 tools:ignore="LabelFor" />
 
-            <LinearLayout
+            <TextView
+                style="@style/BaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/bussiness_name_if_applicable"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+            <EditText
+                android:id="@+id/etBusinessNameBankTransfer"
+                style="@style/FullBorderEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="@string/bussiness_name_if_applicable"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
 
-                    <TextView
-                        style="@style/BaseTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:text="@string/expiration_mm_yyyy"
-                        android:textAllCaps="true"
-                        android:textColor="@color/theme_black" />
+            <TextView
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/email_hint"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_black" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/etExpMonthCard"
-                            style="@style/FullBorderEditText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/_2sdp"
-                            android:layout_weight="1"
-                            android:hint="@string/mm"
-                            android:importantForAutofill="no"
-                            android:inputType="number"
-                            android:maxLength="2"
-                            tools:ignore="LabelFor" />
-
-                        <EditText
-                            android:id="@+id/etCardExpYearCard"
-                            style="@style/FullBorderEditText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_2sdp"
-                            android:layout_weight="1"
-                            android:hint="@string/yyyy"
-                            android:importantForAutofill="no"
-                            android:inputType="number"
-                            android:maxLength="4"
-                            tools:ignore="LabelFor" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/BaseTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:text="@string/cvc"
-                        android:textAllCaps="true"
-                        android:textColor="@color/theme_black" />
-
-                    <EditText
-                        android:id="@+id/etCardCVVCard"
-                        style="@style/FullBorderEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:hint="@string/cvc"
-                        android:importantForAutofill="no"
-                        android:inputType="number"
-                        android:maxLength="3"
-                        android:textAlignment="center"
-                        tools:ignore="LabelFor" />
-                </LinearLayout>
-            </LinearLayout>
+            <EditText
+                android:id="@+id/etEmailBankTransfer"
+                style="@style/FullBorderEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="@string/email_hint"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+                tools:ignore="LabelFor" />
 
             <Button
-                android:id="@+id/btnSaveAddCard"
+                android:id="@+id/btnSubmitPayoutDetails"
                 style="@style/BaseColorGradientButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:text="@string/save_change" />
+                android:text="@string/save_payout_details"
+                android:textAllCaps="true" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

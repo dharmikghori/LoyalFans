@@ -25,6 +25,7 @@ class SplashActivity : BaseActivity() {
         setContentView(R.layout.activity_splash)
         FacebookSdk.sdkInitialize(this)
         checkAllPermissionsAreAllow()
+
     }
 
     private fun checkAllPermissionsAreAllow() {

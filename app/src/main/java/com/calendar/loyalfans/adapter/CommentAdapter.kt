@@ -1,5 +1,6 @@
 package com.calendar.loyalfans.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.OtherProfileActivity
 import com.calendar.loyalfans.model.request.CommentRequest
 import com.calendar.loyalfans.model.response.CommentData
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.RequestParams
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_comments.view.*
 import java.util.*
@@ -55,6 +58,11 @@ class CommentAdapter(
         holder.cbCommentLike.setOnCheckedChangeListener(null)
         holder.cbCommentLike.isChecked = commentData.is_like == "1"
         holder.tvTimeAgo.text = commentData.created_at
+        holder.tvProfileName.setOnClickListener {
+            activity?.startActivity(Intent(activity, OtherProfileActivity::class.java).putExtra(
+                RequestParams.PROFILE_ID,
+                commentData.user_id))
+        }
         holder.cbCommentLike.setOnCheckedChangeListener { buttonView, isChecked ->
             val commentRequest = CommentRequest()
             commentRequest.user_id = Common.getUserId()

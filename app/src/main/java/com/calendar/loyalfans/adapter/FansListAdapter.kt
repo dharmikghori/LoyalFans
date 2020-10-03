@@ -40,7 +40,7 @@ class FansListAdapter(
     override fun onBindViewHolder(holder: FansViewHolder, position: Int) {
         val fansData = getItem(position)
         holder.tvProfileName.text = fansData.display_name
-        holder.tvUserName.text = fansData.username
+        holder.tvUserName.text = "@" +fansData.username
         if (fansData.end_date != null) {
             holder.tvExpiryDate.text = "Till " + Common.formatDate(fansData.end_date!!)
         }

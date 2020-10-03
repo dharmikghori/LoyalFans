@@ -28,8 +28,8 @@ class SubscriptionFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        tvToolBarName.text = getString(R.string.subscription_plan)
         btnUpdateSubscription.setOnClickListener(this)
+        tvToolBarName.text = getString(R.string.subscription_plan)
         imgBack.setOnClickListener(this)
         getSubscriptionPlans()
     }

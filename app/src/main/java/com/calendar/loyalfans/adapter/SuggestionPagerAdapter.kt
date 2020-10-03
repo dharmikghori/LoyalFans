@@ -85,7 +85,7 @@ class SuggestionPagerAdapter(
         }
         subscriptionAmount.isSelected = true
         tvProfileName.text = suggestionData.display_name
-        tvUserName.text = suggestionData.username
+        tvUserName.text = "@" +suggestionData.username
         val viewPager = container as ViewPager
         viewPager.addView(view, 0)
         return view

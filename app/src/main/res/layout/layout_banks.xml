@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Name"
+            android:textColor="@color/theme_black" />
+
+        <TextView
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SSN/TIN"
+            android:textColor="@color/theme_black" />
+
+        <TextView
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Phone"
+            android:textColor="@color/theme_black" />
+
+        <TextView
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Street"
+            android:textColor="@color/theme_black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:id="@+id/tvNameBank"
+            android:textColor="@color/theme_black" />
+
+        <TextView
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/tvSSNBank"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:textColor="@color/theme_black" />
+
+        <TextView
+            style="@style/BaseTextView"
+            android:id="@+id/tvPhoneBank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:textColor="@color/theme_black" />
+
+        <TextView
+            android:id="@+id/tvStreetBank"
+            style="@style/BaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:textColor="@color/theme_black" />
+    </LinearLayout>
+</LinearLayout>

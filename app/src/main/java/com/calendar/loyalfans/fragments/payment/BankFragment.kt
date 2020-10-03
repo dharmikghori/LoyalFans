@@ -17,11 +17,13 @@ import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.CustomDropDownAdapter
 import com.calendar.loyalfans.model.SelectedFileData
 import com.calendar.loyalfans.model.request.CityRequest
+import com.calendar.loyalfans.model.response.BaseResponse
 import com.calendar.loyalfans.model.response.StateCityData
 import com.calendar.loyalfans.retrofit.APIServices
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_bank_detail.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
@@ -29,8 +31,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -193,40 +198,75 @@ class BankFragment : Fragment(), View.OnClickListener {
                     makeAddBankDetailsCall()
                 }
                 R.id.btnIDExpirationDate -> {
-                    openDatePicker(btnIDExpirationDate)
+                    openDatePicker(btnIDExpirationDate, true, false)
                 }
                 R.id.btnDateOfBirth -> {
-                    openDatePicker(btnDateOfBirth)
+                    openDatePicker(btnDateOfBirth, false, true)
                 }
             }
         }
     }
 
-    private fun openDatePicker(buttonDate: Button?) {
-        val c = Calendar.getInstance()
-        val year = c[Calendar.YEAR]
-        val month = c[Calendar.MONTH]
-        val day = c[Calendar.DAY_OF_MONTH]
-        val dpd = activity?.let {
-            DatePickerDialog(it,
-                { view, year, monthOfYear, dayOfMonth -> // Display Selected date in textbox
-                    var actualMonth = "0"
-                    var actualDay = "0"
-                    actualMonth = if ((monthOfYear + 1) < 10) {
-                        "0${monthOfYear + 1}"
-                    } else {
-                        (monthOfYear + 1).toString()
-                    }
-                    actualDay = if (dayOfMonth < 10) {
-                        "0$dayOfMonth "
-                    } else {
-                        dayOfMonth.toString()
-                    }
-                    buttonDate?.text =
-                        ("$year-$actualMonth-$actualDay")
-                }, year, month, day)
+    private fun openDatePicker(
+        buttonDate: Button?,
+        isOnlyFutureDate: Boolean,
+        is13YearsOld: Boolean,
+    ) {
+
+        if (isOnlyFutureDate) {
+            val calendarInstance = Calendar.getInstance()
+            val year = calendarInstance[Calendar.YEAR]
+            val month = calendarInstance[Calendar.MONTH]
+            val day = calendarInstance[Calendar.DAY_OF_MONTH]
+            val dpd = activity?.let {
+                DatePickerDialog(it,
+                    { view, year, monthOfYear, dayOfMonth -> // Display Selected date in textbox
+                        val actualMonth = if ((monthOfYear + 1) < 10) {
+                            "0${monthOfYear + 1}"
+                        } else {
+                            (monthOfYear + 1).toString()
+                        }
+                        val actualDay = if (dayOfMonth < 10) {
+                            "0$dayOfMonth "
+                        } else {
+                            dayOfMonth.toString()
+                        }
+                        buttonDate?.text =
+                            ("$year-$actualMonth-$actualDay")
+                    }, year, month, day)
+            }
+            if (dpd != null) {
+                dpd.datePicker.minDate = calendarInstance.timeInMillis
+            }
+            dpd?.show()
+        } else if (is13YearsOld) {
+            val calendarInstance = Calendar.getInstance()
+            val year = calendarInstance[Calendar.YEAR] - 13
+            val month = calendarInstance[Calendar.MONTH]
+            val day = calendarInstance[Calendar.DAY_OF_MONTH]
+            calendarInstance.set(year, month, day)
+            val dpd = activity?.let {
+                DatePickerDialog(it,
+                    { view, year, monthOfYear, dayOfMonth -> // Display Selected date in textbox
+                        val actualMonth = if ((monthOfYear + 1) < 10) {
+                            "0${monthOfYear + 1}"
+                        } else {
+                            (monthOfYear + 1).toString()
+                        }
+                        val actualDay = if (dayOfMonth < 10) {
+                            "0$dayOfMonth "
+                        } else {
+                            dayOfMonth.toString()
+                        }
+                        buttonDate?.text =
+                            ("$year-$actualMonth-$actualDay")
+                    }, year, month, day)
+            }
+            if (dpd != null) {
+                dpd.datePicker.maxDate = calendarInstance.timeInMillis
+            }
+            dpd?.show()
         }
-        dpd?.show()
 
     }
 
@@ -248,7 +288,7 @@ class BankFragment : Fragment(), View.OnClickListener {
                         .addFormDataPart("last_name", etLastNameBank.text.toString())
                         .addFormDataPart("phone", etPhoneBank.text.toString())
                         .addFormDataPart("ssn_num", etTaxIDBank.text.toString())
-                        .addFormDataPart("country", etCountryNameBank.text.toString())
+                        .addFormDataPart("country", getString(R.string.us))
                         .addFormDataPart("street", etStreetBank.text.toString())
                         .addFormDataPart("state", (spStateBank.selectedItem as StateCityData).name)
                         .addFormDataPart("zip_code", etZipCodeBank.text.toString())
@@ -272,21 +312,28 @@ class BankFragment : Fragment(), View.OnClickListener {
                         .addHeader("Authorization", "Basic YWRtaW46MTIzNA==")
                         .build()
                     try {
-                        val response: Response = client.newCall(request).execute()
+                        val gson = Gson()
+                        val responseBody = client.newCall(request).execute().body
                         Common.dismissProgress()
-                        if (response.code == 200) {
-                            moveToHome()
-                        } else {
-                            activity?.let {
-                                Common.showToast(it,
-                                    getString(R.string.unable_post_bank))
-                            }
-                        }
+                        val baseResponse: BaseResponse =
+                            gson.fromJson(responseBody!!.string(), BaseResponse::class.java)
+                        manageResponse(baseResponse)
                     } catch (e: Exception) {
                         Common.dismissProgress()
                         activity?.let { e.message?.let { it1 -> Common.showToast(it, it1) } }
                     }
                 }
+            }
+        }
+    }
+
+    private fun manageResponse(baseResponse: BaseResponse) {
+        if (baseResponse.status) {
+            moveToHome(baseResponse)
+        } else {
+            activity?.let {
+                Common.showToast(it,
+                    baseResponse.msg)
             }
         }
     }
@@ -307,19 +354,17 @@ class BankFragment : Fragment(), View.OnClickListener {
         }
 
         body.addFormDataPart(bodyName, file.name,
-            RequestBody.create(
-                fileUri?.let {
+            file
+                .asRequestBody(fileUri?.let {
                     BaseActivity.getActivity().contentResolver.getType(
                         it).toString().toMediaTypeOrNull()
-                },
-                file
-            ))
+                }))
         return body
     }
 
-    private fun moveToHome() {
+    private fun moveToHome(baseResponse: BaseResponse) {
         activity?.runOnUiThread {
-            activity?.let { Common.showToast(it, getString(R.string.bank_details_added)) }
+            activity?.let { Common.showToast(it, baseResponse.msg) }
             (activity as MainActivity).loadFragment(1)
         }
     }
@@ -367,7 +412,10 @@ class BankFragment : Fragment(), View.OnClickListener {
                 return false
             }
             selectedSelfieImage == null -> {
-                activity?.let { Common.showToast(it, getString(R.string.selfie_image_validation)) }
+                activity?.let {
+                    Common.showToast(it,
+                        getString(R.string.selfie_image_validation))
+                }
                 return false
             }
             selectedIDImage == null -> {
@@ -375,7 +423,10 @@ class BankFragment : Fragment(), View.OnClickListener {
                 return false
             }
             btnIDExpirationDate.text.toString().isEmpty() -> {
-                activity?.let { Common.showToast(it, getString(R.string.id_expiration_validation)) }
+                activity?.let {
+                    Common.showToast(it,
+                        getString(R.string.id_expiration_validation))
+                }
                 return false
             }
         }
