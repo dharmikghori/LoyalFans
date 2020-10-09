@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.BaseActivity
-import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.activities.PPVActivity
 import com.calendar.loyalfans.adapter.SelectedFileAdapter
 import com.calendar.loyalfans.dialog.FansSelectionDialog
@@ -56,6 +55,7 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener, RadioGroup.OnChecke
         tvToolBarName.text = getString(R.string.ppv_send)
         setUpSelectedFilesAdapter()
         btnAddPost.setOnClickListener(this)
+        imgBack.setOnClickListener(this)
         rgPPVType.setOnCheckedChangeListener(this)
         rbFree.isChecked = true
     }
@@ -128,9 +128,13 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener, RadioGroup.OnChecke
         rvSelectedFiles.smoothScrollToPosition(selectedFileList.size - 1)
     }
 
-    override fun onClick(p0: View?) {
-        if (checkValidation()) {
-            openFansSelectionDialog()
+    override fun onClick(view: View?) {
+        if (view != null) {
+            if (view.id == R.id.btnAddPost && checkValidation()) {
+                openFansSelectionDialog()
+            } else if (view.id == R.id.imgBack) {
+                activity?.onBackPressed()
+            }
         }
     }
 

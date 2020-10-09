@@ -788,9 +788,9 @@ class BaseViewModel : ViewModel() {
 
     fun w9FormStatus(
         progressShow: Boolean,
-    ): MutableLiveData<BaseResponse> {
+    ): MutableLiveData<BankListResponse> {
         val apiName = APIServices.W9_FORM_STATUS
-        val baseResponseData: MutableLiveData<BaseResponse> =
+        val baseResponseData: MutableLiveData<BankListResponse> =
             MutableLiveData()
         val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
         val baseRequest = BaseRequest()
@@ -800,7 +800,7 @@ class BaseViewModel : ViewModel() {
             baseRequest.user_id
         )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
             override fun onResponse(response: Any) {
-                val baseResponse = response as BaseResponse
+                val baseResponse = response as BankListResponse
                 printStrJson(baseResponse, apiName)
                 baseResponseData.value = baseResponse
             }
@@ -891,6 +891,125 @@ class BaseViewModel : ViewModel() {
         }))
         return favoriteProfileData
     }
+
+    fun notificationList(
+        notificationSecurityRequest: NotificationSecurityRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<NotificationResponse> {
+        val apiName = APIServices.NOTIFICATION_LIST
+        val notificationResponseData: MutableLiveData<NotificationResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        notificationSecurityRequest.user_id = Common.getUserId()
+        printStrRequestJson(notificationSecurityRequest, apiName)
+        apiServices?.notificationList(
+            notificationSecurityRequest.user_id,
+            notificationSecurityRequest.type
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val notificationResponse = response as NotificationResponse
+                printStrJson(notificationResponse, apiName)
+                notificationResponseData.value = notificationResponse
+            }
+        }))
+        return notificationResponseData
+    }
+
+    fun getStatement(
+        notificationSecurityRequest: NotificationSecurityRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<StatementResponse> {
+        val apiName = APIServices.STATEMENTS
+        val statementData: MutableLiveData<StatementResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        notificationSecurityRequest.user_id = Common.getUserId()
+        printStrRequestJson(notificationSecurityRequest, apiName)
+        apiServices?.getStatement(
+            notificationSecurityRequest.user_id,
+            notificationSecurityRequest.type
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val statementResponse = response as StatementResponse
+                printStrJson(statementResponse, apiName)
+                statementData.value = statementResponse
+            }
+        }))
+        return statementData
+    }
+
+    fun getPaymentHistory(
+        baseRequest: BaseRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<StatementResponse> {
+        val apiName = APIServices.PAYMENT_HISTORY
+        val paymentData: MutableLiveData<StatementResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        baseRequest.user_id = Common.getUserId()
+        printStrRequestJson(baseRequest, apiName)
+        apiServices?.paymentHistory(
+            baseRequest.user_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val paymentResponse = response as StatementResponse
+                printStrJson(paymentResponse, apiName)
+                paymentData.value = paymentResponse
+            }
+        }))
+        return paymentData
+    }
+
+
+
+
+    fun withdrawalRequest(
+        sendTipRequest: SendTipRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.WITHDRAWAL_REQ
+        val amountWithdrawalData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        sendTipRequest.user_id = Common.getUserId()
+        printStrRequestJson(sendTipRequest, apiName)
+        apiServices?.withdrawalRequest(
+            sendTipRequest.user_id,
+            sendTipRequest.amount
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val amountWithdrawalResponse = response as BaseResponse
+                printStrJson(amountWithdrawalResponse, apiName)
+                amountWithdrawalData.value = amountWithdrawalResponse
+            }
+        }))
+        return amountWithdrawalData
+    }
+
+
+    fun payPPVPost(
+        payPPVRequest: NotificationSecurityRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.PAY_PPV_POST
+        val payPPVData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        payPPVRequest.user_id = Common.getUserId()
+        printStrRequestJson(payPPVRequest, apiName)
+        apiServices?.payPPVPost(
+            payPPVRequest.user_id,
+            payPPVRequest.type //PPV ID
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val payPPVResponse = response as BaseResponse
+                printStrJson(payPPVResponse, apiName)
+                payPPVData.value = payPPVResponse
+            }
+        }))
+        return payPPVData
+    }
+
 
     private fun printStrRequestJson(request: Any, apiName: String) {
         try {

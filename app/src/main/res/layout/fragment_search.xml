@@ -95,6 +95,7 @@
                 android:layout_height="@dimen/_1sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@color/theme_black"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

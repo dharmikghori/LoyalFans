@@ -7,12 +7,12 @@
     android:padding="@dimen/_5sdp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/layPostTopCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:clickable="true"
         android:focusable="true"
-        android:id="@+id/layPostTopCardView"
         android:foreground="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         app:cardBackgroundColor="@color/white"
@@ -63,8 +63,10 @@
                     android:contentDescription="@string/app_name"
                     android:padding="@dimen/_100sdp"
                     android:scaleType="centerCrop"
+                    android:clickable="true"
                     android:src="@drawable/lock"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:focusable="true" />
             </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

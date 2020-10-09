@@ -40,6 +40,7 @@ class EditPostFragment(private var postData: PostData, private var onPostEdit: O
         super.onActivityCreated(savedInstanceState)
         tvToolBarName.text = getString(R.string.edit_post)
         btnAddPost.setOnClickListener(this)
+        imgBack.setOnClickListener(this)
         etPostMessage.setText(postData.content)
     }
 
@@ -57,20 +58,28 @@ class EditPostFragment(private var postData: PostData, private var onPostEdit: O
         return true
     }
 
-    override fun onClick(p0: View?) {
-        if (checkValidation()) {
-            val postEditRequest = PostEditRequest(postData.id, etPostMessage.text.toString())
-            postEditRequest.user_id = Common.getUserId()
-            val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-            baseViewModel.updatePost(
-                postEditRequest, true
-            )
-                .observe(this, {
-                    if (it.status) {
-                        postData.content = etPostMessage.text.toString()
-                        onPostEdit.onEdit(postData)
-                    }
-                })
+    override fun onClick(view: View?) {
+        if (view != null) {
+            if (view.id == R.id.imgBack) {
+                activity?.onBackPressed()
+            } else if (view.id == R.id.btnAddPost) {
+
+                if (checkValidation()) {
+                    val postEditRequest =
+                        PostEditRequest(postData.id, etPostMessage.text.toString())
+                    postEditRequest.user_id = Common.getUserId()
+                    val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+                    baseViewModel.updatePost(
+                        postEditRequest, true
+                    )
+                        .observe(this, {
+                            if (it.status) {
+                                postData.content = etPostMessage.text.toString()
+                                onPostEdit.onEdit(postData)
+                            }
+                        })
+                }
+            }
         }
     }
 }

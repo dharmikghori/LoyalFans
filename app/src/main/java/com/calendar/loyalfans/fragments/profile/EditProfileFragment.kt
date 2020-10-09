@@ -3,6 +3,7 @@ package com.calendar.loyalfans.fragments.profile
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,8 +65,8 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
         etAbout.setText(data.about)
         etLocation.setText(data.location)
         etWebsiteURL.setText(data.website)
-        activity?.let { Common.loadImageUsingURL(imgEditProfile, data.profile_img, it) }
-        activity?.let { Common.loadImageUsingURL(imgCoverProfile, data.cover_img, it) }
+        activity?.let { Common.loadImageUsingURL(imgEditProfile, data.profile_img, it, true) }
+        activity?.let { Common.loadImageUsingURL(imgCoverProfile, data.cover_img, it, true) }
     }
 
     var profilePicBase64 = ""
@@ -110,7 +111,13 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
                                 imagePath: String?,
                                 imageUri: Uri?,
                             ) {
-                                imgCoverProfile.setImageBitmap(bitmap)
+//                                if (bitmap != null && activity != null) {
+//                                    Common.loadImageUsingBitmap(imgCoverProfile, bitmap,
+//                                        activity as MainActivity)
+//                                }
+                                Handler().postDelayed({
+                                    imgCoverProfile.setImageBitmap(bitmap)
+                                }, 1000)
                                 imagePath?.let {
                                     coverPicBase64 =
                                         Common.getBase64FromBitmap(it)

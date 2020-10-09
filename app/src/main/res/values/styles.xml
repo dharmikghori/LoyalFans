@@ -160,4 +160,8 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
+    <style name="TextStyleTabLayout">
+        <item name="android:textSize">@dimen/_9sdp</item>
+    </style>
+
 </resources>

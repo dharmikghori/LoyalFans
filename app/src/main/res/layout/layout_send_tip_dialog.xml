@@ -68,15 +68,17 @@
 
             <Button
                 android:id="@+id/btnSendTipDialog"
+                style="@style/BaseColorGradientButton"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:background="@drawable/app_background"
                 android:fontFamily="@font/cambria"
-                android:text="@string/send"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/send_tip"
                 android:textAllCaps="true"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
 
         </LinearLayout>
     </LinearLayout>

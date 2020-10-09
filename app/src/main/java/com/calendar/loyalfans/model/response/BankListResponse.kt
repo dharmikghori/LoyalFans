@@ -4,6 +4,7 @@ package com.calendar.loyalfans.model.response
 open class BankListResponse : BaseResponse() {
     lateinit var data: BankListData
     var bank_status: Boolean = false
+    var form_status: Boolean = false
 }
 
 open class BankListData {

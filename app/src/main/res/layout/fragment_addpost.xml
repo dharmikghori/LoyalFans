@@ -17,7 +17,7 @@
         android:layout_height="0dp"
         android:padding="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addPostToolBar">
+        app:layout_constraintTop_toBottomOf="@+id/helpAndSupportToolBar">
 
         <EditText
             android:id="@+id/etPostMessage"

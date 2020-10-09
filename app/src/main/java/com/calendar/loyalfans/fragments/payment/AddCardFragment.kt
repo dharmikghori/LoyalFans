@@ -30,7 +30,8 @@ class AddCardFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_addcard, container, false)
+        val view = inflater.inflate(R.layout.fragment_addcard, container, false)
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -107,6 +108,8 @@ class AddCardFragment : Fragment(), View.OnClickListener {
 
     private fun onSaveCard() {
         if (checkValidation()) {
+            var carNumber = etCardNumberCard.text.toString()
+            carNumber = carNumber.replace(" ", "")
             val addCardRequest =
                 AddCardRequest(
                     etStreetCard.text.toString(),
@@ -115,13 +118,13 @@ class AddCardFragment : Fragment(), View.OnClickListener {
                     etZipCodeCard.text.toString(),
                     getString(R.string.us),
                     etNameOnCardCard.text.toString(),
-                    etCardNumberCard.text.toString(),
+                    carNumber,
                     etCardExpYearCard.text.toString(),
                     etExpMonthCard.text.toString(),
                     etCardCVVCard.text.toString()
                 )
             val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-            baseViewModel.addCard(addCardRequest, false
+            baseViewModel.addCard(addCardRequest, true
             ).observe(viewLifecycleOwner,
                 {
                     if (it.status) {
@@ -147,7 +150,7 @@ class AddCardFragment : Fragment(), View.OnClickListener {
                 activity?.let { Common.showToast(it, getString(R.string.card_name_validation)) }
                 return false
             }
-            etCardNumberCard.text.isEmpty() -> {
+            etCardNumberCard.text?.isEmpty()!! -> {
                 activity?.let { Common.showToast(it, getString(R.string.card_number_validation)) }
                 return false
             }
@@ -194,6 +197,61 @@ class AddCardFragment : Fragment(), View.OnClickListener {
         val currentYear = calendar[Calendar.YEAR]
         return currentYear > cardExpiryYear
     }
+
+
+//    private val CARD_NUMBER_TOTAL_SYMBOLS = 19 // size of pattern 0000-0000-0000-0000
+//    private val CARD_NUMBER_TOTAL_DIGITS = 16 // max numbers of digits in pattern: 0000 x 4
+//    private val CARD_NUMBER_DIVIDER_MODULO =
+//        5 // means divider position is every 5th symbol beginning with 1
+//    private val CARD_NUMBER_DIVIDER_POSITION =
+//        CARD_NUMBER_DIVIDER_MODULO - 1 // means divider position is every 4th symbol beginning with 0
+//    private val CARD_NUMBER_DIVIDER = '-'
+
+
+//    private fun isInputCorrect(
+//        s: Editable,
+//        size: Int,
+//        dividerPosition: Int,
+//        divider: Char,
+//    ): Boolean {
+//        var isCorrect = s.length <= size
+//        for (i in s.indices) {
+//            isCorrect = if (i > 0 && (i + 1) % dividerPosition == 0) {
+//                isCorrect and (divider == s[i])
+//            } else {
+//                isCorrect and Character.isDigit(s[i])
+//            }
+//        }
+//        return !isCorrect
+//    }
+//
+//    private fun concatString(digits: CharArray, dividerPosition: Int, divider: Char): String {
+//        val formatted = StringBuilder()
+//        for (i in digits.indices) {
+//            if (i != 0) {
+//                formatted.append(digits[i])
+//                if (i > 0 && i < digits.size - 1 && (i + 1) % dividerPosition == 0) {
+//                    formatted.append(divider)
+//                }
+//            }
+//        }
+//        return formatted.toString()
+//    }
+//
+//    private fun getDigitArray(s: Editable, size: Int): CharArray {
+//        val digits = CharArray(size)
+//        var index = 0
+//        var i = 0
+//        while (i < s.length && index < size) {
+//            val current = s[i]
+//            if (Character.isDigit(current)) {
+//                digits[index] = current
+//                index++
+//            }
+//            i++
+//        }
+//        return digits
+//    }
 
 
 }

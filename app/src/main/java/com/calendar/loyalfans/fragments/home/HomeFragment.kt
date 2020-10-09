@@ -28,7 +28,6 @@ class HomeFragment : Fragment() {
         fun newInstance() = HomeFragment()
     }
 
-    private lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +38,6 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         imgDrawerMenu.setOnClickListener {
             val mainActivity = activity as MainActivity
             if (mainActivity.drawerLayout?.isDrawerOpen(GravityCompat.START)!!) {
@@ -58,6 +56,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        (activity as MainActivity).manageBottomNavigationVisibility(true)
         limit = 10
         offset = 0
         postList = ArrayList()
@@ -108,11 +107,11 @@ class HomeFragment : Fragment() {
             }
 
             override fun onComment(postData: PostData, position: Int) {
-                    if (activity is MainActivity) {
-                        (activity as MainActivity).loadFragment(17, postData.id)
-                    } else if (activity is OtherProfileActivity) {
-                        (activity as OtherProfileActivity).loadFragment(17, postData.id)
-                    }
+                if (activity is MainActivity) {
+                    (activity as MainActivity).loadFragment(17, postData.id)
+                } else if (activity is OtherProfileActivity) {
+                    (activity as OtherProfileActivity).loadFragment(17, postData.id)
+                }
             }
 
             override fun onBookmark(postData: PostData, position: Int) {

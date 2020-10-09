@@ -71,7 +71,7 @@ class HomePostAdapter(
         }
         holder.tvActivityMessage.text = postData.content
         holder.tvProfileName.text = postData.display_name
-        holder.tvUserName.text = "@" +postData.username
+        holder.tvUserName.text = "@" + postData.username
         holder.tvTotalComment.text = postData.comments + " Comments"
         holder.tvTotalLike.text = postData.likes + " Likes"
         holder.viewProfile.setOnClickListener {
@@ -80,13 +80,9 @@ class HomePostAdapter(
                 postData.user_id))
         }
         activity?.let {
-            holder.photos_viewpager.adapter = PostImageVideoPagerAdapter(it, postData.images)
-            if (postData.images.size > 1) {
-                holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
-                holder.tabLayout.visibility = View.VISIBLE
-            } else {
-                holder.tabLayout.visibility = View.GONE
-            }
+            holder.photos_viewpager.adapter =
+                PostImageVideoPagerAdapter(it, postData.images)
+            holder.tabLayout.visibility = View.GONE
         }
 
         activity?.let {

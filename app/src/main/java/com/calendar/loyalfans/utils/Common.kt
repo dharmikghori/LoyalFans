@@ -9,6 +9,8 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.media.MediaMetadataRetriever
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -18,10 +20,8 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Base64
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.exifinterface.media.ExifInterface
@@ -32,28 +32,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.LoginActivity
 import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.fragments.home.HomeFragment
+import com.calendar.loyalfans.fragments.notifications.NotificationFragment
 import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
-import com.calendar.loyalfans.fragments.payment.AddCardFragment
-import com.calendar.loyalfans.fragments.payment.BankFragment
-import com.calendar.loyalfans.fragments.payment.BankTransferFragment
-import com.calendar.loyalfans.fragments.payment.BankW9Fragment
+import com.calendar.loyalfans.fragments.payment.*
 import com.calendar.loyalfans.fragments.post.AddPostFragment
 import com.calendar.loyalfans.fragments.post.CommentsFragment
 import com.calendar.loyalfans.fragments.ppv.AddPpvPostFragment
 import com.calendar.loyalfans.fragments.ppv.PPVFragment
 import com.calendar.loyalfans.fragments.profile.*
 import com.calendar.loyalfans.fragments.searchFragment.SearchFragment
+import com.calendar.loyalfans.fragments.setting.HelpAndSupportFragment
 import com.calendar.loyalfans.fragments.setting.NotificationSettingFragment
 import com.calendar.loyalfans.fragments.setting.SecuritySettingFragment
 import com.calendar.loyalfans.model.request.SendTipRequest
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.facebook.login.LoginManager
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import java.io.*
 import java.text.SimpleDateFormat
@@ -65,9 +66,6 @@ import kotlin.collections.HashMap
 class Common {
     companion object {
 
-        private val homeFragment = HomeFragment.newInstance()
-        private val searchFragment = SearchFragment.newInstance()
-        private val addPostFragment = AddPostFragment.newInstance()
 
         fun showSendDialog(context: Context, postData: PostData) {
             val dialog = Dialog(context, R.style.FullScreenDialogStyle)
@@ -90,6 +88,37 @@ class Common {
                     })
                 } else {
                     showToast(context, context.getString(R.string.enter_tip_amount_validation))
+
+                }
+            }
+        }
+
+        fun withdrawalRequestDialog(context: Context) {
+            val dialog = Dialog(context, R.style.FullScreenDialogStyle)
+            dialog.setContentView(R.layout.layout_send_tip_dialog)
+            dialog.show()
+            dialog.findViewById<TextView>(R.id.tvTitle).text =
+                context.getString(R.string.send_request_withdrawal)
+            val etTipAmount = dialog.findViewById<EditText>(R.id.etTipAmount)
+            val btnSendTipDialog = dialog.findViewById<Button>(R.id.btnSendTipDialog)
+            etTipAmount.hint = context.getString(R.string.enter_amount)
+            btnSendTipDialog.text = context.getString(R.string.send_request)
+            btnSendTipDialog.setOnClickListener {
+                if (etTipAmount.length() > 0) {
+                    val sendTipRequest =
+                        SendTipRequest("", etTipAmount.text.toString(), "")
+                    val baseViewModel =
+                        ViewModelProvider(BaseActivity.getActivity()).get(BaseViewModel::class.java)
+                    baseViewModel.withdrawalRequest(
+                        sendTipRequest, true
+                    ).observe(BaseActivity.getActivity(), {
+                        if (it.status) {
+                            showToast(context, it.msg)
+                            dialog.dismiss()
+                        }
+                    })
+                } else {
+                    showToast(context, context.getString(R.string.enter_withdraw_amount_validation))
 
                 }
             }
@@ -160,6 +189,18 @@ class Common {
                 21 -> {
                     "BankTransferFragment"
                 }
+                22 -> {
+                    "HelpAndSupportFragment"
+                }
+                23 -> {
+                    "PaymentHistoryFragment"
+                }
+                24 -> {
+                    "StatementsFragment"
+                }
+                25 -> {
+                    "OtherMessageFragment"
+                }
                 else -> ""
             }
         }
@@ -167,16 +208,16 @@ class Common {
         fun getFragmentBasedOnType(type: Int): Fragment? {
             return when (type) {
                 1 -> {
-                    homeFragment
+                    HomeFragment.newInstance()
                 }
                 2 -> {
-                    searchFragment
+                    SearchFragment.newInstance()
                 }
                 3 -> {
-                    addPostFragment
+                    AddPostFragment.newInstance()
                 }
                 4 -> {
-                    null
+                    NotificationFragment.newInstance()
                 }
                 5 -> {
                     MyProfileFragment.newInstance()
@@ -223,8 +264,39 @@ class Common {
                 21 -> {
                     BankTransferFragment.newInstance()
                 }
+                22 -> {
+                    HelpAndSupportFragment.newInstance()
+                }
+                23 -> {
+                    PaymentHistoryFragment.newInstance()
+                }
+                24 -> {
+                    StatementFragment.newInstance()
+                }
                 else -> null
             }
+        }
+
+        fun setUpTablayOutStyle(tabLayout: TabLayout) {
+            for (i in 0 until tabLayout.tabCount) {
+                val tabViewAt = tabLayout.getTabAt(i)?.view
+                var tabChildCount = tabViewAt?.childCount
+                if (tabChildCount == null)
+                    tabChildCount = 0
+                for (j in 0 until tabChildCount) {
+                    if (tabViewAt != null) {
+                        val tabViewChild = tabViewAt.getChildAt(j)
+                        if (tabViewChild is AppCompatTextView) {
+                            tabViewChild.typeface = Typeface.createFromAsset(
+                                BaseActivity.getActivity().assets,
+                                "cambria.ttf"
+                            )
+                        }
+                    }
+                }
+
+            }
+
         }
 
         fun getFragmentBasedOnType(type: Int, profileId: String): Fragment? {
@@ -412,7 +484,7 @@ class Common {
 
         fun showToast(context: Context, message: String, isLongMessage: Boolean = false) {
             BaseActivity.getActivity().runOnUiThread {
-                if (message != "No data found") {
+                if (message.toLowerCase() != "no data found") {
                     if (isLongMessage) {
                         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                     } else {
@@ -615,6 +687,24 @@ class Common {
             if (activity is MainActivity) {
                 activity.loadFragment(1)
             }
+        }
+
+        fun loadImageUsingBitmap(
+            imageView: ImageView,
+            bitmap: Bitmap,
+            context: Context,
+        ) {
+
+            Glide.with(context).asBitmap().load(bitmap).into(object : CustomTarget<Bitmap?>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap?>?,
+                ) {
+                    imageView.setImageBitmap(resource)
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {}
+            })
         }
 
         fun loadImageUsingURL(

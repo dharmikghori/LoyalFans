@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.SearchAdapter
 import com.calendar.loyalfans.model.request.SearchUserRequest
 import com.calendar.loyalfans.model.response.SearchUsers
@@ -35,6 +36,7 @@ class SearchFragment : Fragment(), TextWatcher, View.OnClickListener {
     ): View? {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -60,6 +62,11 @@ class SearchFragment : Fragment(), TextWatcher, View.OnClickListener {
     private fun setUpRecentSearchAdapter(searchUserList: ArrayList<SearchUsers>) {
         Common.setupVerticalRecyclerView(rvRecentSearch, activity)
         rvRecentSearch.adapter = SearchAdapter(searchUserList, activity, true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).manageBottomNavigationVisibility(true)
     }
 
     private fun setUpSearchResultAdapter(searchUserList: ArrayList<SearchUsers>) {

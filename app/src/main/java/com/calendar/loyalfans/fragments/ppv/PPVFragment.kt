@@ -1,19 +1,14 @@
 package com.calendar.loyalfans.fragments.ppv
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
-import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.PPVActivity
-import com.calendar.loyalfans.dialog.FansSelectionDialog
 import com.calendar.loyalfans.model.request.ProfileDetailRequest
-import com.calendar.loyalfans.model.response.FansData
 import com.calendar.loyalfans.model.response.PpvHistoryResponse
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
@@ -43,6 +38,7 @@ class PPVFragment : Fragment(), View.OnClickListener {
         addPPV.setOnClickListener(this)
         getPPVHistory()
     }
+
     private fun getPPVHistory() {
         val fansFollowingRequest =
             ProfileDetailRequest(Common.getUserId())
@@ -68,24 +64,7 @@ class PPVFragment : Fragment(), View.OnClickListener {
             viewPagerPPVMessage.adapter = ppvTabPagerAdapter
             ppvTabLayout.setupWithViewPager(viewPagerPPVMessage)
             ppvTabPagerAdapter.notifyDataSetChanged()
-            for (i in 0 until ppvTabLayout.tabCount) {
-                val tabViewAt = ppvTabLayout.getTabAt(i)?.view
-                var tabChildCount = tabViewAt?.childCount
-                if (tabChildCount == null)
-                    tabChildCount = 0
-                for (j in 0 until tabChildCount) {
-                    if (tabViewAt != null) {
-                        val tabViewChild = tabViewAt.getChildAt(j)
-                        if (tabViewChild is AppCompatTextView) {
-                            tabViewChild.typeface = Typeface.createFromAsset(
-                                requireContext().assets,
-                                "cambria.ttf"
-                            )
-                        }
-                    }
-                }
-
-            }
+            Common.setUpTablayOutStyle(ppvTabLayout)
         }
     }
 

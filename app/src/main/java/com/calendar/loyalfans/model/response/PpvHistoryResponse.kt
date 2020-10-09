@@ -25,6 +25,7 @@ open class MyPPVDetailsData {
     var status: String = ""
     var updated_at: String = ""
     var created_at: String = ""
+    var paid: String = ""
     var files: ArrayList<MyPPVFilesData> = ArrayList()
 }
 
@@ -70,7 +71,7 @@ open class OtherPPVData : BaseResponse() {
     var username: String = ""
     var display_name: String = ""
     var profile_img: String = ""
-    var details: MyPPVDetailsData? = null
+    var details: ArrayList<MyPPVDetailsData>? = null
 }
 
 

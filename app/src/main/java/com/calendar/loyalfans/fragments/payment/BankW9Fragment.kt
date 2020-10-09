@@ -48,7 +48,7 @@ class BankW9Fragment : Fragment(), View.OnClickListener {
     private fun checkStatusOfW9Form() {
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.w9FormStatus(true).observe(viewLifecycleOwner, {
-            if (it.status) {
+            if (it.form_status) {
                 layNoW9Form.visibility = View.GONE
             } else {
                 layNoW9Form.visibility = View.VISIBLE

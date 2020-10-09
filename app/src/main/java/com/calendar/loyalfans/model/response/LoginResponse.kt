@@ -15,4 +15,7 @@ open class LoginResponseData {
     var user_id = ""
     var name = ""
     var username = ""
+    var profile_img = ""
+    var thumb = ""
+    var card_status = ""
 }

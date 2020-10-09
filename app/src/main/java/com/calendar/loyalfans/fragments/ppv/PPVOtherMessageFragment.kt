@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.PPVActivity
 import com.calendar.loyalfans.adapter.OtherMessageAdapter
 import com.calendar.loyalfans.model.response.OtherPPVData
 import com.calendar.loyalfans.utils.Common
-import kotlinx.android.synthetic.main.fragment_favorite_list.*
 import kotlinx.android.synthetic.main.fragment_ppv_message.*
 
-class MyPPVMessageFragment(
+class PPVOtherMessageFragment(
     private val otherPPVMessages: ArrayList<OtherPPVData>?,
 ) : Fragment() {
 
@@ -21,7 +20,7 @@ class MyPPVMessageFragment(
         fun newInstance(
             otherMessages: ArrayList<OtherPPVData>?,
         ): Fragment {
-            return MyPPVMessageFragment(otherMessages)
+            return PPVOtherMessageFragment(otherMessages)
         }
     }
 
@@ -39,9 +38,16 @@ class MyPPVMessageFragment(
         }
     }
 
-    private fun setUpOtherMessageAdapter(myPpvMessages: ArrayList<OtherPPVData>?) {
+    private fun setUpOtherMessageAdapter(myPpvMessages: ArrayList<OtherPPVData>) {
         Common.setupVerticalRecyclerView(rvPPVMessage, activity)
-        rvPPVMessage.adapter = myPpvMessages?.let { OtherMessageAdapter(it, activity) }
+        val otherMessageAdapter = OtherMessageAdapter(myPpvMessages, activity)
+        rvPPVMessage.adapter = otherMessageAdapter
+        otherMessageAdapter.onOtherMessageAction =
+            object : OtherMessageAdapter.OnOtherMessageAction {
+                override fun otherMessage(otherPPVData: OtherPPVData) {
+                    (activity as PPVActivity).loadFragment(25,otherPPVData)
+                }
+            }
     }
 
 }

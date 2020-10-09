@@ -2,6 +2,8 @@ package com.calendar.loyalfans.activities
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebSettings
@@ -39,8 +41,17 @@ open class WebViewActivity : BaseActivity(), View.OnClickListener {
         settings.loadsImagesAutomatically = true
         settings.javaScriptEnabled = true
         settings.builtInZoomControls = true
+        settings.mediaPlaybackRequiresUserGesture = false;
         webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         webView.loadUrl(webViewURL)
+        if (webViewURL.contains(APIServices.W9_FORM_DOWNLOAD_URL)) {
+            webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
+        }
+
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
                 // do your handling codes here, which url is the requested url

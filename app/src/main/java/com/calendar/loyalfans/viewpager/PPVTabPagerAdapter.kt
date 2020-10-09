@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.calendar.loyalfans.R
-import com.calendar.loyalfans.fragments.ppv.MyPPVMessageFragment
+import com.calendar.loyalfans.fragments.ppv.PPVOtherMessageFragment
 import com.calendar.loyalfans.fragments.ppv.PPVMyMessageFragment
 import com.calendar.loyalfans.model.response.PpvHistoryResponse
 
@@ -19,7 +19,7 @@ class PPVTabPagerAdapter(context: Context, fm: FragmentManager, val data: PpvHis
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> PPVMyMessageFragment.newInstance(data.my_ppvs)
-            else -> MyPPVMessageFragment.newInstance(data.other_ppvs)
+            else -> PPVOtherMessageFragment.newInstance(data.other_ppvs)
         }
     }
 

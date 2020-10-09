@@ -71,24 +71,18 @@ class BankFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setUpDocumentTypeSpinner() {
-
         spDocumentSelectionBank.adapter =
             activity?.let { CustomDropDownAdapter(it, getDocumentList()) }
-
     }
 
     private fun getDocumentList(): ArrayList<StateCityData> {
-
         val documentList = ArrayList<StateCityData>()
-
         val stateCityItem = StateCityData()
         stateCityItem.name = getString(R.string.passport)
         documentList.add(stateCityItem)
-
         val stateCityItem1 = StateCityData()
         stateCityItem1.name = getString(R.string.driver_licence)
         documentList.add(stateCityItem1)
-
         val stateCityItem2 = StateCityData()
         stateCityItem2.name = getString(R.string.state_id_card)
         documentList.add(stateCityItem2)

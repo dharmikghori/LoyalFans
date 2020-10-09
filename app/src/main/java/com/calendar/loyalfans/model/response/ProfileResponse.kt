@@ -18,6 +18,7 @@ open class ProfileData {
     var website = ""
     var tofollow = "0"
     var business_type = ""
+    var isfavorite = ""
     var bank_status = "1"
     var card_status = "0"
     var subscription_plans: ArrayList<ProfileSubscriptionData>? = null

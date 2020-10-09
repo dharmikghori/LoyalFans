@@ -8,7 +8,9 @@ import retrofit2.http.POST
 
 interface APIServices {
     companion object {
-        const val W9_FORM_WEB_URL = "https://www.loyalfansonly.com/welcome/w9form/"
+        const val MAIN_URL = "https://www.loyalfansonly.com/"
+        const val W9_FORM_WEB_URL = MAIN_URL + "welcome/w9form/"
+        const val W9_FORM_DOWNLOAD_URL = MAIN_URL + "wform/"
         const val AUTH_TOKEN = "eyJ0eXA1iOi0JKV1QiL8CJhb5GciTWvLUzI1NiJ9IiRk2YXRh8Ig"
         const val APP_SECRET_KEY = "Mn2fKZG4M1170jDlVn6lOFTN6OE27f6UO99n9QDV"
         const val SERVICE_URL = "https://loyalfansonly.com/v1/"
@@ -50,6 +52,11 @@ interface APIServices {
         const val BANK_TRANSFER = "auth/banktransfer"
         const val EMAIL_NOTIFICATION = "auth/emailnotification"
         const val FAVORITE_PROFILE = "auth/favoriteprofile"
+        const val NOTIFICATION_LIST = "auth/notificationlist"
+        const val STATEMENTS = "auth/statements"
+        const val WITHDRAWAL_REQ = "auth/withdrawalreq"
+        const val PAYMENT_HISTORY = "auth/paymenthistory"
+        const val PAY_PPV_POST = "auth/paytoppvpost"
     }
 
     @FormUrlEncoded
@@ -382,6 +389,40 @@ interface APIServices {
     fun favoriteProfile(
         @Field("user_id") user_id: String,
         @Field("owner_id") owner_id: String,
+    ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(NOTIFICATION_LIST)
+    fun notificationList(
+        @Field("user_id") user_id: String,
+        @Field("type") type: String,
+    ): Call<NotificationResponse>
+
+    @FormUrlEncoded
+    @POST(STATEMENTS)
+    fun getStatement(
+        @Field("user_id") user_id: String,
+        @Field("type") type: String,
+    ): Call<StatementResponse>
+
+    @FormUrlEncoded
+    @POST(WITHDRAWAL_REQ)
+    fun withdrawalRequest(
+        @Field("user_id") user_id: String,
+        @Field("amount") amount: String,
+    ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(PAYMENT_HISTORY)
+    fun paymentHistory(
+        @Field("user_id") user_id: String,
+    ): Call<StatementResponse>
+
+    @FormUrlEncoded
+    @POST(PAY_PPV_POST)
+    fun payPPVPost(
+        @Field("user_id") user_id: String,
+        @Field("ppv_id") ppv_id: String,
     ): Call<BaseResponse>
 
 }

@@ -47,9 +47,14 @@ class AddPostFragment : Fragment(), View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
         tvToolBarName.text = getString(R.string.add_post)
         setUpSelectedFilesAdapter()
+        imgBack.visibility = View.GONE
         btnAddPost.setOnClickListener(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).manageBottomNavigationVisibility(true)
+    }
     private val selectedFileList = ArrayList<SelectedFileData>()
     private lateinit var selectedFileAdapter: SelectedFileAdapter
     private fun setUpSelectedFilesAdapter() {

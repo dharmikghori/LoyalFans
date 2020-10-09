@@ -93,6 +93,8 @@ open class BaseActivity : AppCompatActivity() {
         var imei = ""
         val checkReplyOrNormalComment: MutableLiveData<String> =
             MutableLiveData<String>()
+        val currentBalance: MutableLiveData<String> =
+            MutableLiveData<String>()
         private lateinit var activity: AppCompatActivity
         fun getActivity(): AppCompatActivity {
             return activity

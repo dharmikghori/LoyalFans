@@ -126,9 +126,8 @@ class SPHelper(mContext: Context) {
 
     fun getLoginAppSecretKey(): String {
         val loginData = getLoginData()
-        val secretKey: String
-        secretKey = //            secretKey = "Nc9iWN89ijAGQ6kX7H0iBKYLaAVEXIl88OEaeUIR"
-            loginData?.appSecretKey ?: APIServices.APP_SECRET_KEY
+//        val secretKey = loginData?.appSecretKey ?: APIServices.APP_SECRET_KEY
+        val secretKey = "VdBWlgfWgljSB0HQ7iTJgHB5Ik8Fa1Nh3Pna8GeE"
         Log.d("secretKey", secretKey)
         return secretKey
     }

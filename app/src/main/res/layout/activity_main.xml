@@ -98,16 +98,35 @@
                 style="@style/SideMenuBaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onBankAdd"
                 android:layout_below="@+id/tvYourCards"
+                android:onClick="onBankAdd"
                 android:text="@string/add_bank_to_earn" />
+
+            <TextView
+                android:id="@+id/tvPaymentHistory"
+                style="@style/SideMenuBaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvAddBank"
+                android:onClick="onPaymentHistory"
+                android:text="@string/payment_history" />
+
+            <TextView
+                android:id="@+id/tvStatements"
+                style="@style/SideMenuBaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvPaymentHistory"
+                android:onClick="onStatements"
+                android:text="@string/statements" />
 
             <TextView
                 android:id="@+id/tvHelpAndSupport"
                 style="@style/SideMenuBaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvAddBank"
+                android:layout_below="@+id/tvStatements"
+                android:onClick="onHelpAndSupport"
                 android:text="@string/help_amp_support" />
 
             <View

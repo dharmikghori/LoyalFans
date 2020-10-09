@@ -2,7 +2,6 @@ package com.calendar.loyalfans.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.calendar.loyalfans.R
-import com.calendar.loyalfans.activities.WebViewActivity
+import com.calendar.loyalfans.activities.ViewPostImagesAndVideoWebView
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.RequestParams
 
@@ -54,16 +53,10 @@ class PostImageVideoPagerAdapter(
             imgPlayVideo.visibility = View.GONE
         }
         imgPostImageVideoPager.setOnClickListener {
-            val imageURL =
-                if (Common.isVideo(imageData)) {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(imageData))
-                    intent.setDataAndType(Uri.parse(imageData), "video/mp4")
-                    context.startActivity(intent)
-                } else {
-                    context.startActivity(Intent(context, WebViewActivity::class.java).putExtra(
-                        RequestParams.WEBVIEW_URL,
-                        imageData))
-                }
+            context.startActivity(Intent(context,
+                ViewPostImagesAndVideoWebView::class.java).putExtra(
+                RequestParams.WEBVIEW_URL,
+                imagesList))
         }
         return view
     }

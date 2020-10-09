@@ -1,5 +1,6 @@
 package com.calendar.loyalfans.fragments.profile
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -8,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CompoundButton
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
@@ -18,6 +18,7 @@ import com.calendar.loyalfans.model.request.PaidSubscriptionRequest
 import com.calendar.loyalfans.model.request.ProfileDetailRequest
 import com.calendar.loyalfans.model.response.ProfileData
 import com.calendar.loyalfans.model.response.ProfileSubscriptionData
+import com.calendar.loyalfans.retrofit.APIServices
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
@@ -53,6 +54,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
             imgBack.visibility = View.VISIBLE
             imgBack.setOnClickListener(this)
         } else {
+            (activity as MainActivity).manageBottomNavigationVisibility(true)
             cbFavouriteProfile.visibility = View.GONE
             tvToolBarName.text = getString(R.string.myprofile)
             imgBack.visibility = View.GONE
@@ -62,15 +64,18 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         layFollowing.setOnClickListener(this)
         layFavorites.setOnClickListener(this)
         imgEditProfile.setOnClickListener(this)
+        imgShare.setOnClickListener(this)
         setViewPagerHeight()
+        getProfile(false)
     }
 
-    private val isFirstTime = true
+    private var isFirstTime = true
     private fun setViewPagerHeight() {
         val displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         val totalHeight = displayMetrics.heightPixels
         if (isFirstTime) {
+            isFirstTime = false
             var topViewHeight = layProfileTop.measuredHeight
             var tabLayoutHeight = tabLayout.measuredHeight
             if (topViewHeight == 0) {
@@ -89,7 +94,10 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
 
     override fun onResume() {
         super.onResume()
-        getProfile(false)
+        if (profileId == Common.getUserId()) {
+            (activity as MainActivity).manageBottomNavigationVisibility(true)
+        }
+
     }
 
     private lateinit var profileData: ProfileData
@@ -120,6 +128,10 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         tvTotalFansCount.text = data.fans
         tvFollowingCount.text = data.followers
         tvFavouritesCount.text = data.favorites
+        cbFavouriteProfile.setOnCheckedChangeListener(null)
+        cbFavouriteProfile.isChecked = data.isfavorite == "1"
+        cbFavouriteProfile.setOnCheckedChangeListener(this)
+
         activity?.let { Common.loadImageUsingURL(imgProfilePic, data.profile_img, it) }
     }
 
@@ -276,8 +288,10 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
     private fun manageFreeProfile() {
         btnFollowUnFollow.visibility = View.VISIBLE
         if (profileData.tofollow == "0") {
+            btnFollowUnFollow.background = resources.getDrawable(R.drawable.subscription_bg)
             btnFollowUnFollow.text = getString(R.string.follow)
         } else {
+            btnFollowUnFollow.background = resources.getDrawable(R.drawable.cancel_subscription_bg)
             btnFollowUnFollow.text = getString(R.string.unfollow)
         }
         btnFollowUnFollow.setOnClickListener {
@@ -289,9 +303,14 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                 if (it.status) {
                     activity?.let { it1 -> Common.showToast(it1, it.msg) }
                     val toFollow = profileData.tofollow
+
                     if (toFollow == "0") {
+                        btnFollowUnFollow.background =
+                            resources.getDrawable(R.drawable.cancel_subscription_bg)
                         btnFollowUnFollow.text = getString(R.string.unfollow)
                     } else {
+                        btnFollowUnFollow.background =
+                            resources.getDrawable(R.drawable.subscription_bg)
                         btnFollowUnFollow.text = getString(R.string.follow)
                     }
                     getProfile(true)
@@ -327,24 +346,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
             viewPager.adapter = tabsPagerAdapter
             viewPager.isSaveFromParentEnabled = true
             tabLayout.setupWithViewPager(viewPager)
-            for (i in 0 until tabLayout.tabCount) {
-                val tabViewAt = tabLayout.getTabAt(i)?.view
-                var tabChildCount = tabViewAt?.childCount
-                if (tabChildCount == null)
-                    tabChildCount = 0
-                for (j in 0 until tabChildCount) {
-                    if (tabViewAt != null) {
-                        val tabViewChild = tabViewAt.getChildAt(j)
-                        if (tabViewChild is AppCompatTextView) {
-                            tabViewChild.typeface = Typeface.createFromAsset(
-                                requireContext().assets,
-                                "cambria.ttf"
-                            )
-                        }
-                    }
-                }
-
-            }
+            Common.setUpTablayOutStyle(tabLayout)
         }
     }
 
@@ -380,6 +382,19 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                         val otherProfileActivity = activity as OtherProfileActivity
                         otherProfileActivity.loadFragment(8, otherProfileActivity.otherProfileId)
                     }
+                }
+                R.id.imgShare -> {
+                    val sharingIntent = Intent(Intent.ACTION_SEND)
+                    sharingIntent.type = "text/plain"
+                    var userName = tvUserName.text.toString()
+                    userName = userName.replace("@", "")
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, APIServices.MAIN_URL + userName)
+                    activity?.startActivity(
+                        Intent.createChooser(
+                            sharingIntent, "Share with"
+                        )
+                    )
+
                 }
                 R.id.imgEditProfile -> {
                     if (activity is MainActivity) {

@@ -11,6 +11,7 @@ import com.calendar.loyalfans.R
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.viewpager.FansTabPagerAdapter
 import kotlinx.android.synthetic.main.fragment_fans.*
+import kotlinx.android.synthetic.main.fragment_notification.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.*
 
 class FansFragment(private val profileId: String) : Fragment(), View.OnClickListener {
@@ -44,24 +45,7 @@ class FansFragment(private val profileId: String) : Fragment(), View.OnClickList
             viewPagerFans.adapter = tabsPagerAdapter
             tabFansLayout.setupWithViewPager(viewPagerFans)
             tabsPagerAdapter.notifyDataSetChanged()
-            for (i in 0 until tabFansLayout.tabCount) {
-                val tabViewAt = tabFansLayout.getTabAt(i)?.view
-                var tabChildCount = tabViewAt?.childCount
-                if (tabChildCount == null)
-                    tabChildCount = 0
-                for (j in 0 until tabChildCount) {
-                    if (tabViewAt != null) {
-                        val tabViewChild = tabViewAt.getChildAt(j)
-                        if (tabViewChild is AppCompatTextView) {
-                            tabViewChild.typeface = Typeface.createFromAsset(
-                                requireContext().assets,
-                                "cambria.ttf"
-                            )
-                        }
-                    }
-                }
-
-            }
+            Common.setUpTablayOutStyle(tabFansLayout)
         }
     }
 

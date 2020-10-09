@@ -1,6 +1,7 @@
 package com.calendar.loyalfans.fragments.payment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Html
 import android.text.SpannableStringBuilder
@@ -56,6 +57,9 @@ class BankTransferFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id) {
+                R.id.imgBack -> {
+                    activity?.onBackPressed()
+                }
                 R.id.tvW9Form -> {
                     (activity as MainActivity).loadFragment(20)
                 }
@@ -125,7 +129,6 @@ class BankTransferFragment : Fragment(), View.OnClickListener {
         return true
     }
 
-
     private fun setUpClickHere(textView: TextView, textForTextView: String) {
         val sequence: CharSequence =
             Html.fromHtml(textForTextView)
@@ -145,7 +148,13 @@ class BankTransferFragment : Fragment(), View.OnClickListener {
         val clickable: ClickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 if (strBuilder.contains("Download")) {
-                    activity?.let { Common.showToast(it, "Download Form") }
+//                    startActivity(Intent(activity,
+//                        WebViewActivity::class.java).putExtra(RequestParams.WEBVIEW_URL,
+//                        APIServices.W9_FORM_DOWNLOAD_URL + Common.getUserId()))
+//
+                    val i = Intent(Intent.ACTION_VIEW)
+                    i.data = Uri.parse(APIServices.W9_FORM_DOWNLOAD_URL + Common.getUserId())
+                    startActivity(i)
                 } else if (strBuilder.contains("Edit")) {
                     startActivity(Intent(activity,
                         WebViewActivity::class.java).putExtra(RequestParams.WEBVIEW_URL,

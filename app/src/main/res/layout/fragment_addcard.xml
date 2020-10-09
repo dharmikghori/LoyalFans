@@ -196,7 +196,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
-            <EditText
+            <com.uphyca.creditcardedittext.CreditCardNumberEditText
                 android:id="@+id/etCardNumberCard"
                 style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
@@ -204,8 +204,6 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:hint="@string/card_number"
                 android:importantForAutofill="no"
-                android:inputType="number"
-                android:maxLength="16"
                 tools:ignore="LabelFor" />
 
             <LinearLayout

@@ -3,28 +3,34 @@ package com.calendar.loyalfans.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.model.response.OtherPPVData
 import com.calendar.loyalfans.utils.Common
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_other_message.view.*
 import java.util.*
 
 class OtherMessageAdapter(
-    private var fansList: ArrayList<com.calendar.loyalfans.model.response.OtherPPVData>,
+    private var messages: ArrayList<OtherPPVData>,
     private val activity: FragmentActivity?,
 ) :
     RecyclerView.Adapter<OtherMessageAdapter.FansViewHolder>() {
+    var onOtherMessageAction: OnOtherMessageAction? = null
 
-
-    override fun getItemCount(): Int {
-        return fansList.size
+    interface OnOtherMessageAction {
+        fun otherMessage(otherPPVData: OtherPPVData)
     }
 
-    private fun getItem(position: Int): com.calendar.loyalfans.model.response.OtherPPVData {
-        return fansList[position]
+    override fun getItemCount(): Int {
+        return messages.size
+    }
+
+    private fun getItem(position: Int): OtherPPVData {
+        return messages[position]
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FansViewHolder {
@@ -39,14 +45,18 @@ class OtherMessageAdapter(
 
     override fun onBindViewHolder(holder: FansViewHolder, position: Int) {
         val otherMessageData = getItem(position)
+        val details = otherMessageData.details?.get(0)
         holder.tvProfileName.text = otherMessageData.display_name
-        holder.tvMessageContent.text = otherMessageData.details?.content
+        holder.tvMessageContent.text = details?.content
+        holder.layOtherMessage.setOnClickListener {
+            onOtherMessageAction?.otherMessage(otherMessageData)
+        }
         holder.tvDateAndTime.text =
-            otherMessageData.details?.updated_at?.let { Common.formatTime(it) }
+            details?.updated_at?.let { Common.formatTime(it) }
         activity?.let {
             Common.loadImageUsingURL(holder.imgProfilePic,
                 otherMessageData.profile_img,
-                it)
+                it, true)
         }
     }
 
@@ -55,6 +65,7 @@ class OtherMessageAdapter(
         val tvProfileName: TextView = view.tvProfileName
         val tvMessageContent: TextView = view.tvMessageContent
         val tvDateAndTime: TextView = view.tvDateAndTime
+        val layOtherMessage: LinearLayout = view.layOtherMessage
     }
 
 }

@@ -1,7 +1,10 @@
 package com.calendar.loyalfans.activities
 
 import android.os.Bundle
+import androidx.fragment.app.FragmentTransaction
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.fragments.ppv.OtherMessageDetailsFragment
+import com.calendar.loyalfans.model.response.OtherPPVData
 import com.calendar.loyalfans.utils.Common
 
 
@@ -18,15 +21,33 @@ class PPVActivity : BaseActivity() {
         if (fragmentToBeLoad != null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.layFrame, fragmentToBeLoad, fragmentToTag)
-                .addToBackStack(fragmentToTag)
+                .add(R.id.layFrame, fragmentToBeLoad, fragmentToTag)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack(null)
                 .commit()
         }
     }
 
+
     override fun onBackPressed() {
-        super.onBackPressed()
-        super.onBackPressed()
+        val backStackEntryCount = supportFragmentManager.backStackEntryCount
+        if (backStackEntryCount == 1) {
+            finish()
+        } else {
+            supportFragmentManager.popBackStack()
+        }
+
+    }
+
+    fun loadFragment(type: Int, otherPPVData: OtherPPVData) {
+        val fragmentToBeLoad = OtherMessageDetailsFragment.newInstance(otherPPVData)
+        val fragmentToTag = Common.getTagBasedOnType(type)
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.layFrame, fragmentToBeLoad, fragmentToTag)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .addToBackStack(null)
+            .commit()
     }
 
 }

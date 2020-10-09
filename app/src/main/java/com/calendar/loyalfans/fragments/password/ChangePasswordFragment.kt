@@ -100,7 +100,7 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
         changePasswordRequest.user_id = Common.getUserId()
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.changePassword(
-            changePasswordRequest, false
+            changePasswordRequest, true
         )
             .observe(viewLifecycleOwner,
                 {
