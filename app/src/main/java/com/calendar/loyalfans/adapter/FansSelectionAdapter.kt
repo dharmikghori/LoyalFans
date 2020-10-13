@@ -58,7 +58,7 @@ class FansSelectionAdapter(
     override fun onBindViewHolder(holder: FansViewHolder, position: Int) {
         val fansData = getItem(position)
         holder.tvProfileName.text = fansData.display_name
-        holder.tvUserName.text = "@" +fansData.username
+        holder.tvUserName.text = "@" + fansData.username
         activity?.let {
             Common.loadImageUsingURL(holder.imgProfilePic,
                 fansData.profile_img,

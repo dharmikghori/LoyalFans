@@ -201,6 +201,9 @@ class Common {
                 25 -> {
                     "OtherMessageFragment"
                 }
+                26 -> {
+                    "MessageAnalyticFragment"
+                }
                 else -> ""
             }
         }

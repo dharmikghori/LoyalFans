@@ -29,7 +29,7 @@ class FansSelectionDialog(context: AppCompatActivity) : Dialog(context) {
         this.onPPVSend = onOptionSelection
     }
 
-    private lateinit var fansSelectionAdapter: FansSelectionAdapter
+    private var fansSelectionAdapter: FansSelectionAdapter? = null
     private fun dialogInit() {
         val params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -51,34 +51,36 @@ class FansSelectionDialog(context: AppCompatActivity) : Dialog(context) {
         window!!.attributes.windowAnimations = R.style.DialogAnimation
         getFans()
         imgSendPPV.setOnClickListener {
-            val fans = fansSelectionAdapter.getFans()
-            val filteredList = fans.filter { it.isSelected }
-            if (filteredList.isNotEmpty()) {
-                onPPVSend?.onSendPPV(filteredList)
-                dismiss()
-            } else {
-                Common.showToast(activity, "Please select at least one fan")
+            if (fansSelectionAdapter != null) {
+                val fans = fansSelectionAdapter!!.getFans()
+                val filteredList = fans.filter { it.isSelected }
+                if (filteredList.isNotEmpty()) {
+                    onPPVSend?.onSendPPV(filteredList)
+                    dismiss()
+                } else {
+                    Common.showToast(activity, "Please select at least one fan")
+                }
             }
         }
 
         cbAllSubscriber.setOnCheckedChangeListener { buttonView, isChecked ->
-            val fans = fansSelectionAdapter.getFans()
-            val updatedFans = ArrayList<FansData>()
-            for (fanData in fans) {
-                fanData.isSelected = isChecked
-                updatedFans.add(fanData)
+            if (fansSelectionAdapter != null) {
+                val fans = fansSelectionAdapter!!.getFans()
+                val updatedFans = ArrayList<FansData>()
+                for (fanData in fans) {
+                    fanData.isSelected = isChecked
+                    updatedFans.add(fanData)
+                }
+                fansSelectionAdapter!!.setFans(updatedFans)
             }
-            fansSelectionAdapter.setFans(updatedFans)
         }
-
         etSearchFans.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                fansSelectionAdapter.filter.filter(s.toString())
-
+                fansSelectionAdapter?.filter?.filter(s.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {

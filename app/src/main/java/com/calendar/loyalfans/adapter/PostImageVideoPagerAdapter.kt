@@ -19,6 +19,13 @@ class PostImageVideoPagerAdapter(
     images: ArrayList<String>,
 ) :
     PagerAdapter() {
+
+    var onPPVPost: OnPayPPVPost? = null
+
+    interface OnPayPPVPost {
+        fun onPostSeen()
+    }
+
     private val imagesList = images
     override fun getCount(): Int {
         return imagesList.size
@@ -53,6 +60,7 @@ class PostImageVideoPagerAdapter(
             imgPlayVideo.visibility = View.GONE
         }
         imgPostImageVideoPager.setOnClickListener {
+            onPPVPost?.onPostSeen()
             context.startActivity(Intent(context,
                 ViewPostImagesAndVideoWebView::class.java).putExtra(
                 RequestParams.WEBVIEW_URL,

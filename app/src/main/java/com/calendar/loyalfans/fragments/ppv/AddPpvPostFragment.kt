@@ -142,8 +142,9 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener, RadioGroup.OnChecke
         activity?.runOnUiThread {
             selectedFileList.clear()
             selectedFileAdapter.notifyDataSetChanged()
-            activity?.let { Common.showToast(it, "PPV Sent") }
-            (activity as PPVActivity).loadFragment(15)
+            activity?.let { Common.showToast(it, "PPV Successfully Send") }
+//            (activity as PPVActivity).loadFragment(15)
+            requireActivity().onBackPressed()
         }
     }
 

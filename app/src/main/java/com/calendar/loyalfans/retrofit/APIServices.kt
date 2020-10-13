@@ -8,12 +8,12 @@ import retrofit2.http.POST
 
 interface APIServices {
     companion object {
-        const val MAIN_URL = "https://www.loyalfansonly.com/"
+        const val MAIN_URL = "http://www.loyalfansonly.com/"
         const val W9_FORM_WEB_URL = MAIN_URL + "welcome/w9form/"
         const val W9_FORM_DOWNLOAD_URL = MAIN_URL + "wform/"
         const val AUTH_TOKEN = "eyJ0eXA1iOi0JKV1QiL8CJhb5GciTWvLUzI1NiJ9IiRk2YXRh8Ig"
         const val APP_SECRET_KEY = "Mn2fKZG4M1170jDlVn6lOFTN6OE27f6UO99n9QDV"
-        const val SERVICE_URL = "https://loyalfansonly.com/v1/"
+        const val SERVICE_URL = "http://www.loyalfansonly.com/v1/"
         const val SIGN_IN = "signin"
         const val SIGN_UP = "signup"
         const val FORGOT_PASSWORD = "forgotpassword"
@@ -57,6 +57,8 @@ interface APIServices {
         const val WITHDRAWAL_REQ = "auth/withdrawalreq"
         const val PAYMENT_HISTORY = "auth/paymenthistory"
         const val PAY_PPV_POST = "auth/paytoppvpost"
+        const val SEEN_PPV = "auth/seenppv"
+        const val PPV_SENT_USER = "auth/ppvsendtouser"
     }
 
     @FormUrlEncoded
@@ -422,6 +424,21 @@ interface APIServices {
     @POST(PAY_PPV_POST)
     fun payPPVPost(
         @Field("user_id") user_id: String,
+        @Field("ppv_id") ppv_id: String,
+    ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(SEEN_PPV)
+    fun seenPPV(
+        @Field("user_id") user_id: String,
+        @Field("ppv_id") ppv_id: String,
+    ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(PPV_SENT_USER)
+    fun ppvSendUser(
+        @Field("user_id") user_id: String,
+        @Field("touser_id") touser_id: String,
         @Field("ppv_id") ppv_id: String,
     ): Call<BaseResponse>
 

@@ -14,6 +14,7 @@ import com.calendar.loyalfans.R
 class PostImageVideoPagerWebViewAdapter(
     private val context: Context,
     images: ArrayList<String>,
+    val views: ArrayList<View> = ArrayList(),
 ) :
     PagerAdapter() {
     private val imagesList = images
@@ -49,8 +50,28 @@ class PostImageVideoPagerWebViewAdapter(
         settings.javaScriptCanOpenWindowsAutomatically = true
         webview.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         webview.loadUrl(imageData)
-        val viewPager = container as ViewPager
-        viewPager.addView(view, 0)
+        container.addView(view, position)
         return view
     }
+
+
+    //-----------------------------------------------------------------------------
+    // Add "view" to right end of "views".
+    // Returns the position of the new view.
+    // The app should call this to add pages; not used by ViewPager.
+//    fun addView(v: View?): Int {
+//        return addView(v, views.size)
+//    }
+
+    //-----------------------------------------------------------------------------
+    // Add "view" at "position" to "views".
+    // Returns position of new view.
+    // The app should call this to add pages; not used by ViewPager.
+//    private fun addView(view: View?, position: Int): Int {
+//        if (view != null) {
+//            views.add(position, view)
+//        }
+//        return position
+//    }
+
 }

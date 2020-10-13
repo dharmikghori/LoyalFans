@@ -961,8 +961,6 @@ class BaseViewModel : ViewModel() {
     }
 
 
-
-
     fun withdrawalRequest(
         sendTipRequest: SendTipRequest,
         progressShow: Boolean,
@@ -1008,6 +1006,55 @@ class BaseViewModel : ViewModel() {
             }
         }))
         return payPPVData
+    }
+
+
+    fun seenPPV(
+        payPPVRequest: NotificationSecurityRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.SEEN_PPV
+        val payPPVData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        payPPVRequest.user_id = Common.getUserId()
+        printStrRequestJson(payPPVRequest, apiName)
+        apiServices?.seenPPV(
+            payPPVRequest.user_id,
+            payPPVRequest.type //PPV ID
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val payPPVResponse = response as BaseResponse
+                printStrJson(payPPVResponse, apiName)
+                payPPVData.value = payPPVResponse
+            }
+        }))
+        return payPPVData
+    }
+
+
+    fun ppvSendUser(
+        sendPPVRequest: SendPPVUserRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.PPV_SENT_USER
+        val sentPPVData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        sendPPVRequest.user_id = Common.getUserId()
+        printStrRequestJson(sendPPVRequest, apiName)
+        apiServices?.ppvSendUser(
+            sendPPVRequest.user_id,
+            sendPPVRequest.touser_id,
+            sendPPVRequest.ppv_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val sentPPVResponse = response as BaseResponse
+                printStrJson(sentPPVResponse, apiName)
+                sentPPVData.value = sentPPVResponse
+            }
+        }))
+        return sentPPVData
     }
 
 

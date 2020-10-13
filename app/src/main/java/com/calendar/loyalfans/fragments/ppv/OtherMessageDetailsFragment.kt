@@ -43,8 +43,13 @@ class OtherMessageDetailsFragment(private val otherPPVData: OtherPPVData) : Frag
             activity?.onBackPressed()
         }
         setUpOtherMessagesAdapter()
+    }
 
-
+    private fun callMessageSeenAPI(ppvID: String) {
+        val baseViewModel =
+            ViewModelProvider(this).get(BaseViewModel::class.java)
+        val payPPVRequest = NotificationSecurityRequest(ppvID)
+        baseViewModel.seenPPV(payPPVRequest, false).observe(viewLifecycleOwner, { })
     }
 
     private var otherDetailsMessageAdapter: OtherDetailsMessageAdapter? = null
@@ -56,6 +61,12 @@ class OtherMessageDetailsFragment(private val otherPPVData: OtherPPVData) : Frag
         otherDetailsMessageAdapter?.onPayPPV = object : OtherDetailsMessageAdapter.OnPayPPVPost {
             override fun onPay(otherPPVData: MyPPVDetailsData, position: Int) {
                 onPayForPPVPost(otherPPVData, position)
+            }
+
+            override fun onFreePostSeen(otherPPVData: MyPPVDetailsData) {
+                if (otherPPVData.paid != "1") {
+                    callMessageSeenAPI(otherPPVData.id)
+                }
             }
         }
     }
@@ -70,6 +81,7 @@ class OtherMessageDetailsFragment(private val otherPPVData: OtherPPVData) : Frag
                 myPPVMessageData.paid = "1"
                 otherPPVData.details?.set(position, myPPVMessageData)
                 otherDetailsMessageAdapter?.notifyItemChanged(position)
+                callMessageSeenAPI(myPPVMessageData.id)
             }
         })
     }

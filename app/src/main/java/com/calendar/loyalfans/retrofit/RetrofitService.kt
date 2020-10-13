@@ -15,11 +15,11 @@ import java.util.concurrent.TimeUnit
 
 open class RetrofitService {
 
-
     companion object {
         var gson: Gson = GsonBuilder()
             .setLenient()
             .create()
+
         private val retrofit = Retrofit.Builder()
             .baseUrl(APIServices.SERVICE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -27,6 +27,7 @@ open class RetrofitService {
             .build()
         private val okHttp: OkHttpClient
             get() {
+
                 val okHttpBuilder = OkHttpClient.Builder()
                 okHttpBuilder.readTimeout(5, TimeUnit.MINUTES)
                 okHttpBuilder.writeTimeout(5, TimeUnit.MINUTES)
@@ -35,7 +36,6 @@ open class RetrofitService {
             }
 
         private fun getInterceptor(): Interceptor {
-
             return Interceptor { chain ->
                 val original = chain.request()
                 val builder = original.newBuilder()

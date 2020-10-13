@@ -35,6 +35,7 @@ open class ViewPostImagesAndVideoWebView : BaseActivity(), View.OnClickListener 
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setUpWebView(webViewURLs: ArrayList<String>) {
+//        webViewViewPager.offscreenPageLimit = 1
         webViewViewPager.adapter = PostImageVideoPagerWebViewAdapter(this, webViewURLs)
         webViewViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(

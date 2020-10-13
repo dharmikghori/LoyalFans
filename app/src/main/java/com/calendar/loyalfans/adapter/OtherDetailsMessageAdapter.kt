@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -25,7 +26,8 @@ class OtherDetailsMessageAdapter(
     var onPayPPV: OnPayPPVPost? = null
 
     interface OnPayPPVPost {
-        fun onPay(otherPPVData: MyPPVDetailsData,position: Int)
+        fun onPay(otherPPVData: MyPPVDetailsData, position: Int)
+        fun onFreePostSeen(otherPPVData: MyPPVDetailsData)
     }
 
     override fun getItemCount(): Int {
@@ -55,16 +57,20 @@ class OtherDetailsMessageAdapter(
             holder.tapToPay.visibility = View.VISIBLE
             holder.tapToPay.text = "pay $" + otherMessagePPVDetailsData.price + " to view"
             holder.tapToPay.setOnClickListener {
-                onPayPPV?.onPay(otherMessagePPVDetailsData,position)
+                onPayPPV?.onPay(otherMessagePPVDetailsData, position)
             }
         } else {
             holder.imgLock.visibility = View.GONE
             holder.tapToPay.visibility = View.GONE
         }
+        holder.layPostTopCardView.setOnClickListener {
+            onPayPPV?.onFreePostSeen(otherMessagePPVDetailsData)
+        }
         activity?.let {
             val imagesAndVideos: ArrayList<String> =
                 getPhotosArray(otherMessagePPVDetailsData.files)
-            holder.photos_viewpager.adapter = PostImageVideoPagerAdapter(it, imagesAndVideos)
+            val postImageVideoPagerAdapter = PostImageVideoPagerAdapter(it, imagesAndVideos)
+            holder.photos_viewpager.adapter = postImageVideoPagerAdapter
             if (imagesAndVideos.size > 1) {
                 holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
                 holder.tabLayout.visibility = View.VISIBLE
@@ -90,6 +96,7 @@ class OtherDetailsMessageAdapter(
         val imgLock: ImageView = view.imgLock
         val tabLayout: TabLayout = view.tabLayout
         val tapToPay: TextView = view.tapToPay
+        val layPostTopCardView: CardView = view.layPostTopCardView
     }
 
 }

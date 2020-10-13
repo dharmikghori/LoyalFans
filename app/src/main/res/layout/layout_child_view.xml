@@ -58,20 +58,22 @@
                     android:text="@string/all_subscribers"
                     android:textAllCaps="true"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_9sdp"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="@dimen/_1sdp"
                     android:layout_height="@dimen/_10sdp"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/colorAccent" />
+                    android:background="@color/colorAccent"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tvAllSubscriberAmount"
                     style="@style/BaseTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_7sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_7sdp"
@@ -104,20 +106,35 @@
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:src="@drawable/place_holder"
-                    android:scaleType="centerCrop"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    android:contentDescription="@string/app_name" />
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/place_holder" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
+                    android:layout_gravity="end|center"
                     android:gravity="end">
+
+                    <Button
+                        android:id="@+id/btnAnalytics"
+                        style="@style/BaseColorGradientButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:fontFamily="@font/cambria"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/analytics"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:id="@+id/tvTotalPurchases"
                         style="@style/BaseTextView"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -126,30 +143,36 @@
                         android:text="@string/total_purchases"
                         android:textAllCaps="true"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/_9sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvTotalPurchasesAmount"
                         style="@style/BaseTextView"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:layout_marginEnd="@dimen/_3sdp"
                         android:layout_marginBottom="@dimen/_7sdp"
-                        android:text="$ 300.00"
+                        android:text="@string/_00_00"
                         android:textAllCaps="true"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/_9sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:visibility="gone" />
 
                     <View
                         android:layout_width="@dimen/_1sdp"
                         android:layout_height="@dimen/_10sdp"
+
                         android:layout_gravity="center_vertical"
-                        android:background="@color/colorAccent" />
+                        android:background="@color/colorAccent"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvSeen"
                         style="@style/BaseTextView"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
@@ -159,7 +182,8 @@
                         android:text="@string/seen"
                         android:textAllCaps="true"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/_9sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvSeenCount"
@@ -169,10 +193,10 @@
                         android:layout_marginTop="@dimen/_7sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_7sdp"
-                        android:text="50"
                         android:textAllCaps="true"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/_9sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

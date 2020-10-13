@@ -272,5 +272,12 @@
     <string name="card_last_4_digit">Card Last 4 Digit</string>
     <string name="amount">Amount</string>
     <string name="payment_date">Payment Date</string>
-
+    <string name="analytics">analytics</string>
+    <string name="my_fans_analytics">MY FANS</string>
+    <string name="seen_analytics">SEEN</string>
+    <string name="earning__analytics">EARNING</string>
+    <string name="seen_earning">Seen</string>
+    <string name="earning_earning">Earning</string>
+    <string name="sent">Sent</string>
+    <string name="zero">0</string>
 </resources>

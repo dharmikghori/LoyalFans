@@ -324,7 +324,7 @@ class MainActivity : BaseActivity() {
         if (loginData != null) {
             tvUserNameMenu.text = loginData.data.username
             Common.loadImageUsingURL(imgProfileBottom, loginData.data.profile_img, this)
-//            statementAndPaymentHistoryVisibility(loginData.data.card_status == "1")
+            statementAndPaymentHistoryVisibility(loginData.data.card_status == "1")
         }
     }
 

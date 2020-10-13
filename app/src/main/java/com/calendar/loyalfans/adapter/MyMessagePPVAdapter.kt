@@ -5,22 +5,31 @@ import android.animation.AnimatorListenerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.model.response.MyPPVData
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.layout_child_view.view.*
 import java.util.*
 
 class MyMessagePPVAdapter(
-    private var fansList: ArrayList<com.calendar.loyalfans.model.response.MyPPVData>,
+    private var fansList: ArrayList<MyPPVData>,
     private val activity: FragmentActivity?,
 ) :
     RecyclerView.Adapter<MyMessagePPVAdapter.FansViewHolder>() {
     private var lastClickedPosition = -1
+
+
+    interface MyMessageAction {
+        fun onAnalytics(myPPVData: MyPPVData)
+    }
+
+    var myMessageAction: MyMessageAction? = null
 
     override fun getItemCount(): Int {
         return fansList.size
@@ -72,6 +81,9 @@ class MyMessagePPVAdapter(
             }
             notifyDataSetChanged()
         }
+        holder.btnAnalytics.setOnClickListener {
+            myMessageAction?.onAnalytics(otherMessageData)
+        }
         if (lastClickedPosition == position) {
             holder.layMessageVisibleGone.animate()
                 .translationY(0F)
@@ -103,6 +115,7 @@ class MyMessagePPVAdapter(
         val imgFile: ImageView = view.imgFile
         val tvTotalPurchasesAmount: TextView = view.tvTotalPurchasesAmount
         val tvSeenCount: TextView = view.tvSeenCount
+        val btnAnalytics: Button = view.btnAnalytics
     }
 }
 
