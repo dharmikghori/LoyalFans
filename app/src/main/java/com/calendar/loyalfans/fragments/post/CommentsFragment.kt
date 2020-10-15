@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.BaseActivity.Companion.checkReplyOrNormalComment
-import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.CommentAdapter
 import com.calendar.loyalfans.model.request.AddCommentRequest
 import com.calendar.loyalfans.model.request.CommentRequest
@@ -45,20 +44,19 @@ class CommentsFragment(private val postId: String) : Fragment(), View.OnClickLis
         getComments()
         checkReplyOrNormalComment.value = ""
         tvToolBarName.text = getString(R.string.comments_header)
-        if (activity is MainActivity) {
-            (activity as MainActivity).manageBottomNavigationVisibility(false)
-            checkReplyOrNormalComment.removeObserver {}
-            checkReplyOrNormalComment.observe(viewLifecycleOwner, {
-                replyCommentID = ""
-                if (it == "") {
-                    etComment.hint = getString(R.string.write_comment)
-                } else {
-                    val replyCommentData = it.split(",")
-                    replyCommentID = replyCommentData[0]
-                    etComment.hint = "Reply to ${replyCommentData[1]}"
-                }
-            })
-        }
+//        if (activity is MainActivity) {
+//            (activity as MainActivity).manageBottomNavigationVisibility(false)}
+        checkReplyOrNormalComment.removeObserver {}
+        checkReplyOrNormalComment.observe(viewLifecycleOwner, {
+            replyCommentID = ""
+            if (it == "") {
+                etComment.hint = getString(R.string.write_comment)
+            } else {
+                val replyCommentData = it.split(",")
+                replyCommentID = replyCommentData[0]
+                etComment.hint = "Reply to ${replyCommentData[1]}"
+            }
+        })
 
     }
 

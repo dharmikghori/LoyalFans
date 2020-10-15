@@ -71,6 +71,11 @@ class OtherDetailsMessageAdapter(
                 getPhotosArray(otherMessagePPVDetailsData.files)
             val postImageVideoPagerAdapter = PostImageVideoPagerAdapter(it, imagesAndVideos)
             holder.photos_viewpager.adapter = postImageVideoPagerAdapter
+            postImageVideoPagerAdapter.onPPVPost=object :PostImageVideoPagerAdapter.OnPayPPVPost{
+                override fun onPostSeen() {
+                    onPayPPV?.onFreePostSeen(otherMessagePPVDetailsData)
+                }
+            }
             if (imagesAndVideos.size > 1) {
                 holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
                 holder.tabLayout.visibility = View.VISIBLE

@@ -59,6 +59,8 @@ interface APIServices {
         const val PAY_PPV_POST = "auth/paytoppvpost"
         const val SEEN_PPV = "auth/seenppv"
         const val PPV_SENT_USER = "auth/ppvsendtouser"
+        const val MY_CARD = "auth/mycard"
+        const val POST_DETAILS = "auth/getpostdetails"
     }
 
     @FormUrlEncoded
@@ -441,5 +443,18 @@ interface APIServices {
         @Field("touser_id") touser_id: String,
         @Field("ppv_id") ppv_id: String,
     ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(MY_CARD)
+    fun myCards(
+        @Field("user_id") user_id: String,
+    ): Call<CardResponse>
+
+    @FormUrlEncoded
+    @POST(POST_DETAILS)
+    fun getPostDetails(
+        @Field("user_id") user_id: String,
+        @Field("post_id") post_id: String,
+    ): Call<PostDetailsReponse>
 
 }

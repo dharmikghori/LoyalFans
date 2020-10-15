@@ -45,9 +45,22 @@ class OtherMessageAdapter(
 
     override fun onBindViewHolder(holder: FansViewHolder, position: Int) {
         val otherMessageData = getItem(position)
-        val details = otherMessageData.details?.get(0)
+        val details = otherMessageData.details?.last()
         holder.tvProfileName.text = otherMessageData.display_name
         holder.tvMessageContent.text = details?.content
+        if (otherMessageData.unseen != "0") {
+            holder.tvUnReadCount.text = otherMessageData.unseen
+            holder.tvUnReadCount.visibility = View.VISIBLE
+            if (activity != null) {
+                holder.tvMessageContent.setTextColor(activity.resources.getColor(R.color.black))
+            }
+        } else {
+            holder.tvUnReadCount.visibility = View.GONE
+            if (activity != null) {
+                holder.tvMessageContent.setTextColor(activity.resources.getColor(R.color.theme_black))
+            }
+
+        }
         holder.layOtherMessage.setOnClickListener {
             onOtherMessageAction?.otherMessage(otherMessageData)
         }
@@ -65,6 +78,7 @@ class OtherMessageAdapter(
         val tvProfileName: TextView = view.tvProfileName
         val tvMessageContent: TextView = view.tvMessageContent
         val tvDateAndTime: TextView = view.tvDateAndTime
+        val tvUnReadCount: TextView = view.tvUnReadCount
         val layOtherMessage: LinearLayout = view.layOtherMessage
     }
 

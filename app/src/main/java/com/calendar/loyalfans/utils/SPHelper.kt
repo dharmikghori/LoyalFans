@@ -114,7 +114,7 @@ class SPHelper(mContext: Context) {
     }
 
     fun getRecentSearch(): ArrayList<SearchUsers> {
-        var searchUsers = ArrayList<SearchUsers>()
+        var searchUsers = java.util.ArrayList<SearchUsers>()
         val strJson = get(RequestParams.RECENT_SEARCH_USER_DATA + Common.getUserId(), "")
         strJson?.let { searchUsers = SearchUsers.fromJSON(it) }
         return searchUsers
@@ -127,7 +127,7 @@ class SPHelper(mContext: Context) {
     fun getLoginAppSecretKey(): String {
         val loginData = getLoginData()
         val secretKey = loginData?.appSecretKey ?: APIServices.APP_SECRET_KEY
-//        val secretKey = "DYgfTXMg9EjS76CdmMB2V8g7HB5GNEYQP3mgcInb"
+//        val secretKey = "RdYWUNVEZaDPSAJBAFBCIFdln30J6kOiJnEP7cGR"
         Log.d("secretKey", secretKey)
         return secretKey
     }

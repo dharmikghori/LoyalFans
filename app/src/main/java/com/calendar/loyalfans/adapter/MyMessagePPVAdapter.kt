@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
@@ -14,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.response.MyPPVData
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.CustomViewPager
 import kotlinx.android.synthetic.main.layout_child_view.view.*
-import java.util.*
 
 class MyMessagePPVAdapter(
     private var fansList: ArrayList<MyPPVData>,
@@ -53,15 +52,24 @@ class MyMessagePPVAdapter(
         val otherMessageData = getItem(position)
         holder.tvGroupTitle.text = Common.formatDate(otherMessageData.created_at)
         if (activity != null) {
-            holder.tvAllSubscriberAmount.text =
-                activity.getString(R.string.dollar) + otherMessageData.details?.price
+            if (otherMessageData.details?.price != null) {
+                holder.tvAllSubscriberAmount.text =
+                    activity.getString(R.string.dollar) + otherMessageData.details?.price
+            } else {
+                holder.tvAllSubscriberAmount.text = "FREE"
+            }
             holder.tvMessageContent.text = otherMessageData.details?.content
             val files = otherMessageData.details?.files
             if (files != null) {
                 if (!files.isNullOrEmpty()) {
+                    val images: ArrayList<String> = ArrayList()
+                    for (fileData in files) {
+                        images.add(fileData.file_name)
+                    }
+                    holder.imgFile.adapter =
+                        PostImageVideoPagerAdapter(activity, images)
+
                     holder.imgFile.visibility = View.VISIBLE
-                    Common.loadImageUsingURL(holder.imgFile,
-                        otherMessageData.details!!.files[0].file_name, activity)
                 } else {
                     holder.imgFile.visibility = View.GONE
                 }
@@ -112,7 +120,7 @@ class MyMessagePPVAdapter(
         val tvGroupTitle: TextView = view.tvGroupTitle
         val tvAllSubscriberAmount: TextView = view.tvAllSubscriberAmount
         val tvMessageContent: TextView = view.tvMessageContent
-        val imgFile: ImageView = view.imgFile
+        val imgFile: CustomViewPager = view.imgFile
         val tvTotalPurchasesAmount: TextView = view.tvTotalPurchasesAmount
         val tvSeenCount: TextView = view.tvSeenCount
         val btnAnalytics: Button = view.btnAnalytics

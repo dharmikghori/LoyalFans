@@ -9,7 +9,6 @@ import com.calendar.loyalfans.R
 import com.calendar.loyalfans.adapter.PostImageVideoPagerWebViewAdapter
 import com.calendar.loyalfans.utils.RequestParams
 import kotlinx.android.synthetic.main.activity_multiple_view_webview.*
-import java.util.*
 
 open class ViewPostImagesAndVideoWebView : BaseActivity(), View.OnClickListener {
 
@@ -17,6 +16,10 @@ open class ViewPostImagesAndVideoWebView : BaseActivity(), View.OnClickListener 
         super.onCreate(null)
         setContentView(R.layout.activity_multiple_view_webview)
         val webViewURLs = intent.getStringArrayListExtra(RequestParams.WEBVIEW_URL)
+//        val webViewURLs = ArrayList<String>()
+//        webViewURLs.add("https://www.loyalfansonly.com/assets/upload/post/video/SampleVideo_360x240_1mb.mp4")
+//        webViewURLs.add("https://www.loyalfansonly.com/assets/upload/post/image/post_1600671719_file.jpg")
+//        webViewURLs.add("https://www.loyalfansonly.com/assets/upload/post/image/post_1600671719_file.jpg")
         imgBack.setOnClickListener(this)
         if (webViewURLs != null) {
             setUpWebView(webViewURLs)
@@ -30,12 +33,40 @@ open class ViewPostImagesAndVideoWebView : BaseActivity(), View.OnClickListener 
                 previewTabLayout.visibility = View.GONE
 //                imgPrevWebView.visibility = View.GONE
             }
+
+//            webViewViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+//                override fun onPageScrolled(
+//                    position: Int,
+//                    positionOffset: Float,
+//                    positionOffsetPixels: Int,
+//                ) {
+//
+//                }
+//
+//                override fun onPageSelected(position: Int) {
+//                    val postImageVideoPagerWebViewAdapter =
+//                        webViewViewPager.adapter as PostImageVideoPagerWebViewAdapter
+//                    val allViews = postImageVideoPagerWebViewAdapter.allViews
+//                    for (i in 0 until allViews.size) {
+//                        val webViewData = allViews[i]
+//                        if (i == position) {
+//                            webViewData.onResume()
+//                        } else {
+//                            webViewData.onPause()
+//                        }
+//                        postImageVideoPagerWebViewAdapter.notifyDataSetChanged()
+//                    }
+//                }
+//
+//                override fun onPageScrollStateChanged(state: Int) {
+//                }
+//            })
+
         }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setUpWebView(webViewURLs: ArrayList<String>) {
-//        webViewViewPager.offscreenPageLimit = 1
         webViewViewPager.adapter = PostImageVideoPagerWebViewAdapter(this, webViewURLs)
         webViewViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(

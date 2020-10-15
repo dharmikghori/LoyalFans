@@ -12,6 +12,7 @@ import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.adapter.CustomDropDownAdapter
 import com.calendar.loyalfans.model.request.AddCardRequest
 import com.calendar.loyalfans.model.request.CityRequest
+import com.calendar.loyalfans.model.response.CardData
 import com.calendar.loyalfans.model.response.StateCityData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
@@ -40,6 +41,24 @@ class AddCardFragment : Fragment(), View.OnClickListener {
         imgBack.setOnClickListener(this)
         btnSaveAddCard.setOnClickListener(this)
         getStates()
+        getCards()
+    }
+
+    private fun getCards() {
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.myCards(false
+        ).observe(viewLifecycleOwner, {
+            if (it.status && it.card_status) {
+                setupCard(it.data)
+            }
+        })
+    }
+
+    private fun setupCard(cardData: CardData) {
+        layCards.visibility = View.VISIBLE
+        tvNameOnCard.text = cardData.name
+        tvCardType.text = cardData.payment_method
+        tvLastDigit.text = cardData.last4
     }
 
     private fun getStates() {

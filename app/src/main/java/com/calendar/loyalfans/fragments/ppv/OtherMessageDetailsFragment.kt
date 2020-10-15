@@ -64,7 +64,7 @@ class OtherMessageDetailsFragment(private val otherPPVData: OtherPPVData) : Frag
             }
 
             override fun onFreePostSeen(otherPPVData: MyPPVDetailsData) {
-                if (otherPPVData.paid != "1") {
+                if (otherPPVData.paid == "0") {
                     callMessageSeenAPI(otherPPVData.id)
                 }
             }

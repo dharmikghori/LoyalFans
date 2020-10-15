@@ -60,7 +60,7 @@ class PPVFragment : Fragment(), View.OnClickListener {
         if (supportFragmentManager != null && activity != null) {
             val ppvTabPagerAdapter =
                 PPVTabPagerAdapter(requireActivity(), supportFragmentManager, data)
-            viewPagerPPVMessage.offscreenPageLimit = 2
+            viewPagerPPVMessage.offscreenPageLimit = ppvTabPagerAdapter.count
             viewPagerPPVMessage.adapter = ppvTabPagerAdapter
             ppvTabLayout.setupWithViewPager(viewPagerPPVMessage)
             ppvTabPagerAdapter.notifyDataSetChanged()

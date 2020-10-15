@@ -38,6 +38,8 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        homeAdapter = null
+        getPosts()
         imgDrawerMenu.setOnClickListener {
             val mainActivity = activity as MainActivity
             if (mainActivity.drawerLayout?.isDrawerOpen(GravityCompat.START)!!) {
@@ -57,11 +59,11 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).manageBottomNavigationVisibility(true)
-        limit = 10
-        offset = 0
-        postList = ArrayList()
-        homeAdapter = null
-        getPosts()
+//        limit = 10
+//        offset = 0
+//        postList = ArrayList()
+//        homeAdapter = null
+//        getPosts()
     }
 
     private fun getPosts() {

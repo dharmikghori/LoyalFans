@@ -42,7 +42,7 @@ class PPVAnaliticsFragment(private val myPPVData: MyPPVData) : Fragment(),
         if (supportFragmentManager != null && activity != null) {
             val analyticsTabPager =
                 AnalyticsTabPagerAdapter(requireActivity(), supportFragmentManager, myPPVData)
-            viewPagerAnalytics.offscreenPageLimit = AnalyticsTabPagerAdapter.TAB_TITLES.size
+            viewPagerAnalytics.offscreenPageLimit = analyticsTabPager.count
             viewPagerAnalytics.adapter = analyticsTabPager
             analyticsTabLayout.setupWithViewPager(viewPagerAnalytics)
             analyticsTabPager.notifyDataSetChanged()

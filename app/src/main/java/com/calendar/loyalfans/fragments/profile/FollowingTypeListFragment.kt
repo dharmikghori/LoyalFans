@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.adapter.FansListAdapter
 import com.calendar.loyalfans.model.request.FansFollowingRequest
@@ -14,7 +13,6 @@ import com.calendar.loyalfans.model.response.FansData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.fragment_fans_list.*
-import kotlinx.android.synthetic.main.fragment_profile_post.*
 
 class FollowingTypeListFragment(private val fansType: String, private val profileId: String) :
     Fragment() {

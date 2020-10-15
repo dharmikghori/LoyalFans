@@ -14,7 +14,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -43,13 +42,13 @@ open class BaseActivity : AppCompatActivity() {
     private var VIDEO_CAPTURE_RESULT_CODE = 4
     var spHelper: SPHelper = SPHelper(this)
 
-    public interface OnImageSelection {
+    interface OnImageSelection {
         fun onSuccess(bitmap: Bitmap?, imagePath: String?, imageURI: Uri?)
     }
 
     private var onImageSelection: OnImageSelection? = null
 
-    public fun setOnImageSelection(onImageSelection: OnImageSelection) {
+    fun setOnImageSelection(onImageSelection: OnImageSelection) {
         this.onImageSelection = onImageSelection
     }
 
@@ -81,6 +80,7 @@ open class BaseActivity : AppCompatActivity() {
                     return@OnCompleteListener
                 }
                 firebaseToken = task.result?.token.toString()
+                Common.updateTokenToServer(firebaseToken)
             })
     }
 

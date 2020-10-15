@@ -40,7 +40,7 @@ class ProfileTabPagerAdapter(
 
     companion object {
         @StringRes
-        private val TAB_TITLES =
+        val TAB_TITLES =
             intArrayOf(R.string.profile_post, R.string.profile_image, R.string.profile_video)
     }
 

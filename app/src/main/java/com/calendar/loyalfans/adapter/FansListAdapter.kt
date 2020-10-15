@@ -1,13 +1,17 @@
 package com.calendar.loyalfans.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.OtherProfileActivity
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.RequestParams
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_fans_list.view.*
 import java.util.*
@@ -40,12 +44,17 @@ class FansListAdapter(
     override fun onBindViewHolder(holder: FansViewHolder, position: Int) {
         val fansData = getItem(position)
         holder.tvProfileName.text = fansData.display_name
-        holder.tvUserName.text = "@" +fansData.username
+        holder.tvUserName.text = "@" + fansData.username
         if (fansData.end_date != null) {
             holder.tvExpiryDate.text = "Till " + Common.formatDate(fansData.end_date!!)
         }
         holder.tvExpiryDate.isSelected = true
         activity?.let { Common.loadImageUsingURL(holder.imgProfilePic, fansData.profile_img, it) }
+        holder.layProfile.setOnClickListener {
+            activity?.startActivity(Intent(activity, OtherProfileActivity::class.java).putExtra(
+                RequestParams.PROFILE_ID,
+                fansData.fanid))
+        }
     }
 
     class FansViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -53,6 +62,7 @@ class FansListAdapter(
         val tvProfileName: TextView = view.tvProfileName
         val tvUserName: TextView = view.tvUserName
         val tvExpiryDate: TextView = view.tvExpiryDate
+        val layProfile: LinearLayout = view.layProfile
     }
 
 }

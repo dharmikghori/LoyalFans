@@ -23,11 +23,12 @@ open class RetrofitService {
         private val retrofit = Retrofit.Builder()
             .baseUrl(APIServices.SERVICE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(okHttp)
+            .client(UnsafeOkHttpClient().getUnsafeOkHttpClient())
             .build()
+
+        //Use this for SSL verification otherwise UnsafeOkHttpClient().getUnsafeOkHttpClient()
         private val okHttp: OkHttpClient
             get() {
-
                 val okHttpBuilder = OkHttpClient.Builder()
                 okHttpBuilder.readTimeout(5, TimeUnit.MINUTES)
                 okHttpBuilder.writeTimeout(5, TimeUnit.MINUTES)
@@ -35,7 +36,7 @@ open class RetrofitService {
                 return okHttpBuilder.build()
             }
 
-        private fun getInterceptor(): Interceptor {
+        fun getInterceptor(): Interceptor {
             return Interceptor { chain ->
                 val original = chain.request()
                 val builder = original.newBuilder()
@@ -48,6 +49,10 @@ open class RetrofitService {
                     .build()
                 chain.proceed(request)
             }
+        }
+
+        fun disabledSSL() {
+
         }
 
         fun <S> createService(serviceClass: Class<S>): S? {

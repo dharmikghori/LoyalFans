@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/layProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -78,13 +79,13 @@
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
                     android:maxLines="1"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
                     android:text="@string/till_20_sep_2020"
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_10sdp"
-                    android:singleLine="true"
                     tools:ignore="EllipsizeMaxLines" />
 
             </LinearLayout>
@@ -96,7 +97,8 @@
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
             android:padding="@dimen/_3sdp"
-            android:src="@mipmap/ic_more_option" />
+            android:src="@mipmap/ic_more_option"
+            android:visibility="gone" />
 
     </LinearLayout>
 

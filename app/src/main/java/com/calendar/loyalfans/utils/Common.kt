@@ -10,8 +10,6 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
-import android.media.MediaMetadataRetriever
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
@@ -31,8 +29,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.target.CustomTarget
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.LoginActivity
@@ -43,6 +39,7 @@ import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
 import com.calendar.loyalfans.fragments.payment.*
 import com.calendar.loyalfans.fragments.post.AddPostFragment
 import com.calendar.loyalfans.fragments.post.CommentsFragment
+import com.calendar.loyalfans.fragments.post.PostDetailsFragment
 import com.calendar.loyalfans.fragments.ppv.AddPpvPostFragment
 import com.calendar.loyalfans.fragments.ppv.PPVFragment
 import com.calendar.loyalfans.fragments.profile.*
@@ -51,6 +48,7 @@ import com.calendar.loyalfans.fragments.setting.HelpAndSupportFragment
 import com.calendar.loyalfans.fragments.setting.NotificationSettingFragment
 import com.calendar.loyalfans.fragments.setting.SecuritySettingFragment
 import com.calendar.loyalfans.model.request.SendTipRequest
+import com.calendar.loyalfans.model.request.UpdateFCMToken
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.facebook.login.LoginManager
@@ -60,7 +58,6 @@ import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.HashMap
 
 
 class Common {
@@ -204,6 +201,9 @@ class Common {
                 26 -> {
                     "MessageAnalyticFragment"
                 }
+                27 -> {
+                    "MessageAnalyticFragment"
+                }
                 else -> ""
             }
         }
@@ -275,6 +275,9 @@ class Common {
                 }
                 24 -> {
                     StatementFragment.newInstance()
+                }
+                27 -> {
+                    PostDetailsFragment.newInstance()
                 }
                 else -> null
             }
@@ -692,24 +695,6 @@ class Common {
             }
         }
 
-        fun loadImageUsingBitmap(
-            imageView: ImageView,
-            bitmap: Bitmap,
-            context: Context,
-        ) {
-
-            Glide.with(context).asBitmap().load(bitmap).into(object : CustomTarget<Bitmap?>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap?>?,
-                ) {
-                    imageView.setImageBitmap(resource)
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {}
-            })
-        }
-
         fun loadImageUsingURL(
             imageView: ImageView,
             url: String?,
@@ -717,45 +702,27 @@ class Common {
             isCache: Boolean = false,
         ) {
             if (url != null) {
-                if (isCache) {
-                    Glide.with(context)
-                        .load(url)
-                        .fitCenter()
-                        .placeholder(R.drawable.place_holder)
-                        .into(imageView)
-                } else {
-                    Glide.with(context)
-                        .load(url)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .fitCenter()
-                        .placeholder(R.drawable.place_holder)
-                        .into(imageView)
-                }
+//                if (isCache) {
+                Glide.with(context)
+                    .load(url)
+                    .fitCenter()
+                    .placeholder(R.drawable.place_holder)
+                    .into(imageView)
+//                } else {
+//                    Glide.with(context)
+//                        .load(url)
+//                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                        .skipMemoryCache(true)
+//                        .fitCenter()
+//                        .placeholder(R.drawable.place_holder)
+//                        .into(imageView)
+//                }
             }
         }
 
         fun setupVerticalRecyclerView(recyclerView: RecyclerView, activity: Context?) {
             recyclerView.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        }
-
-        @Throws(Throwable::class)
-        fun retriveVideoFrameFromVideo(videoPath: String?): Bitmap? {
-            val bitmap: Bitmap?
-            var mediaMetadataRetriever: MediaMetadataRetriever? = null
-            try {
-                mediaMetadataRetriever = MediaMetadataRetriever()
-                mediaMetadataRetriever.setDataSource(videoPath, HashMap<String, String>())
-                //   mediaMetadataRetriever.setDataSource(videoPath);
-                bitmap = mediaMetadataRetriever.frameAtTime
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
-                throw Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
-            } finally {
-                mediaMetadataRetriever?.release()
-            }
-            return bitmap
         }
 
         fun getBase64FromBitmap(path: String): String {
@@ -784,22 +751,40 @@ class Common {
         private var serverFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         private var serverFullDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US)
         var localDateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.US)
-        var localTimeFormat = SimpleDateFormat("HH:mm a", Locale.US)
+        var localTimeFormat = SimpleDateFormat("hh:mm a", Locale.US)
 
         fun formatDate(strDate: String): String {
+            serverFormat.timeZone = TimeZone.getTimeZone("UTC")
             val format = serverFormat.parse(strDate)
             if (format != null) {
+                localDateFormat.timeZone = TimeZone.getDefault();
                 return localDateFormat.format(format)
             }
             return ""
         }
 
         fun formatTime(strDate: String): String {
+            serverFullDateFormat.timeZone = TimeZone.getTimeZone("UTC")
             val format = serverFullDateFormat.parse(strDate)
             if (format != null) {
+                localTimeFormat.timeZone = TimeZone.getDefault();
                 return localTimeFormat.format(format)
             }
             return ""
+        }
+
+        fun updateTokenToServer(token: String) {
+            if (SPHelper(BaseActivity.getActivity()).getLoginData() == null) {
+                BaseActivity.firebaseToken = ""
+                return
+            }
+            val updateTokenRequest = UpdateFCMToken(token)
+            val baseViewModel =
+                ViewModelProvider(BaseActivity.getActivity()).get(BaseViewModel::class.java)
+            baseViewModel.updateFcmToken(
+                updateTokenRequest, false
+            )
+                .observe(BaseActivity.getActivity(), {})
         }
     }
 }

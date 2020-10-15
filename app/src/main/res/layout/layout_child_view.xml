@@ -100,17 +100,17 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="horizontal">
 
-                <ImageView
+
+                <com.calendar.loyalfans.utils.CustomViewPager
                     android:id="@+id/imgFile"
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/place_holder"
                     android:contentDescription="@string/app_name"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/place_holder" />
-
+                    android:scaleType="centerCrop" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

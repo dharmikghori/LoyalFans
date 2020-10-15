@@ -17,7 +17,6 @@ import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.layout_bottom.*
 
 
@@ -31,8 +30,8 @@ class MainActivity : BaseActivity() {
         drawerLayout = drawer_layout
     }
 
-    var fragmentThatWillAddNotReplace: List<Int> = listOf(6, 7, 8, 17)
-    var checkBottomVisibleOrNot: List<Int> = listOf(1, 2, 3, 4, 5)
+    var fragmentThatWillAddNotReplace: List<Int> = listOf(1, 6, 7, 8, 17)
+    var checkBottomVisibleOrNot: List<Int> = listOf(17, 1, 2, 3, 4, 5)
 
     fun loadFragment(type: Int) {
         if (checkBottomVisibleOrNot.contains(type)) {
@@ -139,14 +138,14 @@ class MainActivity : BaseActivity() {
         )
         closeDrawer()
 //        if (fragmentThatWillAddNotReplace.contains(type)) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.layFrame,
-                    EditPostFragment.newInstance(postData, onPostEdit),
-                    fragmentToTag)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .addToBackStack(fragmentToTag)
-                .commit()
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.layFrame,
+                EditPostFragment.newInstance(postData, onPostEdit),
+                fragmentToTag)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .addToBackStack(fragmentToTag)
+            .commit()
 //        }
 //        else {
 //            supportFragmentManager
@@ -198,11 +197,11 @@ class MainActivity : BaseActivity() {
     }
 
     fun manageBottomNavigationVisibility(isVisible: Boolean) {
-        if (isVisible) {
-            layBottomNavigation.visibility = View.VISIBLE
-        } else {
-            layBottomNavigation.visibility = View.GONE
-        }
+//        if (isVisible) {
+//            layBottomNavigation.visibility = View.VISIBLE
+//        } else {
+//            layBottomNavigation.visibility = View.GONE
+//        }
     }
 
 //    private fun checkMainLastFragmentOrNot(): Boolean {

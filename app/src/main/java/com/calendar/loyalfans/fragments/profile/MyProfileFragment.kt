@@ -342,7 +342,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                     supportFragmentManager,
                     profileId,
                     isProfileVisible)
-            viewPager.offscreenPageLimit = 3
+            viewPager.offscreenPageLimit = tabsPagerAdapter.count
             viewPager.adapter = tabsPagerAdapter
             viewPager.isSaveFromParentEnabled = true
             tabLayout.setupWithViewPager(viewPager)

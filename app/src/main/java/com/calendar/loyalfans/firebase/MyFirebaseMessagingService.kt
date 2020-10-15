@@ -9,8 +9,11 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.activities.SplashActivity
+import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.SPHelper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -18,27 +21,28 @@ import com.google.firebase.messaging.RemoteMessage
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        try {
-            val webViewURL = remoteMessage.data["webViewURL"]
-            webViewURL?.let { Log.d("WebViewURL", it) }
-
-        } catch (e: Exception) {
-        }
-        remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
-            it.body?.let { it1 ->
-                sendNotification(
-                    it1,
-                    it.sound,
-                    it.clickAction
-                )
+        Log.d(TAG, "Notification Received")
+        if (SPHelper(BaseActivity.getActivity()).getLoginData() != null) {
+            remoteMessage.notification?.let {
+                Log.d(TAG, "Message Notification Body: ${it.body}")
+                it.body?.let { it1 ->
+                    sendNotification(
+                        it.title.toString(),
+                        it1,
+                        it.clickAction
+                    )
+                }
             }
+        } else {
+            Log.d(TAG, "No Login")
         }
     }
 
     override fun onNewToken(token: String) {
         Log.d("Token---", token)
+        Common.updateTokenToServer(token)
     }
+
 
     /**
      * Create and show a simple notification containing the received FCM message.
@@ -46,8 +50,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * @param messageBody FCM message body received.
      */
     private fun sendNotification(
+        title: String,
         messageBody: String,
-        sound: String?,
         clickAction: String?,
     ) {
         val channelId = "101"
@@ -63,16 +67,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_ONE_SHOT
         )
 
-//        val NOTIFICATION_SOUND =
-//            Uri.parse("android.resource://com.gama.whistle/raw/$sound")
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setContentTitle(getString(R.string.app_name))
-            .setContentText(messageBody)
+            .setContentText(title)
             .setAutoCancel(true)
             .setPriority(2)
-//            .setSound(NOTIFICATION_SOUND)
             .setContentIntent(pendingIntent)
 
         val notificationManager =
@@ -80,19 +81,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val audioAttributes = AudioAttributes.Builder()
-//                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-//                .setUsage(AudioAttributes.USAGE_ALARM)
-//                .build()
-
             val channel = NotificationChannel(
-                channelId, sound,
+                channelId, getString(R.string.app_name),
                 NotificationManager.IMPORTANCE_HIGH
             )
-//            channel.setSound(NOTIFICATION_SOUND, audioAttributes)
             notificationManager.createNotificationChannel(channel)
         }
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(0, notificationBuilder.build())
     }
 
     companion object {

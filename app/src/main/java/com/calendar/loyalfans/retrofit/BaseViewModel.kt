@@ -100,6 +100,7 @@ class BaseViewModel : ViewModel() {
         val fcmTokenData: MutableLiveData<BaseResponse> =
             MutableLiveData()
         val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        fcmTokenRequest.user_id = Common.getUserId()
         printStrRequestJson(fcmTokenRequest, apiName)
         apiServices?.updateFcmToken(
             fcmTokenRequest.user_id,
@@ -1057,6 +1058,51 @@ class BaseViewModel : ViewModel() {
         return sentPPVData
     }
 
+
+    fun myCards(
+        progressShow: Boolean,
+    ): MutableLiveData<CardResponse> {
+        val apiName = APIServices.MY_CARD
+        val cardData: MutableLiveData<CardResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        val baseRequest = BaseRequest()
+        baseRequest.user_id = Common.getUserId()
+        printStrRequestJson(baseRequest, apiName)
+        apiServices?.myCards(
+            baseRequest.user_id,
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val cardResponse = response as CardResponse
+                printStrJson(cardResponse, apiName)
+                cardData.value = cardResponse
+            }
+        }))
+        return cardData
+    }
+
+
+    fun getPostDetails(
+        postDetailRequest: PostDetailRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<PostDetailsReponse> {
+        val apiName = APIServices.POST_DETAILS
+        val postDetailsData: MutableLiveData<PostDetailsReponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        postDetailRequest.user_id = Common.getUserId()
+        printStrRequestJson(postDetailRequest, apiName)
+        apiServices?.getPostDetails(
+            postDetailRequest.user_id, postDetailRequest.post_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val postResponse = response as PostDetailsReponse
+                printStrJson(postResponse, apiName)
+                postDetailsData.value = postResponse
+            }
+        }))
+        return postDetailsData
+    }
 
     private fun printStrRequestJson(request: Any, apiName: String) {
         try {

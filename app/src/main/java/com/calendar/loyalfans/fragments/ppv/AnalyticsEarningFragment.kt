@@ -32,6 +32,6 @@ class AnalyticsEarningFragment(
         super.onActivityCreated(savedInstanceState)
         tvTotalSent.text = myAnalyticData.earning?.send
         tvTotalSeen.text = myAnalyticData.earning?.seen
-        tvTotalEarning.text = myAnalyticData.earning?.earning
+        tvTotalEarning.text = getString(R.string.dollar) + myAnalyticData.earning?.earning
     }
 }

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/_10sdp"
     android:background="@color/white"
+    android:padding="@dimen/_10sdp"
     tools:context=".fragments.home.HomeFragment">
 
     <include
@@ -18,7 +18,7 @@
         android:layout_height="0dp"
         android:padding="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/helpAndSupportToolBar">
+        app:layout_constraintTop_toBottomOf="@+id/addPostToolBar">
 
         <EditText
             android:id="@+id/etPostMessage"
@@ -96,10 +96,11 @@
                 android:background="@color/transparent"
                 android:fontFamily="@font/cambria"
                 android:hint="@string/enter_amount"
-                android:text="0"
                 android:importantForAutofill="no"
                 android:inputType="number"
                 android:labelFor="@+id/tvTipAmount"
+                android:maxLength="10"
+                android:text="0"
                 android:textColor="@color/theme_black"
                 android:textColorHint="@color/theme_black"
                 android:textSize="@dimen/_11sdp" />
@@ -113,7 +114,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:text="@string/post"
+            android:text="@string/send_ppv"
             android:textSize="@dimen/_14sdp" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

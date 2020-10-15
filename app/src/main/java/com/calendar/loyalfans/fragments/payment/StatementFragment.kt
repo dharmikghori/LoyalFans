@@ -10,8 +10,6 @@ import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.viewpager.StatementTabPagerAdapter
-import com.calendar.loyalfans.viewpager.StatementTabPagerAdapter.Companion.TAB_TITLES
-import kotlinx.android.synthetic.main.fragment_myprofile.*
 import kotlinx.android.synthetic.main.fragment_statements.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
@@ -54,7 +52,7 @@ class StatementFragment : Fragment(), View.OnClickListener {
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
                 StatementTabPagerAdapter(requireActivity(), supportFragmentManager)
-            viewPagerStatements.offscreenPageLimit = TAB_TITLES.size
+            viewPagerStatements.offscreenPageLimit = tabsPagerAdapter.count
             viewPagerStatements.adapter = tabsPagerAdapter
             tabStatements.setupWithViewPager(viewPagerStatements)
             tabsPagerAdapter.notifyDataSetChanged()

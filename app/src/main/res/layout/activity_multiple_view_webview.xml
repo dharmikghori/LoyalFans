@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_black"
+    android:background="@color/black"
     android:orientation="vertical"
     tools:context=".activities.ForgotPasswordActivity">
 
@@ -15,7 +15,8 @@
         android:contentDescription="@string/app_name"
         android:padding="@dimen/_10sdp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_back_message" />
+        android:src="@drawable/ic_back_message"
+        app:tint="@color/white" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/webViewViewPager"

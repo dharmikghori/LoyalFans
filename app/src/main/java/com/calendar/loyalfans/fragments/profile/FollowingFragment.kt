@@ -1,17 +1,14 @@
 package com.calendar.loyalfans.fragments.profile
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.viewpager.FollowingTabPagerAdapter
 import kotlinx.android.synthetic.main.fragment_fans.*
-import kotlinx.android.synthetic.main.fragment_notification.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.*
 
 class FollowingFragment(private val profileId: String) : Fragment(), View.OnClickListener {
@@ -41,11 +38,12 @@ class FollowingFragment(private val profileId: String) : Fragment(), View.OnClic
         if (supportFragmentManager != null && activity != null) {
             val tabsPagerAdapter =
                 FollowingTabPagerAdapter(requireActivity(), supportFragmentManager, profileId)
-            viewPagerFans.offscreenPageLimit = 3
+            viewPagerFans.offscreenPageLimit = tabsPagerAdapter.count
             viewPagerFans.adapter = tabsPagerAdapter
             tabFansLayout.setupWithViewPager(viewPagerFans)
             tabsPagerAdapter.notifyDataSetChanged()
-            Common.setUpTablayOutStyle(tabFansLayout)        }
+            Common.setUpTablayOutStyle(tabFansLayout)
+        }
     }
 
     override fun onClick(view: View?) {

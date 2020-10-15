@@ -1,101 +1,42 @@
 {
   "project_info": {
-    "project_number": "590305210481",
-    "firebase_url": "https://theearningapp-c082f.firebaseio.com",
-    "project_id": "theearningapp-c082f",
-    "storage_bucket": "theearningapp-c082f.appspot.com"
+    "project_number": "106780997195",
+    "firebase_url": "https://loyal-fans.firebaseio.com",
+    "project_id": "loyal-fans",
+    "storage_bucket": "loyal-fans.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:590305210481:android:d6014fab48fc08cb05abd0",
+        "mobilesdk_app_id": "1:106780997195:android:6e2655468ea76162617fce",
         "android_client_info": {
           "package_name": "com.calendar.loyalfans"
         }
       },
       "oauth_client": [
         {
-          "client_id": "590305210481-kkhtap842c0pumgfb3r7flmhjpj2sdlo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.calendar.loyalfans",
-            "certificate_hash": "8ad595a53b76014b7b919ed231db372096d358e7"
-          }
-        },
-        {
-          "client_id": "590305210481-admgpjhbv2e2ip959rvs2744m18on18a.apps.googleusercontent.com",
+          "client_id": "106780997195-3up14bqnirfs5fb1317519k1dr8qcrl0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAG8nBjeoBCJo7_rtPdppaHos_mX0Ew-7I"
+          "current_key": "AIzaSyB6RpjReuv29raFVLmm4XXtx1ux0YXkQ-Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "590305210481-admgpjhbv2e2ip959rvs2744m18on18a.apps.googleusercontent.com",
+              "client_id": "106780997195-3up14bqnirfs5fb1317519k1dr8qcrl0.apps.googleusercontent.com",
               "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:590305210481:android:ad742fcf3f4a4d8805abd0",
-        "android_client_info": {
-          "package_name": "com.gama.loyalfans"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "590305210481-admgpjhbv2e2ip959rvs2744m18on18a.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAG8nBjeoBCJo7_rtPdppaHos_mX0Ew-7I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
+            },
             {
-              "client_id": "590305210481-admgpjhbv2e2ip959rvs2744m18on18a.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:590305210481:android:8f83fe245831c56705abd0",
-        "android_client_info": {
-          "package_name": "com.gama.theearningapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "590305210481-admgpjhbv2e2ip959rvs2744m18on18a.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAG8nBjeoBCJo7_rtPdppaHos_mX0Ew-7I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "590305210481-admgpjhbv2e2ip959rvs2744m18on18a.apps.googleusercontent.com",
-              "client_type": 3
+              "client_id": "106780997195-f9a7hfbu4pkc0bh9dg63o3rc9ud683ug.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.calendar.loyalfans"
+              }
             }
           ]
         }

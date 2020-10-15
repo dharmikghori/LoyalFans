@@ -71,6 +71,7 @@ open class OtherPPVData : BaseResponse() {
     var username: String = ""
     var display_name: String = ""
     var profile_img: String = ""
+    var unseen: String = "0"
     var details: ArrayList<MyPPVDetailsData>? = null
 }
 

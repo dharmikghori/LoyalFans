@@ -46,6 +46,7 @@
     <string name="permission_error">Permission must be granted in order to access</string>
     <string name="write_something">Write Something</string>
     <string name="post">post</string>
+    <string name="send_ppv">send ppv</string>
     <string name="add_post">Add Post</string>
     <string name="media_selection">Media Selection</string>
     <string name="fans">Fans</string>
@@ -275,9 +276,14 @@
     <string name="analytics">analytics</string>
     <string name="my_fans_analytics">MY FANS</string>
     <string name="seen_analytics">SEEN</string>
-    <string name="earning__analytics">EARNING</string>
+    <string name="earning__analytics">EARNINGS</string>
     <string name="seen_earning">Seen</string>
-    <string name="earning_earning">Earning</string>
+    <string name="earning_earning">Earnings</string>
     <string name="sent">Sent</string>
     <string name="zero">0</string>
+    <string name="default_notification_channel_id">1001</string>
+    <string name="your_card">Your Card</string>
+    <string name="name_of_card">Name of card</string>
+    <string name="last_4_digit">Last 4 digit</string>
+    <string name="ppv_price_validation">PPV price must be greater than 0</string>
 </resources>

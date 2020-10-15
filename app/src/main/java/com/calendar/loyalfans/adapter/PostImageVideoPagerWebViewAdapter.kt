@@ -14,7 +14,7 @@ import com.calendar.loyalfans.R
 class PostImageVideoPagerWebViewAdapter(
     private val context: Context,
     images: ArrayList<String>,
-    val views: ArrayList<View> = ArrayList(),
+    val allViews: ArrayList<WebView> = ArrayList(),
 ) :
     PagerAdapter() {
     private val imagesList = images
@@ -51,6 +51,9 @@ class PostImageVideoPagerWebViewAdapter(
         webview.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         webview.loadUrl(imageData)
         container.addView(view, position)
+//        if (!allViews.contains(webview)) {
+//            allViews.add(webview)
+//        }
         return view
     }
 
