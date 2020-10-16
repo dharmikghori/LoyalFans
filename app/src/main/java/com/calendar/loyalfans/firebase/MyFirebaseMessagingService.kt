@@ -29,12 +29,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     sendNotification(
                         it.title.toString(),
                         it1,
-                        it.clickAction
+                        it.clickAction,
+                        remoteMessage.data
                     )
                 }
             }
-        } else {
-            Log.d(TAG, "No Login")
         }
     }
 
@@ -53,11 +52,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         title: String,
         messageBody: String,
         clickAction: String?,
+        data: MutableMap<String, String>,
     ) {
         val channelId = "101"
 
         val intent = if (clickAction.equals("MainActivity")) {
-            Intent(this, MainActivity::class.java)
+            Intent(this, MainActivity::class.java).putExtra("body", data["body"])
         } else {
             Intent(this, SplashActivity::class.java)
         }
@@ -70,8 +70,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_launcher_background)
-            .setContentTitle(getString(R.string.app_name))
-            .setContentText(title)
+            .setContentTitle(title)
+            .setContentText(messageBody)
             .setAutoCancel(true)
             .setPriority(2)
             .setContentIntent(pendingIntent)

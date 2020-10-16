@@ -12,10 +12,11 @@ import com.calendar.loyalfans.viewpager.NotificationTabPagerAdapter
 import kotlinx.android.synthetic.main.fragment_notification.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.*
 
-class NotificationFragment() : Fragment(), View.OnClickListener {
+class NotificationFragment(val notificationType: String) : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() = NotificationFragment()
+        fun newInstance() = NotificationFragment("0")
+        fun newInstance(type: String) = NotificationFragment(type)
     }
 
 
@@ -43,6 +44,13 @@ class NotificationFragment() : Fragment(), View.OnClickListener {
             tabNotificationLayout.setupWithViewPager(viewPagerNotification)
             tabsPagerAdapter.notifyDataSetChanged()
             Common.setUpTablayOutStyle(tabNotificationLayout)
+            if (notificationType == Common.Companion.Notifications.SEND_TIP.notificationTypeValue()) {
+                viewPagerNotification.currentItem = 4
+            } else if (notificationType == Common.Companion.Notifications.SEEN_PPV.notificationTypeValue() ||
+                notificationType == Common.Companion.Notifications.PAY_PPV.notificationTypeValue()
+            ) {
+                viewPagerNotification.currentItem = 0
+            }
         }
     }
 

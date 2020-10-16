@@ -1,5 +1,6 @@
 package com.calendar.loyalfans.retrofit
 
+import android.util.Log
 import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.model.response.BaseResponse
 import com.calendar.loyalfans.utils.Common
@@ -39,6 +40,8 @@ class CustomCB<T>(isShowProgressDialog: Boolean, onAPIResponse: OnAPIResponse) :
             if (body != null) {
                 onAPIResponse?.onResponse(body)
             }
+        } else if (response.code() == HTTP_INTERNAL_ERROR) {
+            Log.d("API---Response-error", response.errorBody()?.string().toString())
         } else {
             try {
                 val type: Type = object : TypeToken<BaseResponse?>() {}.type

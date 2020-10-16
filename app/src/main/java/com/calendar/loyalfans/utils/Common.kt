@@ -17,6 +17,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Base64
+import android.util.Log
 import android.view.Window
 import android.widget.*
 import androidx.appcompat.widget.AppCompatTextView
@@ -39,7 +40,6 @@ import com.calendar.loyalfans.fragments.password.ChangePasswordFragment
 import com.calendar.loyalfans.fragments.payment.*
 import com.calendar.loyalfans.fragments.post.AddPostFragment
 import com.calendar.loyalfans.fragments.post.CommentsFragment
-import com.calendar.loyalfans.fragments.post.PostDetailsFragment
 import com.calendar.loyalfans.fragments.ppv.AddPpvPostFragment
 import com.calendar.loyalfans.fragments.ppv.PPVFragment
 import com.calendar.loyalfans.fragments.profile.*
@@ -275,9 +275,6 @@ class Common {
                 }
                 24 -> {
                     StatementFragment.newInstance()
-                }
-                27 -> {
-                    PostDetailsFragment.newInstance()
                 }
                 else -> null
             }
@@ -612,6 +609,7 @@ class Common {
                 progressDialog!!.setCanceledOnTouchOutside(false)
                 progressDialog!!.show()
             } catch (ex: java.lang.Exception) {
+                Log.d("ProgressBar", "" + ex.message)
             }
         }
 
@@ -670,11 +668,11 @@ class Common {
         }
 
         fun automaticallyLogoutOnUnauthorizedOrForbidden() {
+            updateTokenToServer("abc")
             val context = BaseActivity.getActivity()
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
             LoginManager.getInstance().logOut()
-
             SPHelper(context).clearLoginSession()
             val i = Intent(context, LoginActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -774,7 +772,9 @@ class Common {
         }
 
         fun updateTokenToServer(token: String) {
-            if (SPHelper(BaseActivity.getActivity()).getLoginData() == null) {
+            if (SPHelper(BaseActivity.getActivity()).getLoginData() == null ||
+                BaseActivity.firebaseToken == ""
+            ) {
                 BaseActivity.firebaseToken = ""
                 return
             }
@@ -783,8 +783,27 @@ class Common {
                 ViewModelProvider(BaseActivity.getActivity()).get(BaseViewModel::class.java)
             baseViewModel.updateFcmToken(
                 updateTokenRequest, false
-            )
-                .observe(BaseActivity.getActivity(), {})
+            ).observe(BaseActivity.getActivity(), {})
         }
+
+        enum class Notifications(
+            private val stringValue: String,
+            private val intValue: Int,
+        ) {
+            SEND_TIP("sendTipNotification", 1), //Notification tip
+            ADD_COMMENT("addCommentNotification", 2), //Comment
+            PAY_PPV("payPPVNotification", 3), //Notification all
+            PPV_SEND_USER("ppvSendUserNotification", 4), //PPV history
+            SEEN_PPV("seenPPVNotification", 5), //Notification all
+            SUBSCRIBED("subscribedNotification", 6), //Other profile
+            FOLLOWING_USER("followingUserNotification", 7), //Other profile
+            LIKE_COMMENT("likeCommentNotification", 8), //Comment
+            POST_LIKE("postLike", 9); //Pos detail
+
+            fun notificationTypeValue(): String {
+                return intValue.toString()
+            }
+        }
+
     }
 }

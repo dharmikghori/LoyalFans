@@ -1,9 +1,11 @@
 package com.calendar.loyalfans.fragments.post
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
@@ -79,6 +81,7 @@ class CommentsFragment(private val postId: String) : Fragment(), View.OnClickLis
         Common.setupVerticalRecyclerView(rvComments, activity)
         val commentAdapter = CommentAdapter(comments, activity, false, postId)
         rvComments.adapter = commentAdapter
+        rvComments.smoothScrollToPosition(comments.size)
         commentAdapter.onCommentLikeUnLike = object : CommentAdapter.OnCommentLikeUnLike {
             override fun onLikeUnLikeComment(commentRequest: CommentRequest) {
                 makeLikeUnLikeComment(commentRequest)
@@ -128,6 +131,9 @@ class CommentsFragment(private val postId: String) : Fragment(), View.OnClickLis
                         if (it.status) {
                             activity?.let { it1 ->
                                 Common.showToast(it1, it.msg)
+                                val imm: InputMethodManager =
+                                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                imm.hideSoftInputFromWindow(etComment.windowToken, 0)
                                 requireActivity().onBackPressed()
                             }
                         }

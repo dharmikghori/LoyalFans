@@ -4,7 +4,6 @@ package com.calendar.loyalfans.activities
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import androidx.viewpager.widget.ViewPager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.adapter.PostImageVideoPagerWebViewAdapter
 import com.calendar.loyalfans.utils.RequestParams
@@ -41,6 +40,9 @@ open class ViewPostImagesAndVideoWebView : BaseActivity(), View.OnClickListener 
 //                    positionOffsetPixels: Int,
 //                ) {
 //
+//                    Log.d("viewpager-scro-position", position.toString())
+//                    Log.d("viewpager-scro-offset", positionOffset.toString())
+//                    Log.d("viewpager-scro-pixel", positionOffsetPixels.toString())
 //                }
 //
 //                override fun onPageSelected(position: Int) {
@@ -49,40 +51,37 @@ open class ViewPostImagesAndVideoWebView : BaseActivity(), View.OnClickListener 
 //                    val allViews = postImageVideoPagerWebViewAdapter.allViews
 //                    for (i in 0 until allViews.size) {
 //                        val webViewData = allViews[i]
-//                        if (i == position) {
-//                            webViewData.onResume()
-//                        } else {
-//                            webViewData.onPause()
+//                         if (i == position) {
+//                             if (webViewData != null) {
+//                                 webViewData.onResume()
+//                                 webViewData.invalidate()
+//                             }
+//                         } else {
+//                             if (webViewData != null) {
+//                                 webViewData.onPause()
+//                                 webViewData.invalidate()
+//                             }
 //                        }
-//                        postImageVideoPagerWebViewAdapter.notifyDataSetChanged()
+////                        Log.d("viewpager-pageselect",
+////                            ("$webViewURL -position $i").toString())
+////                        if (webViewData != null) {
+////                            webViewData.loadUrl(webViewURL)
+////                            webViewData.invalidate()
+////                        }
 //                    }
 //                }
 //
 //                override fun onPageScrollStateChanged(state: Int) {
+//                    Log.d("viewpager-scrolchange", state.toString())
 //                }
 //            })
-
         }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setUpWebView(webViewURLs: ArrayList<String>) {
         webViewViewPager.adapter = PostImageVideoPagerWebViewAdapter(this, webViewURLs)
-        webViewViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int,
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                (webViewViewPager.adapter as PostImageVideoPagerWebViewAdapter).notifyDataSetChanged()
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-        })
+//        webViewViewPager.offscreenPageLimit = 0
     }
 
     override fun onClick(v: View?) {

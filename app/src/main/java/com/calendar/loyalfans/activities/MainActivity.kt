@@ -1,23 +1,37 @@
 package com.calendar.loyalfans.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.fragments.home.HomeFragment
+import com.calendar.loyalfans.fragments.notifications.NotificationFragment
+import com.calendar.loyalfans.fragments.notifications.NotificationTypeFragment
 import com.calendar.loyalfans.fragments.payment.BankTransferAndW9Fragment
+import com.calendar.loyalfans.fragments.post.AddPostFragment
 import com.calendar.loyalfans.fragments.post.EditPostFragment
+import com.calendar.loyalfans.fragments.post.PostDetailsFragment
+import com.calendar.loyalfans.fragments.profile.ProfilePhotosFragment
+import com.calendar.loyalfans.fragments.profile.ProfilePostFragment
+import com.calendar.loyalfans.fragments.profile.ProfileVideosFragment
+import com.calendar.loyalfans.fragments.searchFragment.SearchFragment
 import com.calendar.loyalfans.model.response.BankListData
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.RequestParams
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom.*
+import org.json.JSONObject
 
 
 class MainActivity : BaseActivity() {
@@ -25,9 +39,44 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Common.updateTokenToServer(firebaseToken)
         imgHome.performClick()
         tvUserNameMenu.text = spHelper.getLoginData()?.data?.username
         drawerLayout = drawer_layout
+        if (intent.extras != null) {
+            val notificationBodyValue = intent.extras!!.getString("body")
+            if (notificationBodyValue != null) {
+                val jsonObject = JSONObject(notificationBodyValue.toString())
+                val type = jsonObject.get("type").toString()
+                var postOrUserdId = ""
+                if (type == Common.Companion.Notifications.SUBSCRIBED.notificationTypeValue() ||
+                    type == Common.Companion.Notifications.FOLLOWING_USER.notificationTypeValue()
+                ) {
+                    postOrUserdId = jsonObject.get("user_id").toString()
+                } else {
+                    postOrUserdId = jsonObject.get("post_id").toString()
+                }
+                if (type == Common.Companion.Notifications.ADD_COMMENT.notificationTypeValue() ||
+                    type == Common.Companion.Notifications.LIKE_COMMENT.notificationTypeValue() ||
+                    type == Common.Companion.Notifications.POST_LIKE.notificationTypeValue()
+                ) {
+                    loadFragment(PostDetailsFragment.newInstance(postOrUserdId, type), 27)
+                } else if (type == Common.Companion.Notifications.SEND_TIP.notificationTypeValue() ||
+                    type == Common.Companion.Notifications.SEEN_PPV.notificationTypeValue() ||
+                    type == Common.Companion.Notifications.PAY_PPV.notificationTypeValue()
+                ) {
+                    loadFragment(NotificationFragment.newInstance(type), 4)
+                } else if (type == Common.Companion.Notifications.SUBSCRIBED.notificationTypeValue() ||
+                    type == Common.Companion.Notifications.FOLLOWING_USER.notificationTypeValue()
+                ) {
+                    startActivity(Intent(this, OtherProfileActivity::class.java)
+                        .putExtra(RequestParams.PROFILE_ID, postOrUserdId))
+                } else if (type == Common.Companion.Notifications.PPV_SEND_USER.notificationTypeValue()) {
+                    startActivity(Intent(this, PPVActivity::class.java))
+                }
+            }
+            Log.d("Notificationata", " Value: $notificationBodyValue")
+        }
     }
 
     var fragmentThatWillAddNotReplace: List<Int> = listOf(1, 6, 7, 8, 17)
@@ -93,6 +142,21 @@ class MainActivity : BaseActivity() {
                     .commit()
             }
         }
+    }
+
+    fun loadFragment(fragmentToBeLoad: Fragment, type: Int) {
+        Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+            type, imgHome, imgSearch, imgNotification,
+            resources, theme
+        )
+        val fragmentToTag = Common.getTagBasedOnType(type)
+        closeDrawer()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.layFrame, fragmentToBeLoad, fragmentToTag)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .addToBackStack(fragmentToTag)
+            .commit()
     }
 
     fun loadFragment(type: Int, bankList: BankListData) {
@@ -164,12 +228,14 @@ class MainActivity : BaseActivity() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             closeDrawer()
         }
+        val isMainFragment = checkMainLastFragmentOrNot()
+//        manageBottomNavigationVisibility(isMainFragment)
         val backStackEntryCount = supportFragmentManager.backStackEntryCount
         when {
             doubleBackToExitPressedOnce -> {
                 finish()
             }
-            backStackEntryCount == 1 -> {
+            (backStackEntryCount == 1 || isMainFragment) -> {
                 doubleBackToExitPressedOnce = true
                 Common.showToast(this, getString(R.string.back_press_message))
                 Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false },
@@ -180,7 +246,6 @@ class MainActivity : BaseActivity() {
             }
         }
 
-//        val isMainFragment = checkMainLastFragmentOrNot()
 //        if (isMainFragment) {
 //            if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
 //                closeDrawer()
@@ -204,7 +269,67 @@ class MainActivity : BaseActivity() {
 //        }
     }
 
-//    private fun checkMainLastFragmentOrNot(): Boolean {
+    private fun checkMainLastFragmentOrNot(): Boolean {
+        when (supportFragmentManager.fragments.last()) {
+            is HomeFragment -> {
+                Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+                    1, imgHome, imgSearch, imgNotification,
+                    resources, theme
+                )
+                return true
+            }
+            is SearchFragment -> {
+                Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+                    2, imgHome, imgSearch, imgNotification,
+                    resources, theme
+                )
+                return true
+            }
+            is AddPostFragment -> {
+                Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+                    3, imgHome, imgSearch, imgNotification,
+                    resources, theme
+                )
+                return true
+            }
+            is NotificationFragment -> {
+                Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+                    4, imgHome, imgSearch, imgNotification,
+                    resources, theme
+                )
+                return true
+            }
+            is NotificationTypeFragment -> {
+                Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+                    4, imgHome, imgSearch, imgNotification,
+                    resources, theme
+                )
+                return true
+            }
+            is ProfileVideosFragment -> {
+                Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+                    5, imgHome, imgSearch, imgNotification,
+                    resources, theme
+                )
+                return true
+            }
+            is ProfilePhotosFragment -> {
+                Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+                    5, imgHome, imgSearch, imgNotification,
+                    resources, theme
+                )
+                return true
+            }
+            is ProfilePostFragment -> {
+                Common.manageBottomVisibilitiesAndSelectionBasedOnType(
+                    5, imgHome, imgSearch, imgNotification,
+                    resources, theme
+                )
+                return true
+            }
+        }
+        return false
+    }
 //        val fragmentHome = supportFragmentManager.findFragmentByTag(Common.getTagBasedOnType(1))
 //        val fragmentSearch =
 //            supportFragmentManager.findFragmentByTag(Common.getTagBasedOnType(2))
@@ -308,11 +433,11 @@ class MainActivity : BaseActivity() {
     fun onBankAdd(view: View) {
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.bankList(true).observe(this, {
-            if (it.bank_status) {
-                loadFragment(19, it.data)
-            } else {
-                loadFragment(18)
-            }
+//            if (it.bank_status) {
+//                loadFragment(19, it.data)
+//            } else {
+            loadFragment(18)
+//            }
         })
     }
 

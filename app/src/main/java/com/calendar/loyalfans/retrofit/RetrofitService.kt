@@ -23,7 +23,7 @@ open class RetrofitService {
         private val retrofit = Retrofit.Builder()
             .baseUrl(APIServices.SERVICE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(UnsafeOkHttpClient().getUnsafeOkHttpClient())
+            .client(okHttp)
             .build()
 
         //Use this for SSL verification otherwise UnsafeOkHttpClient().getUnsafeOkHttpClient()

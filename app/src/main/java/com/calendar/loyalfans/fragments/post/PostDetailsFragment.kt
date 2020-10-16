@@ -1,6 +1,7 @@
 package com.calendar.loyalfans.fragments.post
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import android.widget.CompoundButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity
+import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.PostImageVideoPagerAdapter
 import com.calendar.loyalfans.model.request.PostDetailRequest
 import com.calendar.loyalfans.model.response.PostData
@@ -20,10 +23,11 @@ import kotlinx.android.synthetic.main.layout_post_top_view.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 
 
-class PostDetailsFragment : Fragment(), View.OnClickListener {
+class PostDetailsFragment(val post_id: String, val type: String) : Fragment(),
+    View.OnClickListener {
 
     companion object {
-        fun newInstance() = PostDetailsFragment()
+        fun newInstance(post_id: String, type: String) = PostDetailsFragment(post_id, type)
     }
 
 
@@ -39,11 +43,20 @@ class PostDetailsFragment : Fragment(), View.OnClickListener {
         tvToolBarName.text = getString(R.string.post)
         imgBack.setOnClickListener(this)
         getPostDetails()
+        Log.d("NotificationTypeComment", type)
+        layComment.setOnClickListener {
+            (activity as MainActivity).loadFragment(17, post_id)
+        }
+        if (type == Common.Companion.Notifications.ADD_COMMENT.notificationTypeValue() ||
+            type == Common.Companion.Notifications.LIKE_COMMENT.notificationTypeValue()
+        ) {
+            layComment.performClick()
+        }
     }
 
     private fun getPostDetails() {
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-        val postDetailRequest = PostDetailRequest("99")
+        val postDetailRequest = PostDetailRequest(post_id)
         baseViewModel.getPostDetails(postDetailRequest, true
         ).observe(viewLifecycleOwner, {
             if (it.status) {
@@ -64,11 +77,6 @@ class PostDetailsFragment : Fragment(), View.OnClickListener {
         tvUserName.text = "@" + postData.username
         tvTotalComment.text = postData.comments + " Comments"
         tvTotalLike.text = postData.likes + " Likes"
-//        viewProfile.setOnClickListener {
-//            activity?.startActivity(Intent(activity, OtherProfileActivity::class.java).putExtra(
-//                RequestParams.PROFILE_ID,
-//                postData.user_id))
-//        }
         activity?.let {
             photos_viewpager.adapter =
                 PostImageVideoPagerAdapter(it, postData.images)
@@ -87,17 +95,7 @@ class PostDetailsFragment : Fragment(), View.OnClickListener {
                 false
         }
         cbBookmark.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
-//            onPostAction?.onBookmark(postData, position)
-//            postData.bookmark = when (isChecked) {
-//                true -> {
-//                    "1"
-//                }
-//                false -> {
-//                    "0"
-//                }
-//            }
-//            postListData[position] = postData
-//            notifyItemChanged(position)
+            onFavouriteUnFavoritePost(postData)
         }
 
         cbLikeUnlike.setOnCheckedChangeListener(null)
@@ -108,70 +106,10 @@ class PostDetailsFragment : Fragment(), View.OnClickListener {
                 false
         }
         cbLikeUnlike.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
-            var likesCount = Integer.parseInt(postData.likes)
-            var isLikeStatus = postData.is_likes
-            when (b) {
-                true -> {
-                    likesCount += 1
-                    isLikeStatus = "1"
-                }
-                false -> {
-                    likesCount -= 1
-                    isLikeStatus = "0"
-                }
-            }
-            postData.likes = likesCount.toString()
-            postData.is_likes = isLikeStatus
-//            onPostAction?.onLikeUnLike(postData, position)
-//            notifyDataSetChanged()
+            onLikeUnLikeAPI(postData, b)
         }
-//        if (position == postListData.size - 1) {
-//            onPostAction?.onBottomReached(position)
-//        }
-
-//        if (isMyPost) {
-//            imgMoreOption.visibility = View.VISIBLE
-//            btnSendTip.visibility = View.GONE
-//            imgMoreOption.setOnClickListener {
-//                openOptionMenu(it, postData, position)
-//            }
-//        } else {
-//            imgMoreOption.visibility = View.GONE
-//            btnSendTip.visibility = View.VISIBLE
-//        }
-
-//        if (!postData.suggestions.isNullOrEmpty()) {
-//            if (postData.id == "" && postData.user_id == "") {
-//                layPostTopCardView.visibility = View.GONE
-//            } else {
-//                layPostTopCardView.visibility = View.VISIBLE
-//            }
-//            laySuggestion.visibility = View.VISIBLE
-//            suggestionViewPager.adapter =
-//                activity?.let {
-//                    val suggestionPagerAdapter =
-//                        SuggestionPagerAdapter(it, postData.suggestions)
-//                    suggestionPagerAdapter
-//
-//                }
-//            imgNextSuggestion.setOnClickListener {
-//                var currentItem = suggestionViewPager.currentItem
-//                currentItem += 1
-//                suggestionViewPager.setCurrentItem(currentItem,
-//                    true)
-//            }
-//            imgPrevSuggestion.setOnClickListener {
-//                var currentItem = suggestionViewPager.currentItem
-//                currentItem -= 1
-//                suggestionViewPager.setCurrentItem(currentItem,
-//                    true)
-//            }
-//        } else {
         laySuggestion.visibility = View.GONE
-//        }
-        layComment.setOnClickListener {
-//            onPostAction?.onComment(postData, position)
-        }
+
 
     }
 
@@ -181,6 +119,51 @@ class PostDetailsFragment : Fragment(), View.OnClickListener {
                 activity?.onBackPressed()
             }
         }
+    }
+
+
+    private fun onFavouriteUnFavoritePost(postData: PostData) {
+        val postDetailRequest = PostDetailRequest(postData.id)
+        postDetailRequest.user_id = Common.getUserId()
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.favUnFavPost(
+            postDetailRequest, false
+        )
+            .observe(viewLifecycleOwner, {
+                if (it.status) {
+                    Common.showToast(BaseActivity.getActivity(), it.msg)
+                }
+            })
+    }
+
+    private fun onLikeUnLikeAPI(postData: PostData, isLike: Boolean) {
+        val postDetailRequest = PostDetailRequest(postData.id)
+        postDetailRequest.user_id = Common.getUserId()
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.likeUnlikePost(
+            postDetailRequest, false
+        )
+            .observe(viewLifecycleOwner, {
+                if (it.status) {
+                    Common.showToast(BaseActivity.getActivity(), it.msg)
+                    var likesCount = Integer.parseInt(postData.likes)
+                    var isLikeStatus = postData.is_likes
+                    when (isLike) {
+                        true -> {
+                            likesCount += 1
+                            isLikeStatus = "1"
+                        }
+                        false -> {
+                            likesCount -= 1
+                            isLikeStatus = "0"
+                        }
+                    }
+                    postData.likes = likesCount.toString()
+                    postData.is_likes = isLikeStatus
+                    tvTotalLike.text = likesCount.toString()
+
+                }
+            })
     }
 
 
