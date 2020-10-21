@@ -56,6 +56,8 @@ class ProfilePhotosFragment(private val profileId: String, private val isProfile
                     } else {
                         setUpAdapter(it.data)
                     }
+                } else {
+                    Common.manageNoDataFound(imgNoDataFound, rvHomePost, postList.isNullOrEmpty())
                 }
             })
     }
@@ -70,7 +72,10 @@ class ProfilePhotosFragment(private val profileId: String, private val isProfile
     private fun setUpAdapter(lastPostList: ArrayList<PostData>) {
         Common.setupVerticalRecyclerView(rvHomePost, activity)
         this.postList.addAll(lastPostList)
-        myProfilePostAdapter = MyProfilePostAdapter(this.postList, activity, profileId == Common.getUserId(), isProfileVisible)
+        myProfilePostAdapter = MyProfilePostAdapter(this.postList,
+            activity,
+            profileId == Common.getUserId(),
+            isProfileVisible)
         rvHomePost.adapter = myProfilePostAdapter
         myProfilePostAdapter!!.onPostAction = object : MyProfilePostAdapter.OnPostAction {
             override fun onBottomReached(position: Int) {
@@ -85,11 +90,11 @@ class ProfilePhotosFragment(private val profileId: String, private val isProfile
             }
 
             override fun onComment(postData: PostData, position: Int) {
-                    if (activity is MainActivity) {
-                        (activity as MainActivity).loadFragment(17, postData.id)
-                    } else if (activity is OtherProfileActivity) {
-                        (activity as OtherProfileActivity).loadFragment(17, postData.id)
-                    }
+                if (activity is MainActivity) {
+                    (activity as MainActivity).loadFragment(17, postData.id)
+                } else if (activity is OtherProfileActivity) {
+                    (activity as OtherProfileActivity).loadFragment(17, postData.id)
+                }
             }
 
             override fun onBookmark(postData: PostData, position: Int) {

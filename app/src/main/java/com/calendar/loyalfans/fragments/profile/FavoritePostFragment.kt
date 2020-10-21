@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.adapter.FavoritePostAdapter
 import com.calendar.loyalfans.model.request.FansFollowingRequest
@@ -52,11 +51,14 @@ class FavoritePostFragment(private val favoriteType: String, private val profile
                 {
                     if (it.status) {
                         setUpFansAdapter(it.data)
+                    } else {
+                        Common.manageNoDataFound(imgNoDataFound, rvFavorite, true)
                     }
                 })
     }
 
     private fun setUpFansAdapter(fansList: ArrayList<FavouriteData>) {
+        Common.manageNoDataFound(imgNoDataFound, rvFavorite, fansList.isNullOrEmpty())
         Common.setupVerticalRecyclerView(rvFavorite, activity)
         rvFavorite.adapter = FavoritePostAdapter(fansList, activity)
     }

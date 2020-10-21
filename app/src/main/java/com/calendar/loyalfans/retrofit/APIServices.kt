@@ -8,12 +8,12 @@ import retrofit2.http.POST
 
 interface APIServices {
     companion object {
-        const val MAIN_URL = "http://www.loyalfansonly.com/"
+        const val MAIN_URL = "https://loyalfansonly.com/"
         const val W9_FORM_WEB_URL = MAIN_URL + "welcome/w9form/"
         const val W9_FORM_DOWNLOAD_URL = MAIN_URL + "wform/"
         const val AUTH_TOKEN = "eyJ0eXA1iOi0JKV1QiL8CJhb5GciTWvLUzI1NiJ9IiRk2YXRh8Ig"
         const val APP_SECRET_KEY = "Mn2fKZG4M1170jDlVn6lOFTN6OE27f6UO99n9QDV"
-        const val SERVICE_URL = "http://www.loyalfansonly.com/v1/"
+        const val SERVICE_URL = MAIN_URL + "v1/"
         const val SIGN_IN = "signin"
         const val SIGN_UP = "signup"
         const val FORGOT_PASSWORD = "forgotpassword"

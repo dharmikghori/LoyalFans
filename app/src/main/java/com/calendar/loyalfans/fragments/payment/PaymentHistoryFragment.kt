@@ -44,11 +44,14 @@ class PaymentHistoryFragment : Fragment(), View.OnClickListener {
         ).observe(viewLifecycleOwner, {
             if (it.status) {
                 setUpPayment(it.data)
+            } else {
+                Common.manageNoDataFound(imgNoDataFound, rvPaymentHistory, true)
             }
         })
     }
 
     private fun setUpPayment(data: ArrayList<StatementData>) {
+        Common.manageNoDataFound(imgNoDataFound, rvPaymentHistory, data.isNullOrEmpty())
         Common.setupVerticalRecyclerView(rvPaymentHistory, activity)
         rvPaymentHistory.adapter = PaymentHistoryAdapter(data, activity)
     }

@@ -56,6 +56,10 @@ class ProfileVideosFragment(private val profileId: String, private val isProfile
                     } else {
                         setUpAdapter(it.data)
                     }
+                } else {
+                    Common.manageNoDataFound(imgNoDataFound,
+                        rvHomePost,
+                        postList.isNullOrEmpty())
                 }
             })
     }
@@ -88,11 +92,11 @@ class ProfileVideosFragment(private val profileId: String, private val isProfile
             }
 
             override fun onComment(postData: PostData, position: Int) {
-                    if (activity is MainActivity) {
-                        (activity as MainActivity).loadFragment(17, postData.id)
-                    } else if (activity is OtherProfileActivity) {
-                        (activity as OtherProfileActivity).loadFragment(17, postData.id)
-                    }
+                if (activity is MainActivity) {
+                    (activity as MainActivity).loadFragment(17, postData.id)
+                } else if (activity is OtherProfileActivity) {
+                    (activity as OtherProfileActivity).loadFragment(17, postData.id)
+                }
             }
 
             override fun onBookmark(postData: PostData, position: Int) {

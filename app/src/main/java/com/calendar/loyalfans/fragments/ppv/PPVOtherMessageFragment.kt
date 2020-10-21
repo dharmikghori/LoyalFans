@@ -33,6 +33,7 @@ class PPVOtherMessageFragment(
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Common.manageNoDataFound(imgNoDataFound, rvPPVMessage, otherPPVMessages.isNullOrEmpty())
         if (otherPPVMessages != null) {
             setUpOtherMessageAdapter(otherPPVMessages)
         }
@@ -45,7 +46,7 @@ class PPVOtherMessageFragment(
         otherMessageAdapter.onOtherMessageAction =
             object : OtherMessageAdapter.OnOtherMessageAction {
                 override fun otherMessage(otherPPVData: OtherPPVData) {
-                    (activity as PPVActivity).loadFragment(25,otherPPVData)
+                    (activity as PPVActivity).loadFragment(25, otherPPVData)
                 }
             }
     }

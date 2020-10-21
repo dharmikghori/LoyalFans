@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvPaymentHistory"
                 android:onClick="onStatements"
-                android:text="@string/statements" />
+                android:text="@string/request_withdrawal" />
 
             <TextView
                 android:id="@+id/tvHelpAndSupport"

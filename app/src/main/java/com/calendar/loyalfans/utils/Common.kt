@@ -18,6 +18,7 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.widget.*
 import androidx.appcompat.widget.AppCompatTextView
@@ -802,6 +803,21 @@ class Common {
 
             fun notificationTypeValue(): String {
                 return intValue.toString()
+            }
+        }
+
+
+        fun manageNoDataFound(
+            imgNoDataFound: ImageView,
+            recyclerView: RecyclerView,
+            isNoDataVisible: Boolean,
+        ) {
+            if (isNoDataVisible) {
+                imgNoDataFound.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+            } else {
+                imgNoDataFound.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
             }
         }
 

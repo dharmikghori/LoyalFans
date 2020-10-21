@@ -73,11 +73,14 @@ class CommentsFragment(private val postId: String) : Fragment(), View.OnClickLis
                 {
                     if (it.status) {
                         setUpCommentsAdapter(it.data)
+                    } else {
+                        Common.manageNoDataFound(imgNoDataFound, rvComments, true)
                     }
                 })
     }
 
     private fun setUpCommentsAdapter(comments: ArrayList<CommentData>) {
+        Common.manageNoDataFound(imgNoDataFound, rvComments, comments.isNullOrEmpty())
         Common.setupVerticalRecyclerView(rvComments, activity)
         val commentAdapter = CommentAdapter(comments, activity, false, postId)
         rvComments.adapter = commentAdapter

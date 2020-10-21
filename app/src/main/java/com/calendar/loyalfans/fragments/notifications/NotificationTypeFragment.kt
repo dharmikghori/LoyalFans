@@ -48,11 +48,15 @@ class NotificationTypeFragment(private val notificationType: String) :
                 {
                     if (it.status) {
                         setUpNotificationAdapter(it.data)
+                    } else {
+                        Common.manageNoDataFound(imgNoDataFound, rvFans, true)
                     }
                 })
     }
 
+
     private fun setUpNotificationAdapter(notificationList: ArrayList<NotificationData>) {
+        Common.manageNoDataFound(imgNoDataFound, rvFans, notificationList.isNullOrEmpty())
         Common.setupVerticalRecyclerView(rvFans, activity)
         rvFans.adapter = NotificationAdapter(notificationList, activity)
     }

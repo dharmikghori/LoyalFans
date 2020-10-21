@@ -130,7 +130,7 @@
     <string name="zip_code">Zip Code</string>
     <string name="zip_code_hint">ZIP CODE</string>
     <string name="not_found">not_found</string>
-    <string name="facebook_app_id">754873191757868</string>
+    <string name="facebook_app_id">985578308583535</string>
     <string name="valid_email">Please enter valid email</string>
     <string name="valid_email_username">Email/UserName is mandatory</string>
     <string name="username_validation">Username is mandatory</string>>
@@ -286,4 +286,7 @@
     <string name="name_of_card">Name of card</string>
     <string name="last_4_digit">Last 4 digit</string>
     <string name="ppv_price_validation">PPV price must be greater than 0</string>
+    <string name="date_and_time"><![CDATA[Date & time]]></string>
+    <string name="invoice">Invoice</string>
+    <string name="status">Status</string>
 </resources>

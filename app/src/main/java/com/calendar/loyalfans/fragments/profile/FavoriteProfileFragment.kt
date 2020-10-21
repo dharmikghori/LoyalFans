@@ -51,11 +51,14 @@ class FavoriteProfileFragment(private val favoriteType: String, private val prof
                 {
                     if (it.status) {
                         setUpFansAdapter(it.data)
+                    } else {
+                        Common.manageNoDataFound(imgNoDataFound, rvFavorite, true)
                     }
                 })
     }
 
     private fun setUpFansAdapter(fansList: ArrayList<FavouriteData>) {
+        Common.manageNoDataFound(imgNoDataFound, rvFavorite, fansList.isNullOrEmpty())
         Common.setupVerticalRecyclerView(rvFavorite, activity)
         rvFavorite.adapter = FavoriteProfileAdapter(fansList, activity)
     }

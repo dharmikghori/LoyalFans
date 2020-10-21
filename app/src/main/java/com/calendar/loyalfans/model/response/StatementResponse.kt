@@ -22,6 +22,7 @@ open class StatementData {
     var created: String = ""
     var earning: String = ""
     var display_name: String = ""
+    var status: String = ""
 
 }
 

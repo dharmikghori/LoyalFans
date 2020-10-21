@@ -33,6 +33,7 @@ class PPVMyMessageFragment(
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Common.manageNoDataFound(imgNoDataFound, rvMyPPVMessage, myPpvMessages.isNullOrEmpty())
         if (myPpvMessages != null) {
             setUpMyMessageAdapter(myPpvMessages)
         }

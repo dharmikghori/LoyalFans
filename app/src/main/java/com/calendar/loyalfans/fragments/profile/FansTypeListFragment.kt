@@ -49,11 +49,14 @@ class FansTypeListFragment(private val fansType: String, private val profileId: 
                 {
                     if (it.status) {
                         setUpFansAdapter(it.data)
+                    } else {
+                        Common.manageNoDataFound(imgNoDataFound, rvFans, true)
                     }
                 })
     }
 
     private fun setUpFansAdapter(fansList: ArrayList<FansData>) {
+        Common.manageNoDataFound(imgNoDataFound, rvFans, fansList.isNullOrEmpty())
         Common.setupVerticalRecyclerView(rvFans, activity)
         rvFans.adapter = FansListAdapter(fansList, activity)
     }

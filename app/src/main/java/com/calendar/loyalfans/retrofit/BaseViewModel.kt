@@ -235,7 +235,7 @@ class BaseViewModel : ViewModel() {
         progressShow: Boolean,
     ): MutableLiveData<PostResponse> {
         postListRequest.user_id = Common.getUserId()
-        val apiName = APIServices.POST_LIST
+        val apiName = APIServices.PROFILE_POST
         val postData: MutableLiveData<PostResponse> =
             MutableLiveData()
         val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)

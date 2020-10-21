@@ -55,6 +55,10 @@ class ProfilePostFragment(private val profileId: String, val isProfileVisible: B
                     } else {
                         setUpAdapter(it.data)
                     }
+                } else {
+                    Common.manageNoDataFound(imgNoDataFound,
+                        rvHomePost,
+                        postList.isNullOrEmpty())
                 }
             })
     }

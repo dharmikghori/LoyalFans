@@ -55,11 +55,13 @@ class AnalyticsDetailFragment(
     }
 
     private fun setUpSeenAdapter(seenList: java.util.ArrayList<SeenData>) {
+        Common.manageNoDataFound(imgNoDataFound, rvAnalytics, seenList.isNullOrEmpty())
         rvAnalytics.adapter = AnalyticsSeenAdapter(seenList, activity)
     }
 
     private var analyticsFansAdapter: AnalyticsFansAdapter? = null
     private fun setUpMyFansAdapter() {
+        Common.manageNoDataFound(imgNoDataFound, rvAnalytics, myFans.isNullOrEmpty())
         Common.setupVerticalRecyclerView(rvAnalytics, activity)
         analyticsFansAdapter = AnalyticsFansAdapter(myFans, activity)
         rvAnalytics.adapter = analyticsFansAdapter

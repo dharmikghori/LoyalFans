@@ -257,8 +257,8 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener, RadioGroup.OnChecke
         } else if (selectedFileList.size == 1) {
             activity?.let { Common.showToast(it, getString(R.string.attachment_validation)) }
             return false
-        } else if (etPPVPostAmount.text.toString()
-                .isEmpty() || etPPVPostAmount.text.toString() == "0"
+        } else if (rbPaid.isChecked && (etPPVPostAmount.text.toString()
+                .isEmpty() || etPPVPostAmount.text.toString() == "0")
         ) {
             activity?.let { Common.showToast(it, getString(R.string.ppv_price_validation)) }
             return false

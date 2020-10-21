@@ -17,4 +17,7 @@
     <color name="profile_hint_color">#a0a0a0</color>
     <color name="cancel_start">#eb545a</color>
     <color name="cancel_end">#eb5691</color>
+    <color name="success">#64DD17</color>
+    <color name="canceled">#D50000</color>
+    <color name="pending">#FFD600</color>
 </resources>

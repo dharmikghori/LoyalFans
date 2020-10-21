@@ -23,5 +23,14 @@
         android:paddingTop="@dimen/_5sdp"
         android:paddingEnd="@dimen/_5sdp"
         android:paddingBottom="@dimen/_10sdp" />
+    <ImageView
+        android:id="@+id/imgNoDataFound"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:contentDescription="@string/no_data"
+        android:src="@drawable/no_data_found"
+        android:visibility="gone" />
 
 </RelativeLayout>

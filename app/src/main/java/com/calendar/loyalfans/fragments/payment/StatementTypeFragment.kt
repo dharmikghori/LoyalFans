@@ -34,10 +34,10 @@ class StatementTypeFragment(private val statementType: String) : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        getStatementsByType(statementType)
+        getStatementsByType()
     }
 
-    private fun getStatementsByType(statementType: String) {
+    private fun getStatementsByType() {
         val notificationSecurityRequest =
             NotificationSecurityRequest(statementType)
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
@@ -50,13 +50,16 @@ class StatementTypeFragment(private val statementType: String) : Fragment() {
                     if (it.status) {
                         setUpStatementAdapter(it.data)
                         BaseActivity.currentBalance.value = it.balance
+                    } else {
+                        Common.manageNoDataFound(imgNoDataFound, rvStatements, true)
                     }
                 })
     }
 
     private fun setUpStatementAdapter(data: ArrayList<StatementData>) {
+        Common.manageNoDataFound(imgNoDataFound, rvStatements, data.isNullOrEmpty())
         Common.setupVerticalRecyclerView(rvStatements, activity)
-        rvStatements.adapter = StatementsEarningAdapter(data, activity)
+        rvStatements.adapter = StatementsEarningAdapter(data, activity, statementType.toInt())
     }
 
 }
