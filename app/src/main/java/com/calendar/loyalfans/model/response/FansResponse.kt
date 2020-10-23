@@ -2,7 +2,7 @@ package com.calendar.loyalfans.model.response
 
 
 open class FansResponse : BaseResponse() {
-    lateinit var data: ArrayList<FansData>
+    var data: ArrayList<FansData> = ArrayList()
 }
 
 open class FansData : BaseResponse() {

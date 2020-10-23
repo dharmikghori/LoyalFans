@@ -3,6 +3,7 @@ package com.calendar.loyalfans.fragments.post
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,12 @@ import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.SelectedFileAdapter
 import com.calendar.loyalfans.model.SelectedFileData
+import com.calendar.loyalfans.model.response.BaseResponse
 import com.calendar.loyalfans.retrofit.APIServices
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.ImageSaver
 import com.calendar.loyalfans.utils.SPHelper
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_addpost.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.coroutines.CoroutineScope
@@ -55,6 +58,7 @@ class AddPostFragment : Fragment(), View.OnClickListener {
         super.onResume()
         (activity as MainActivity).manageBottomNavigationVisibility(true)
     }
+
     private val selectedFileList = ArrayList<SelectedFileData>()
     private lateinit var selectedFileAdapter: SelectedFileAdapter
     private fun setUpSelectedFilesAdapter() {
@@ -179,10 +183,15 @@ class AddPostFragment : Fragment(), View.OnClickListener {
                     try {
                         val response: Response = client.newCall(request).execute()
                         Common.dismissProgress()
-                        if (response.code == 200) {
-                            moveToHome()
+                        val strResponse = response.body?.string()
+                        if (strResponse != null) {
+                            Log.d("API---${APIServices.NEW_POST}", strResponse)
+                        }
+                        val baseResponse = Gson().fromJson(strResponse, BaseResponse::class.java)
+                        if (baseResponse.status) {
+                            moveToHome(baseResponse)
                         } else {
-                            activity?.let { Common.showToast(it, "Unable to add post") }
+                            activity?.let { Common.showToast(it, baseResponse.msg) }
                         }
                     } catch (e: Exception) {
                         Common.dismissProgress()
@@ -194,11 +203,11 @@ class AddPostFragment : Fragment(), View.OnClickListener {
 //        }
     }
 
-    private fun moveToHome() {
+    private fun moveToHome(baseResponse: BaseResponse) {
         activity?.runOnUiThread {
             selectedFileList.clear()
             selectedFileAdapter.notifyDataSetChanged()
-            activity?.let { Common.showToast(it, "Post Added") }
+            activity?.let { Common.showToast(it, baseResponse.msg) }
             (activity as MainActivity).loadFragment(1)
             etPostMessage.setText("")
         }

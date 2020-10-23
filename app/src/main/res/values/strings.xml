@@ -119,7 +119,7 @@
 
     <string name="banking">Banking</string>
     <string name="personal_info">Personal Information</string>
-    <string name="fill_detail">Fill in our legal name, Address and attach your government issued Picture ID.</string>
+    <string name="fill_detail">Fill in your legal name, Address and attach your government issued Picture ID.</string>
     <string name="first_name">First Name*</string>
     <string name="last_name">Last Name*</string>
     <string name="address">Address</string>
@@ -289,4 +289,5 @@
     <string name="date_and_time"><![CDATA[Date & time]]></string>
     <string name="invoice">Invoice</string>
     <string name="status">Status</string>
+    <string name="you_dont_fans">You don\'t have any fans</string>
 </resources>

@@ -7,6 +7,7 @@ import java.lang.reflect.Type
 
 open class SearchUserData : BaseResponse() {
     lateinit var data: ArrayList<SearchUsers>
+    var search_status: Boolean = false
 }
 
 open class SearchUsers : BaseResponse() {

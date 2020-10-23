@@ -87,7 +87,7 @@ class SearchFragment : Fragment(), TextWatcher, View.OnClickListener {
             searchUserRequest, false
         )
             .observe(this, {
-                if (it.status) {
+                if (it.search_status) {
                     setUpSearchResultAdapter(it.data)
                 } else {
                     setUpSearchResultAdapter(ArrayList())

@@ -90,7 +90,7 @@ class FansSelectionDialog(context: AppCompatActivity) : Dialog(context) {
 
     private fun getFans() {
         val fansFollowingRequest =
-            FansFollowingRequest("",
+            FansFollowingRequest("0",
                 Common.getUserId())
         val baseViewModel = ViewModelProvider(activity).get(BaseViewModel::class.java)
         baseViewModel.getFansByType(
@@ -102,6 +102,10 @@ class FansSelectionDialog(context: AppCompatActivity) : Dialog(context) {
                     if (it.status) {
                         setUpFansAdapter(it.data)
                     }
+                    if (it.data.isNullOrEmpty()) {
+                        Common.showToast(activity, context.getString(R.string.you_dont_fans))
+                        dismiss()
+                    }
                 })
     }
 
@@ -109,6 +113,7 @@ class FansSelectionDialog(context: AppCompatActivity) : Dialog(context) {
         Common.setupVerticalRecyclerView(rvFansForPPV, context)
         fansSelectionAdapter = FansSelectionAdapter(data, data, activity)
         rvFansForPPV.adapter = fansSelectionAdapter
+
     }
 
     interface OnPPVSend {

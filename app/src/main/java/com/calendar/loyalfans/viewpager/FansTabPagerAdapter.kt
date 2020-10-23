@@ -16,10 +16,10 @@ class FansTabPagerAdapter(context: Context, fm: FragmentManager, val profileId: 
     private val mContext = context
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> FansTypeListFragment.newInstance("1", profileId)
-            1 -> FansTypeListFragment.newInstance("0", profileId)
-            2 -> FansTypeListFragment.newInstance("2", profileId)
-            else -> FansTypeListFragment.newInstance("", profileId)
+            0 -> FansTypeListFragment.newInstance("2", profileId)
+            1 -> FansTypeListFragment.newInstance("1", profileId)
+            2 -> FansTypeListFragment.newInstance("3", profileId)
+            else -> FansTypeListFragment.newInstance("0", profileId)
         }
     }
 

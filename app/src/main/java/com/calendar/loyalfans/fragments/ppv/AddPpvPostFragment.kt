@@ -3,6 +3,7 @@ package com.calendar.loyalfans.fragments.ppv
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.calendar.loyalfans.activities.PPVActivity
 import com.calendar.loyalfans.adapter.SelectedFileAdapter
 import com.calendar.loyalfans.dialog.FansSelectionDialog
 import com.calendar.loyalfans.model.SelectedFileData
+import com.calendar.loyalfans.model.response.BaseResponse
 import com.calendar.loyalfans.model.response.FansData
 import com.calendar.loyalfans.retrofit.APIServices
 import com.calendar.loyalfans.utils.Common
@@ -138,11 +140,11 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener, RadioGroup.OnChecke
         }
     }
 
-    private fun moveToHome() {
+    private fun moveToHome(baseResponse: BaseResponse) {
         activity?.runOnUiThread {
             selectedFileList.clear()
             selectedFileAdapter.notifyDataSetChanged()
-            activity?.let { Common.showToast(it, "PPV Successfully Send") }
+            activity?.let { Common.showToast(it, baseResponse.msg) }
 //            (activity as PPVActivity).loadFragment(15)
             requireActivity().onBackPressed()
         }
@@ -235,10 +237,15 @@ class AddPpvPostFragment : Fragment(), View.OnClickListener, RadioGroup.OnChecke
                 try {
                     val response: Response = client.newCall(request).execute()
                     Common.dismissProgress()
-                    if (response.code == 200) {
-                        moveToHome()
+                    val strResponse = response.body?.string()
+                    if (strResponse != null) {
+                        Log.d("API---${APIServices.CREATE_PPV}", strResponse)
+                    }
+                    val baseResponse = Gson().fromJson(strResponse, BaseResponse::class.java)
+                    if (baseResponse.status) {
+                        moveToHome(baseResponse)
                     } else {
-                        activity?.let { Common.showToast(it, "Unable to add post") }
+                        activity?.let { Common.showToast(it, baseResponse.msg) }
                     }
                 } catch (e: Exception) {
                     Common.dismissProgress()

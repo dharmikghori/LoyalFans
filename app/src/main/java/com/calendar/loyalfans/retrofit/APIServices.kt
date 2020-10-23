@@ -32,7 +32,7 @@ interface APIServices {
         const val GET_EDIT_PROFILE = "auth/editprofile"
         const val UPDATE_PROFILE = "auth/updateprofile"
         const val SUBSCRIPTION_PLAN = "auth/subscriptionplan"
-        const val GET_FANS = "auth/fanslist"
+        const val GET_FANS = "auth/getfans"
         const val GET_FOLLOWING = "auth/getfollowings"
         const val GET_FAVORITE = "auth/favoritelist"
         const val PPV_HISTORY = "auth/ppvhistory"
