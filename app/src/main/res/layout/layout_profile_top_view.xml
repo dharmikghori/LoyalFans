@@ -92,6 +92,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layFansFollowing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_6sdp"
@@ -190,6 +191,7 @@
         style="@style/BaseTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
         android:maxLines="5"
         android:textColor="@color/theme_black" />
 

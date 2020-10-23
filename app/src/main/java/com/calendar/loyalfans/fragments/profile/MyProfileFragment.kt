@@ -157,8 +157,10 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
             val filter = profileData.subscription_plans?.filter { it.is_subscribe == "1" }
             if (!filter?.isEmpty()!!) {
                 val profileSubscriptionData = filter[0]
+                layFansFollowing.visibility = View.VISIBLE
                 manageCancelSubscribeButtonUI(profileSubscriptionData)
             } else {
+                layFansFollowing.visibility = View.GONE
                 for (subscriptionPlanData in profileData.subscription_plans!!) {
                     manageSubscribeButtonUI(subscriptionPlanData)
                 }
@@ -290,9 +292,11 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         if (profileData.tofollow == "0") {
             btnFollowUnFollow.background = resources.getDrawable(R.drawable.subscription_bg)
             btnFollowUnFollow.text = getString(R.string.follow)
+            layFansFollowing.visibility = View.GONE
         } else {
             btnFollowUnFollow.background = resources.getDrawable(R.drawable.cancel_subscription_bg)
             btnFollowUnFollow.text = getString(R.string.unfollow)
+            layFansFollowing.visibility = View.VISIBLE
         }
         btnFollowUnFollow.setOnClickListener {
             val postDetailRequest = ProfileDetailRequest(profileId)
