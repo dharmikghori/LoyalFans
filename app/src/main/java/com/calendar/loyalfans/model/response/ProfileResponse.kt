@@ -15,6 +15,7 @@ open class ProfileData {
     var fans = ""
     var location = ""
     var cover_img = ""
+    var banner_img = ""
     var website = ""
     var tofollow = "0"
     var business_type = ""

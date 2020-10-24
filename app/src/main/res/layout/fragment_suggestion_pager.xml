@@ -12,13 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_150sdp"
         android:contentDescription="@string/app_name"
-        android:foreground="#50000000"
+        android:foreground="#90000000"
         android:scaleType="centerCrop"
         android:src="@drawable/place_holder" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgProfilePic"
         android:layout_width="@dimen/_40sdp"
+        android:elevation="@dimen/_5sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_15sdp"

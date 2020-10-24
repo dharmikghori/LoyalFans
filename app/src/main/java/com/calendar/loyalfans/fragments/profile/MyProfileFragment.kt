@@ -133,6 +133,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         cbFavouriteProfile.setOnCheckedChangeListener(this)
 
         activity?.let { Common.loadImageUsingURL(imgProfilePic, data.profile_img, it) }
+        activity?.let { Common.loadImageUsingURL(imgCoverPic, data.banner_img, it) }
     }
 
 
