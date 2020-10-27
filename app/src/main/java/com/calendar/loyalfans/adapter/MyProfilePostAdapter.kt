@@ -84,9 +84,9 @@ class MyProfilePostAdapter(
                         PostImageVideoPagerAdapter(it, postData.images)
                     if (postData.images.size > 1) {
                         holder.tabLayout.setupWithViewPager(holder.photos_viewpager)
-                        holder.tabLayout.visibility = View.VISIBLE
+//                        holder.tabLayout.visibility = View.VISIBLE
                     } else {
-                        holder.tabLayout.visibility = View.VISIBLE
+//                        holder.tabLayout.visibility = View.VISIBLE
                     }
                 }
 //                postData.videos.isNotEmpty() -> {

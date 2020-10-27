@@ -4,7 +4,7 @@ import java.io.Serializable
 
 
 open class PostResponse : BaseResponse() {
-    lateinit var data: ArrayList<PostData>
+    var data: ArrayList<PostData> = ArrayList()
 }
 
 open class PostData : BaseResponse(), Serializable {

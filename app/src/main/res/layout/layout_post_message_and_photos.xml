@@ -49,6 +49,7 @@
                 android:layout_alignParentBottom="true"
                 app:tabBackground="@drawable/viewpager_selector"
                 app:tabGravity="center"
+                android:visibility="gone"
                 app:tabIndicatorHeight="0dp" />
 
             <ImageView

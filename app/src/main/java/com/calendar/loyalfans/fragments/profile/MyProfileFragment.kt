@@ -49,6 +49,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         super.onActivityCreated(savedInstanceState)
         if (profileId != Common.getUserId()) {
             tvToolBarName.text = getString(R.string.other_profile)
+            imgEditProfile.visibility = View.GONE
             cbFavouriteProfile.visibility = View.VISIBLE
             cbFavouriteProfile.setOnCheckedChangeListener(this)
             imgBack.visibility = View.VISIBLE
@@ -56,6 +57,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         } else {
             (activity as MainActivity).manageBottomNavigationVisibility(true)
             cbFavouriteProfile.visibility = View.GONE
+            imgEditProfile.visibility = View.VISIBLE
             tvToolBarName.text = getString(R.string.myprofile)
             imgBack.visibility = View.GONE
         }

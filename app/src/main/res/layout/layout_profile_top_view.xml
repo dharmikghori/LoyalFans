@@ -93,7 +93,14 @@
                                 android:button="@drawable/profile_favourite_background"
                                 android:contentDescription="@string/app_name"
                                 android:visibility="gone" />
-
+                            <ImageView
+                                android:id="@+id/imgEditProfile"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:contentDescription="@string/app_name"
+                                android:padding="@dimen/_3sdp"
+                                android:src="@drawable/ic_edit_profile"
+                                android:visibility="gone" />
                             <ImageView
                                 android:id="@+id/imgShare"
                                 android:layout_width="@dimen/_15sdp"
@@ -204,13 +211,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imgEditProfile"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@mipmap/ic_hamburger_menu"
-                    android:visibility="gone" />
+
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

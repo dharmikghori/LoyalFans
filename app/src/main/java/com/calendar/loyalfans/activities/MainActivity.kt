@@ -79,7 +79,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    var fragmentThatWillAddNotReplace: List<Int> = listOf(1, 6, 7, 8, 17)
+    var fragmentThatWillAddNotReplace: List<Int> = listOf(1, 6, 7, 8, 17,10)
     var checkBottomVisibleOrNot: List<Int> = listOf(17, 1, 2, 3, 4, 5)
 
     fun loadFragment(type: Int) {
