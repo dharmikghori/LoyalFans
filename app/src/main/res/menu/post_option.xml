@@ -6,6 +6,9 @@
     <item
         android:id="@+id/delete_post"
         android:title="@string/delete" />
+    <item
+        android:id="@+id/report_post"
+        android:title="@string/report_abuse" />
     <!-- <item
          android:id="@+id/cancel_activity_item"
          android:title="@string/cancel" />-->

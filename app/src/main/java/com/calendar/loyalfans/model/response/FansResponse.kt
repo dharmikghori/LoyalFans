@@ -13,6 +13,7 @@ open class FansData : BaseResponse() {
     var followingID: String = ""
     var profile_img: String = ""
     var isSelected: Boolean = false
+    var block: String = ""
 }
 
 

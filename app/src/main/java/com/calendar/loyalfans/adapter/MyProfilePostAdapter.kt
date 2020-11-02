@@ -37,6 +37,7 @@ class MyProfilePostAdapter(
         fun onBookmark(postData: PostData, position: Int)
         fun onEditPost(postData: PostData, position: Int)
         fun onDeletePost(postData: PostData, position: Int)
+        fun onReportAbuse(postData: PostData, position: Int)
     }
 
     override fun getItemCount(): Int {
@@ -73,7 +74,7 @@ class MyProfilePostAdapter(
         }
         holder.tvActivityMessage.text = postData.content
         holder.tvProfileName.text = postData.display_name
-        holder.tvUserName.text = "@" +postData.username
+        holder.tvUserName.text = "@" + postData.username
         holder.tvTotalComment.text = postData.comments + " Comments"
         holder.tvTotalLike.text = postData.likes + " Likes"
         activity?.let {
@@ -144,17 +145,15 @@ class MyProfilePostAdapter(
         holder.layComment.setOnClickListener {
             onPostAction?.onComment(postData, position)
         }
+        holder.imgMoreOption.visibility = View.VISIBLE
         if (isMyPost) {
-            holder.imgMoreOption.visibility = View.VISIBLE
             holder.btnSendTip.visibility = View.GONE
-            holder.imgMoreOption.setOnClickListener {
-                openOptionMenu(it, postData, position)
-            }
         } else {
-            holder.imgMoreOption.visibility = View.GONE
             holder.btnSendTip.visibility = View.VISIBLE
         }
-
+        holder.imgMoreOption.setOnClickListener {
+            openOptionMenu(it, postData, position)
+        }
     }
 
     class HomePostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -187,12 +186,23 @@ class MyProfilePostAdapter(
                     onPostAction?.onDeletePost(postData, position)
                     return@setOnMenuItemClickListener true
                 }
+                R.id.report_post -> {
+                    onPostAction?.onReportAbuse(postData, position)
+                    return@setOnMenuItemClickListener true
+                }
                 else -> return@setOnMenuItemClickListener false
             }
         }
         inflater.inflate(R.menu.post_option, activityActionMenu.menu)
-        activityActionMenu.menu.findItem(R.id.edit_post).isVisible = true
-        activityActionMenu.menu.findItem(R.id.delete_post).isVisible = true
+        if (isMyPost) {
+            activityActionMenu.menu.findItem(R.id.edit_post).isVisible = true
+            activityActionMenu.menu.findItem(R.id.delete_post).isVisible = true
+            activityActionMenu.menu.findItem(R.id.report_post).isVisible = false
+        } else {
+            activityActionMenu.menu.findItem(R.id.edit_post).isVisible = false
+            activityActionMenu.menu.findItem(R.id.delete_post).isVisible = false
+            activityActionMenu.menu.findItem(R.id.report_post).isVisible = true
+        }
         activityActionMenu.show()
     }
 

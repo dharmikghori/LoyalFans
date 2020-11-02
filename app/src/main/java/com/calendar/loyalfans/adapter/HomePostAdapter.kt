@@ -40,6 +40,7 @@ class HomePostAdapter(
         fun onBookmark(postData: PostData, position: Int)
         fun onEditPost(postData: PostData, position: Int)
         fun onDeletePost(postData: PostData, position: Int)
+        fun onReportAbuse(postData: PostData, position: Int)
     }
 
     override fun getItemCount(): Int {
@@ -143,11 +144,14 @@ class HomePostAdapter(
             holder.imgMoreOption.visibility = View.VISIBLE
             holder.btnSendTip.visibility = View.GONE
             holder.imgMoreOption.setOnClickListener {
-                openOptionMenu(it, postData, position)
+                openOptionMenu(it, postData, position, !isMyPost)
             }
         } else {
-            holder.imgMoreOption.visibility = View.GONE
             holder.btnSendTip.visibility = View.VISIBLE
+            holder.imgMoreOption.visibility = View.VISIBLE
+            holder.imgMoreOption.setOnClickListener {
+                openOptionMenu(it, postData, position, !isMyPost)
+            }
         }
 
         if (!postData.suggestions.isNullOrEmpty()) {
@@ -207,7 +211,12 @@ class HomePostAdapter(
         val layPostTopCardView: CardView = view.layPostTopCardView
     }
 
-    private fun openOptionMenu(view: View, postData: PostData, position: Int) {
+    private fun openOptionMenu(
+        view: View,
+        postData: PostData,
+        position: Int,
+        isOtherPost: Boolean,
+    ) {
         val activityActionMenu = PopupMenu(activity, view)
         val inflater = activityActionMenu.menuInflater
         activityActionMenu.setOnMenuItemClickListener { item: MenuItem ->
@@ -220,12 +229,24 @@ class HomePostAdapter(
                     onPostAction?.onDeletePost(postData, position)
                     return@setOnMenuItemClickListener true
                 }
+                R.id.report_post -> {
+                    onPostAction?.onReportAbuse(postData, position)
+                    return@setOnMenuItemClickListener true
+                }
                 else -> return@setOnMenuItemClickListener false
             }
         }
-        inflater.inflate(R.menu.post_option, activityActionMenu.menu);
-        activityActionMenu.menu.findItem(R.id.edit_post).isVisible = true
-        activityActionMenu.menu.findItem(R.id.delete_post).isVisible = true
+        inflater.inflate(R.menu.post_option, activityActionMenu.menu)
+        if (isOtherPost) {
+            activityActionMenu.menu.findItem(R.id.edit_post).isVisible = false
+            activityActionMenu.menu.findItem(R.id.delete_post).isVisible = false
+            activityActionMenu.menu.findItem(R.id.report_post).isVisible = true
+        } else {
+            activityActionMenu.menu.findItem(R.id.edit_post).isVisible = true
+            activityActionMenu.menu.findItem(R.id.delete_post).isVisible = true
+            activityActionMenu.menu.findItem(R.id.report_post).isVisible = false
+        }
+
         activityActionMenu.show()
     }
 

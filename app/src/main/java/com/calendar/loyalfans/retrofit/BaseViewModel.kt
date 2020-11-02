@@ -1104,6 +1104,55 @@ class BaseViewModel : ViewModel() {
         return postDetailsData
     }
 
+    fun blockUser(
+        blockUnblockRequest: BlockUnblockRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.BLOCK_USER
+        val blockUnblockData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        blockUnblockRequest.user_id = Common.getUserId()
+        printStrRequestJson(blockUnblockRequest, apiName)
+        apiServices?.blockUser(
+            blockUnblockRequest.user_id,
+            blockUnblockRequest.following_id,
+            blockUnblockRequest.is_block
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val blockUnblockResponse = response as BaseResponse
+                printStrJson(blockUnblockResponse, apiName)
+                blockUnblockData.value = blockUnblockResponse
+            }
+        }))
+        return blockUnblockData
+    }
+
+    fun reportPost(
+        reportRequest: ReportRequest,
+        progressShow: Boolean,
+    ): MutableLiveData<BaseResponse> {
+        val apiName = APIServices.REPORT_POST
+        val reportPostData: MutableLiveData<BaseResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        reportRequest.user_id = Common.getUserId()
+        printStrRequestJson(reportRequest, apiName)
+        apiServices?.reportPost(
+            reportRequest.user_id,
+            reportRequest.other_id,
+            reportRequest.type,
+            reportRequest.report_comment
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val reportPostResponse = response as BaseResponse
+                printStrJson(reportPostResponse, apiName)
+                reportPostData.value = reportPostResponse
+            }
+        }))
+        return reportPostData
+    }
+
     private fun printStrRequestJson(request: Any, apiName: String) {
         try {
             val json = Gson().toJson(request)

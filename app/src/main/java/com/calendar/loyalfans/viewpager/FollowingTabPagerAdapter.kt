@@ -22,7 +22,7 @@ class FollowingTabPagerAdapter(
         return when (position) {
             0 -> FollowingTypeListFragment.newInstance("2", profileId)
             1 -> FollowingTypeListFragment.newInstance("1", profileId)
-            else -> FollowingTypeListFragment.newInstance("3", profileId)
+            else -> FollowingTypeListFragment.newInstance("0", profileId)
         }
     }
 
@@ -41,7 +41,7 @@ class FollowingTabPagerAdapter(
             intArrayOf(
                 R.string.active,
                 R.string.expired,
-                R.string.blocked)
+                R.string.all)
     }
 
 }

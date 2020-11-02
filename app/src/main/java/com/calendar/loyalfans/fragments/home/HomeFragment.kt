@@ -14,8 +14,10 @@ import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.activities.OtherProfileActivity
 import com.calendar.loyalfans.activities.PPVActivity
 import com.calendar.loyalfans.adapter.HomePostAdapter
+import com.calendar.loyalfans.dialog.ReportPostDialog
 import com.calendar.loyalfans.model.request.PostDetailRequest
 import com.calendar.loyalfans.model.request.PostListRequest
+import com.calendar.loyalfans.model.request.ReportRequest
 import com.calendar.loyalfans.model.response.PostData
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
@@ -127,7 +129,33 @@ class HomeFragment : Fragment() {
             override fun onDeletePost(postData: PostData, position: Int) {
                 TODO("Not yet implemented")
             }
+
+            override fun onReportAbuse(postData: PostData, position: Int) {
+                openReportPost(postData)
+            }
         }
+    }
+
+    private fun openReportPost(postData: PostData) {
+        val reportPostDialog = ReportPostDialog(BaseActivity.getActivity(), postData.id, "1")
+        reportPostDialog.setOnPPVSend(object : ReportPostDialog.OnReportPost {
+            override fun onReport(reportRequest: ReportRequest) {
+                reportPostDialog.dismiss()
+                onReportPostAPI(reportRequest)
+            }
+        })
+        reportPostDialog.show()
+    }
+
+    private fun onReportPostAPI(reportRequest: ReportRequest) {
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.reportPost(
+            reportRequest, true
+        ).observe(viewLifecycleOwner, {
+            if (it.status) {
+                Common.showToast(BaseActivity.getActivity(), it.msg)
+            }
+        })
     }
 
     private fun onFavouriteUnFavoritePost(postData: PostData) {

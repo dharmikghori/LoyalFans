@@ -2,19 +2,27 @@ package com.calendar.loyalfans.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.request.RegistrationRequest
+import com.calendar.loyalfans.retrofit.APIServices
+import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.RequestParams
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -26,6 +34,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.buttonFacebookLogin
 import kotlinx.android.synthetic.main.activity_login.etPassword
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register.cbPrivacyPolicyAccept
 
 
 class RegisterActivity : BaseActivity() {
@@ -38,6 +47,7 @@ class RegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        setUpClickHere()
         setUpFB()
         setUpGmail()
     }
@@ -47,7 +57,7 @@ class RegisterActivity : BaseActivity() {
     }
 
     fun onRegister(view: View) {
-        if (checkValidation()) {
+        if (checkValidation() && checkPrivacyPolicyChecked()) {
             val registrationRequest =
                 RegistrationRequest(etEmail.text.toString(),
                     etUserName.text.toString(),
@@ -193,6 +203,54 @@ class RegisterActivity : BaseActivity() {
 
     fun onFacebookLoginClick(view: View) {
         buttonFacebookLogin.performClick()
+    }
+
+    private fun checkPrivacyPolicyChecked(): Boolean {
+        if (!cbPrivacyPolicyAccept.isChecked) {
+            Common.showToast(this,
+                getString(R.string.signup_privacy_policy))
+        }
+        return cbPrivacyPolicyAccept.isChecked
+    }
+
+    private fun setUpClickHere() {
+        val sequence: CharSequence =
+            Html.fromHtml("By Signing up you agree to our <strong><a href='terms_condition' style='text-decoration:none'>${"Terms of Service"}</a></strong> and <strong><a href='privacy_policy' style='text-decoration:none'>${"Privacy Policy."}</a></strong>")
+        val strBuilder = SpannableStringBuilder(sequence)
+        val urls: Array<URLSpan> = strBuilder.getSpans(0, sequence.length, URLSpan::class.java)
+        for (span in urls) {
+            makeLinkClickable(strBuilder, span)
+        }
+        tvPrivacyPolicy.text = strBuilder
+        tvPrivacyPolicy.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    private fun makeLinkClickable(
+        strBuilder: SpannableStringBuilder,
+        span: URLSpan,
+    ) {
+        val start = strBuilder.getSpanStart(span)
+        val end = strBuilder.getSpanEnd(span)
+        val flags = strBuilder.getSpanFlags(span)
+        val clickable: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                var webViewURL = ""
+                if (span.url == "terms_condition") {
+                    webViewURL = APIServices.TERMS_CONDITIONS
+                } else if (span.url == "privacy_policy") {
+                    webViewURL = APIServices.PRIVACY_POLICY
+                }
+                startActivity(Intent(this@RegisterActivity,
+                    WebViewActivity::class.java).putExtra(RequestParams.WEBVIEW_URL,
+                    webViewURL))
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                ds.isUnderlineText = false
+            }
+        }
+        strBuilder.setSpan(clickable, start, end, flags)
+        strBuilder.removeSpan(span)
     }
 
 

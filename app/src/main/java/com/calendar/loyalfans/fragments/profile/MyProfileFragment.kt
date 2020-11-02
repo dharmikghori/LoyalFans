@@ -12,10 +12,14 @@ import android.widget.CompoundButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
+import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.activities.OtherProfileActivity
+import com.calendar.loyalfans.dialog.ReportPostDialog
+import com.calendar.loyalfans.model.request.BlockUnblockRequest
 import com.calendar.loyalfans.model.request.PaidSubscriptionRequest
 import com.calendar.loyalfans.model.request.ProfileDetailRequest
+import com.calendar.loyalfans.model.request.ReportRequest
 import com.calendar.loyalfans.model.response.ProfileData
 import com.calendar.loyalfans.model.response.ProfileSubscriptionData
 import com.calendar.loyalfans.retrofit.APIServices
@@ -54,12 +58,14 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
             cbFavouriteProfile.setOnCheckedChangeListener(this)
             imgBack.visibility = View.VISIBLE
             imgBack.setOnClickListener(this)
+            imgMoreOptionProfile.visibility = View.VISIBLE
         } else {
             (activity as MainActivity).manageBottomNavigationVisibility(true)
             cbFavouriteProfile.visibility = View.GONE
             imgEditProfile.visibility = View.VISIBLE
             tvToolBarName.text = getString(R.string.myprofile)
             imgBack.visibility = View.GONE
+            imgMoreOptionProfile.visibility = View.GONE
         }
         getProfile(true)
         layFans.setOnClickListener(this)
@@ -67,6 +73,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         layFavorites.setOnClickListener(this)
         imgEditProfile.setOnClickListener(this)
         imgShare.setOnClickListener(this)
+        imgMoreOptionProfile.setOnClickListener(this)
         setViewPagerHeight()
         getProfile(false)
     }
@@ -111,7 +118,15 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         ).observe(viewLifecycleOwner, {
             if (it.status) {
                 profileData = it.data
-                setUpProfileData(profileData, isSubscriptionManage)
+                if (profileData.s_block == "0") {
+                    setUpProfileData(profileData, isSubscriptionManage)
+                } else {
+                    layFansFollowing.visibility = View.GONE
+                    cbFavouriteProfile.visibility = View.GONE
+                    imgShare.visibility = View.GONE
+                    tvProfileName.text = profileData.display_name
+                    tvUserName.text = "@" + profileData.username
+                }
             }
         })
 
@@ -124,6 +139,8 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         if (Common.getUserId() == profileId) {
             activity?.let { SPHelper(it).saveProfileData(data) }
         }
+        cbFavouriteProfile.visibility = View.VISIBLE
+        imgShare.visibility = View.VISIBLE
         tvProfileName.text = data.display_name
         tvUserName.text = "@" + data.username
         tvAbout.text = data.about
@@ -145,11 +162,38 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
             layProfileSubscription.visibility = View.GONE
         } else {
             layProfileSubscription.visibility = View.VISIBLE
-            if (profileData.business_type == "FREE") {
-                manageFreeProfile()
-            } else if (profileData.business_type == "PAID") {
-                managePaidProfile()
+            when {
+                profileData.is_block == "1" -> {
+                    manageBlockedProfile()
+                }
+                profileData.business_type == "FREE" -> {
+                    manageFreeProfile()
+                }
+                profileData.business_type == "PAID" -> {
+                    managePaidProfile()
+                }
             }
+        }
+    }
+
+    private fun manageBlockedProfile() {
+        btnFollowUnFollow.visibility = View.VISIBLE
+        btnFollowUnFollow.background = resources.getDrawable(R.drawable.cancel_subscription_bg)
+        btnFollowUnFollow.text = getString(R.string.unblock)
+        btnFollowUnFollow.setOnClickListener {
+            val blockUnblockRequest =
+                BlockUnblockRequest(profileId, "2")
+            val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+            baseViewModel.blockUser(
+                blockUnblockRequest,
+                true
+            )
+                .observe(viewLifecycleOwner,
+                    {
+                        if (it.status) {
+                            getProfile(true)
+                        }
+                    })
         }
     }
 
@@ -403,6 +447,9 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                     )
 
                 }
+                R.id.imgMoreOptionProfile -> {
+                    openReportPost()
+                }
                 R.id.imgEditProfile -> {
                     if (activity is MainActivity) {
                         val mainActivity = activity as MainActivity
@@ -417,6 +464,30 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
             }
         }
     }
+
+
+    private fun openReportPost() {
+        val reportPostDialog = ReportPostDialog(BaseActivity.getActivity(), profileId, "2")
+        reportPostDialog.setOnPPVSend(object : ReportPostDialog.OnReportPost {
+            override fun onReport(reportRequest: ReportRequest) {
+                reportPostDialog.dismiss()
+                onReportPostAPI(reportRequest)
+            }
+        })
+        reportPostDialog.show()
+    }
+
+    private fun onReportPostAPI(reportRequest: ReportRequest) {
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.reportPost(
+            reportRequest, true
+        ).observe(viewLifecycleOwner, {
+            if (it.status) {
+                Common.showToast(BaseActivity.getActivity(), it.msg)
+            }
+        })
+    }
+
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
         favoriteUnFavoriteProfile()

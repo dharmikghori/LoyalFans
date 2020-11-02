@@ -10,6 +10,8 @@ interface APIServices {
     companion object {
         const val MAIN_URL = "https://loyalfansonly.com/"
         const val W9_FORM_WEB_URL = MAIN_URL + "welcome/w9form/"
+        const val TERMS_CONDITIONS = MAIN_URL + "terms-service"
+        const val PRIVACY_POLICY = MAIN_URL + "privacy-policy"
         const val W9_FORM_DOWNLOAD_URL = MAIN_URL + "wform/"
         const val AUTH_TOKEN = "eyJ0eXA1iOi0JKV1QiL8CJhb5GciTWvLUzI1NiJ9IiRk2YXRh8Ig"
         const val APP_SECRET_KEY = "Mn2fKZG4M1170jDlVn6lOFTN6OE27f6UO99n9QDV"
@@ -61,6 +63,8 @@ interface APIServices {
         const val PPV_SENT_USER = "auth/ppvsendtouser"
         const val MY_CARD = "auth/mycard"
         const val POST_DETAILS = "auth/getpostdetails"
+        const val BLOCK_USER = "auth/blockuser"
+        const val REPORT_POST = "auth/reports"
     }
 
     @FormUrlEncoded
@@ -457,4 +461,20 @@ interface APIServices {
         @Field("post_id") post_id: String,
     ): Call<PostDetailsReponse>
 
+    @FormUrlEncoded
+    @POST(BLOCK_USER)
+    fun blockUser(
+        @Field("user_id") user_id: String,
+        @Field("following_id") following_id: String,
+        @Field("is_block") is_block: String,
+    ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(REPORT_POST)
+    fun reportPost(
+        @Field("user_id") user_id: String,
+        @Field("other_id") other_id: String,
+        @Field("type") type: String,
+        @Field("report_comment") report_comment: String,
+    ): Call<BaseResponse>
 }

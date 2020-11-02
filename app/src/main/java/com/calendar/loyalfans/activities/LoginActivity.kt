@@ -2,13 +2,21 @@ package com.calendar.loyalfans.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.model.request.LoginRequest
+import com.calendar.loyalfans.retrofit.APIServices
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
+import com.calendar.loyalfans.utils.RequestParams
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -34,6 +42,7 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        setUpClickHere()
         setUpGmail()
         setUpFB()
     }
@@ -70,7 +79,7 @@ class LoginActivity : BaseActivity() {
     }
 
     fun onLogin(view: View) {
-        if (checkValidation()) {
+        if (checkValidation() && checkPrivacyPolicyChecked()) {
             val loginRequest =
                 LoginRequest(etEmailOrUserName.text.toString(), etPassword.text.toString(),
                     imei, "1", firebaseToken, "2")
@@ -80,6 +89,55 @@ class LoginActivity : BaseActivity() {
 
     fun onRegister(view: View) {
         startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+    }
+
+    private fun setUpClickHere() {
+        val sequence: CharSequence =
+            Html.fromHtml("Please accept the <strong><a href='terms_condition' style='text-decoration:none'>${"Terms of Service"}</a></strong> and <strong><a href='privacy_policy' style='text-decoration:none'>${"Privacy Policy."}</a></strong>")
+        val strBuilder = SpannableStringBuilder(sequence)
+        val urls: Array<URLSpan> = strBuilder.getSpans(0, sequence.length, URLSpan::class.java)
+        for (span in urls) {
+            makeLinkClickable(strBuilder, span)
+        }
+        tvPrivacyPolicy.text = strBuilder
+        tvPrivacyPolicy.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    private fun makeLinkClickable(
+        strBuilder: SpannableStringBuilder,
+        span: URLSpan,
+    ) {
+        val start = strBuilder.getSpanStart(span)
+        val end = strBuilder.getSpanEnd(span)
+        val flags = strBuilder.getSpanFlags(span)
+        val clickable: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                var webViewURL = ""
+                if (span.url == "terms_condition") {
+                    webViewURL = APIServices.TERMS_CONDITIONS
+                } else if (span.url == "privacy_policy") {
+                    webViewURL = APIServices.PRIVACY_POLICY
+                }
+                startActivity(Intent(this@LoginActivity,
+                    WebViewActivity::class.java).putExtra(RequestParams.WEBVIEW_URL,
+                    webViewURL))
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                ds.isUnderlineText = false
+            }
+        }
+        strBuilder.setSpan(clickable, start, end, flags)
+        strBuilder.removeSpan(span)
+    }
+
+
+    private fun checkPrivacyPolicyChecked(): Boolean {
+        if (!cbPrivacyPolicyAccept.isChecked) {
+            Common.showToast(this,
+                getString(R.string.please_accept_the_terms_of_service_and_privacy_policy))
+        }
+        return cbPrivacyPolicyAccept.isChecked
     }
 
     fun onForgotPassword(view: View) {

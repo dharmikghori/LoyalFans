@@ -22,6 +22,8 @@ open class ProfileData {
     var isfavorite = ""
     var bank_status = "1"
     var card_status = "0"
+    var is_block = "0"
+    var s_block = "0"
     var subscription_plans: ArrayList<ProfileSubscriptionData>? = null
 }
 

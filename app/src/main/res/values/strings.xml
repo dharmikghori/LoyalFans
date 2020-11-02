@@ -60,6 +60,8 @@
     lorem_ipsum_ipsum_ipsu_ipsum_ipsum_ipsum_m_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum_ipsum
     </string>
     <string name="till_20_sep_2020" />
+    <string name="block">Block</string>
+    <string name="unblock">Unblock</string>
     <string name="blocked">BLOCKED</string>
     <string name="active">ACTIVE</string>
     <string name="expired">EXPIRED</string>
@@ -290,4 +292,13 @@
     <string name="invoice">Invoice</string>
     <string name="status">Status</string>
     <string name="you_dont_fans">You don\'t have any fans</string>
+    <string name="report_abuse">Report abuse</string>
+    <string name="report">Report</string>
+    <string name="write_a_comment">write a report reason…</string>
+    <string name="report_reason_validation">Please enter report reason</string>
+    <string name="please_accept_the_terms_of_service_and_privacy_policy">Please accept the Terms of Service and Privacy Policy.</string>
+    <string name="signup_privacy_policy">By Signing up you agree to our Terms of Service and Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
 </resources>

@@ -22,7 +22,11 @@ open class WebViewActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(null)
         setContentView(R.layout.activity_webview)
         val webViewURL = intent.getStringExtra(RequestParams.WEBVIEW_URL).toString()
-        if (webViewURL.contains(APIServices.W9_FORM_WEB_URL)) {
+        if (webViewURL == APIServices.PRIVACY_POLICY) {
+            tvToolBarName.text = getString(R.string.privacy_policy)
+        } else if (webViewURL == APIServices.TERMS_CONDITIONS) {
+            tvToolBarName.text = getString(R.string.terms_of_service)
+        } else if (webViewURL.contains(APIServices.W9_FORM_WEB_URL)) {
             tvToolBarName.text = getString(R.string.w_9_form)
         } else {
             tvToolBarName.text = getString(R.string.image_viewer)
