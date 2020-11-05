@@ -5,10 +5,12 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CompoundButton
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
@@ -448,7 +450,22 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
 
                 }
                 R.id.imgMoreOptionProfile -> {
-                    openReportPost()
+                    val activityActionMenu = PopupMenu(activity, view)
+                    val inflater = activityActionMenu.menuInflater
+                    activityActionMenu.setOnMenuItemClickListener { item: MenuItem ->
+                        when (item.itemId) {
+                            R.id.report_post -> {
+                                onReportProfileDialog()
+                                return@setOnMenuItemClickListener true
+                            }
+                            else -> return@setOnMenuItemClickListener false
+                        }
+                    }
+                    inflater.inflate(R.menu.post_option, activityActionMenu.menu)
+                    activityActionMenu.menu.findItem(R.id.edit_post).isVisible = false
+                    activityActionMenu.menu.findItem(R.id.delete_post).isVisible = false
+                    activityActionMenu.menu.findItem(R.id.report_post).isVisible = true
+                    activityActionMenu.show()
                 }
                 R.id.imgEditProfile -> {
                     if (activity is MainActivity) {
@@ -466,23 +483,24 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
     }
 
 
-    private fun openReportPost() {
+    private fun onReportProfileDialog() {
         val reportPostDialog = ReportPostDialog(BaseActivity.getActivity(), profileId, "2")
         reportPostDialog.setOnPPVSend(object : ReportPostDialog.OnReportPost {
             override fun onReport(reportRequest: ReportRequest) {
                 reportPostDialog.dismiss()
-                onReportPostAPI(reportRequest)
+                onReportProfileAPI(reportRequest)
             }
         })
         reportPostDialog.show()
     }
 
-    private fun onReportPostAPI(reportRequest: ReportRequest) {
+    private fun onReportProfileAPI(reportRequest: ReportRequest) {
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.reportPost(
             reportRequest, true
         ).observe(viewLifecycleOwner, {
             if (it.status) {
+                getProfile(true)
                 Common.showToast(BaseActivity.getActivity(), it.msg)
             }
         })

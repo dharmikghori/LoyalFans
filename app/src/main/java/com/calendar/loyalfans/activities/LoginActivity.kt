@@ -31,6 +31,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.OAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -45,6 +46,28 @@ class LoginActivity : BaseActivity() {
         setUpClickHere()
         setUpGmail()
         setUpFB()
+        setUpApple()
+    }
+
+    private val TAG = "AppleLogin"
+    lateinit var provider: OAuthProvider.Builder
+    private fun setUpApple() {
+        provider = OAuthProvider.newBuilder("apple.com")
+        provider.scopes = arrayOf("email", "name").toMutableList()
+        provider.addCustomParameter("locale", "en_US")
+        val pending = auth.pendingAuthResult
+        if (pending != null) {
+            pending.addOnSuccessListener { authResult ->
+                Log.d(TAG, "checkPending:onSuccess:$authResult")
+                // Get the user profile with authResult.getUser() and
+                // authResult.getAdditionalUserInfo(), and the ID
+                // token from Apple with authResult.getCredential().
+            }.addOnFailureListener { e ->
+                Log.w(TAG, "checkPending:onFailure", e)
+            }
+        } else {
+            Log.d(TAG, "pending: null")
+        }
     }
 
     private fun setUpGmail() {
@@ -252,6 +275,19 @@ class LoginActivity : BaseActivity() {
             return false
         }
         return true
+    }
+
+    fun onAppleLogin(view: View) {
+        auth.startActivityForSignInWithProvider(this, provider.build())
+            .addOnSuccessListener { authResult ->
+                // Sign-in successful!
+                Log.d(TAG, "activitySignIn:onSuccess:${authResult.user}")
+                val user = authResult.user
+                // ...
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "activitySignIn:onFailure", e)
+            }
     }
 
 

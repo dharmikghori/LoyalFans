@@ -136,29 +136,30 @@ class ProfileVideosFragment(private val profileId: String, private val isProfile
             }
 
             override fun onReportAbuse(postData: PostData, position: Int) {
-                openReportPost(postData)
+                openReportPost(postData, position)
             }
         }
     }
 
 
-    private fun openReportPost(postData: PostData) {
+    private fun openReportPost(postData: PostData, position: Int) {
         val reportPostDialog = ReportPostDialog(BaseActivity.getActivity(), postData.id, "1")
         reportPostDialog.setOnPPVSend(object : ReportPostDialog.OnReportPost {
             override fun onReport(reportRequest: ReportRequest) {
                 reportPostDialog.dismiss()
-                onReportPostAPI(reportRequest)
+                onReportPostAPI(reportRequest, position)
             }
         })
         reportPostDialog.show()
     }
 
-    private fun onReportPostAPI(reportRequest: ReportRequest) {
+    private fun onReportPostAPI(reportRequest: ReportRequest, position: Int) {
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.reportPost(
             reportRequest, true
         ).observe(viewLifecycleOwner, {
             if (it.status) {
+                myProfilePostAdapter?.notifyItemRemoved(position)
                 Common.showToast(BaseActivity.getActivity(), it.msg)
             }
         })

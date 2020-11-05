@@ -176,6 +176,15 @@
                         android:src="@mipmap/ic_facebook" />
 
                 </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onAppleLogin"
+                    android:src="@mipmap/ic_gmail"
+                    android:visibility="gone" />
             </LinearLayout>
 
 
