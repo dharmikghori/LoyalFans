@@ -22,6 +22,7 @@ open class PostData : BaseResponse(), Serializable {
     var comments: String = "0"
     var bookmark: String = ""
     var is_likes: String = ""
+    var report_abuse: String = ""
     var suggestions: ArrayList<SuggestionData> = ArrayList()
 }
 

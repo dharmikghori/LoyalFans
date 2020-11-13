@@ -9,6 +9,16 @@
     <item
         android:id="@+id/report_post"
         android:title="@string/report_abuse" />
+
+    <item
+        android:id="@+id/block_user"
+        android:title="@string/block"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/unblock_user"
+        android:title="@string/unblock"
+        android:visible="false" />
     <!-- <item
          android:id="@+id/cancel_activity_item"
          android:title="@string/cancel" />-->

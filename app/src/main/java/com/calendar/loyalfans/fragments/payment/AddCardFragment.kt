@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.adapter.CustomDropDownAdapter
 import com.calendar.loyalfans.model.request.AddCardRequest
-import com.calendar.loyalfans.model.request.CityRequest
 import com.calendar.loyalfans.model.response.CardData
 import com.calendar.loyalfans.model.response.StateCityData
 import com.calendar.loyalfans.retrofit.BaseViewModel
@@ -40,8 +38,23 @@ class AddCardFragment : Fragment(), View.OnClickListener {
         tvToolBarName.text = getString(R.string.add_card)
         imgBack.setOnClickListener(this)
         btnSaveAddCard.setOnClickListener(this)
-        getStates()
+        getCountryByAPI()
         getCards()
+    }
+
+    private fun getCountryByAPI() {
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.countryList(false
+        ).observe(viewLifecycleOwner, {
+            if (it.status) {
+                manageCountrySpinner(it.data)
+            }
+        })
+    }
+
+    private fun manageCountrySpinner(data: ArrayList<StateCityData>) {
+        spCountryCard.adapter = activity?.let { CustomDropDownAdapter(it, data) }
+
     }
 
     private fun getCards() {
@@ -61,55 +74,55 @@ class AddCardFragment : Fragment(), View.OnClickListener {
         tvLastDigit.text = cardData.last4
     }
 
-    private fun getStates() {
-        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-        baseViewModel.stateList(false
-        ).observe(viewLifecycleOwner, {
-            if (it.status) {
-                manageStateSpinner(it.data)
-            }
-        })
+//    private fun getStates() {
+//        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+//        baseViewModel.countryList(false
+//        ).observe(viewLifecycleOwner, {
+//            if (it.status) {
+//                manageStateSpinner(it.data)
+//            }
+//        })
+//
+//    }
 
-    }
+//    private fun manageStateSpinner(data: ArrayList<StateCityData>) {
+//        spStateCard.adapter = activity?.let { CustomDropDownAdapter(it, data) }
+//        spStateCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long,
+//            ) {
+//                val filter =
+//                    data.filter { it.name == (spStateCard.selectedItem as StateCityData).name }
+//                if (filter.isNotEmpty()) {
+//                    val stateCityData = filter[0]
+//                    bindCityBasedOnStates(stateCityData.id)
+//                }
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//            }
+//
+//        }
+//    }
 
-    private fun manageStateSpinner(data: ArrayList<StateCityData>) {
-        spStateCard.adapter = activity?.let { CustomDropDownAdapter(it, data) }
-        spStateCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long,
-            ) {
-                val filter =
-                    data.filter { it.name == (spStateCard.selectedItem as StateCityData).name }
-                if (filter.isNotEmpty()) {
-                    val stateCityData = filter[0]
-                    bindCityBasedOnStates(stateCityData.id)
-                }
-            }
+//    private fun bindCityBasedOnStates(stateID: String) {
+//        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+//        val cityRequest = CityRequest(stateID)
+//        baseViewModel.cityList(cityRequest, false
+//        ).observe(viewLifecycleOwner, {
+//            if (it.status) {
+//                manageCitySpinner(it.data)
+//            }
+//        })
+//
+//    }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-        }
-    }
-
-    private fun bindCityBasedOnStates(stateID: String) {
-        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-        val cityRequest = CityRequest(stateID)
-        baseViewModel.cityList(cityRequest, false
-        ).observe(viewLifecycleOwner, {
-            if (it.status) {
-                manageCitySpinner(it.data)
-            }
-        })
-
-    }
-
-    private fun manageCitySpinner(data: ArrayList<StateCityData>) {
-        spCityCard.adapter = activity?.let { CustomDropDownAdapter(it, data) }
-    }
+//    private fun manageCitySpinner(data: ArrayList<StateCityData>) {
+//        spCityCard.adapter = activity?.let { CustomDropDownAdapter(it, data) }
+//    }
 
 
     override fun onClick(view: View?) {
@@ -132,10 +145,10 @@ class AddCardFragment : Fragment(), View.OnClickListener {
             val addCardRequest =
                 AddCardRequest(
                     etStreetCard.text.toString(),
-                    (spCityCard.selectedItem as StateCityData).name,
-                    (spStateCard.selectedItem as StateCityData).name,
+                    etCityCard.text.toString(),
+                    etStateCard.text.toString(),
                     etZipCodeCard.text.toString(),
-                    getString(R.string.us),
+                    (spCountryCard.selectedItem as StateCityData).code,
                     etNameOnCardCard.text.toString(),
                     carNumber,
                     etCardExpYearCard.text.toString(),
@@ -163,6 +176,14 @@ class AddCardFragment : Fragment(), View.OnClickListener {
             }
             etZipCodeCard.text.isEmpty() -> {
                 activity?.let { Common.showToast(it, getString(R.string.zipcode_validation)) }
+                return false
+            }
+            etStateCard.text.isEmpty() -> {
+                activity?.let { Common.showToast(it, getString(R.string.state_validation)) }
+                return false
+            }
+            etCityCard.text.isEmpty() -> {
+                activity?.let { Common.showToast(it, getString(R.string.city_validation)) }
                 return false
             }
             etNameOnCardCard.text.isEmpty() -> {

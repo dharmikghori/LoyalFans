@@ -721,17 +721,17 @@ class BaseViewModel : ViewModel() {
     }
 
 
-    fun stateList(
+    fun countryList(
         progressShow: Boolean,
     ): MutableLiveData<StateCityResponse> {
-        val apiName = APIServices.STATE_LIST
+        val apiName = APIServices.COUNTRY_LIST
         val stateCityResponseData: MutableLiveData<StateCityResponse> =
             MutableLiveData()
         val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
         val baseRequest = BaseRequest()
         baseRequest.user_id = Common.getUserId()
         printStrRequestJson(baseRequest, apiName)
-        apiServices?.stateList(
+        apiServices?.countryList(
             baseRequest.user_id
         )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
             override fun onResponse(response: Any) {
@@ -743,27 +743,27 @@ class BaseViewModel : ViewModel() {
         return stateCityResponseData
     }
 
-    fun cityList(
-        cityRequest: CityRequest,
-        progressShow: Boolean,
-    ): MutableLiveData<StateCityResponse> {
-        val apiName = APIServices.CITY_LIST
-        val stateCityResponseData: MutableLiveData<StateCityResponse> =
-            MutableLiveData()
-        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
-        cityRequest.user_id = Common.getUserId()
-        printStrRequestJson(cityRequest, apiName)
-        apiServices?.cityList(
-            cityRequest.user_id, cityRequest.state_id
-        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
-            override fun onResponse(response: Any) {
-                val stateCityResponse = response as StateCityResponse
-                printStrJson(stateCityResponse, apiName)
-                stateCityResponseData.value = stateCityResponse
-            }
-        }))
-        return stateCityResponseData
-    }
+//    fun cityList(
+//        cityRequest: CityRequest,
+//        progressShow: Boolean,
+//    ): MutableLiveData<StateCityResponse> {
+//        val apiName = APIServices.CITY_LIST
+//        val stateCityResponseData: MutableLiveData<StateCityResponse> =
+//            MutableLiveData()
+//        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+//        cityRequest.user_id = Common.getUserId()
+//        printStrRequestJson(cityRequest, apiName)
+//        apiServices?.cityList(
+//            cityRequest.user_id, cityRequest.state_id
+//        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+//            override fun onResponse(response: Any) {
+//                val stateCityResponse = response as StateCityResponse
+//                printStrJson(stateCityResponse, apiName)
+//                stateCityResponseData.value = stateCityResponse
+//            }
+//        }))
+//        return stateCityResponseData
+//    }
 
     fun bankList(
         progressShow: Boolean,
@@ -1152,6 +1152,30 @@ class BaseViewModel : ViewModel() {
         }))
         return reportPostData
     }
+
+
+    fun getBlockUserList(
+        progressShow: Boolean,
+    ): MutableLiveData<FansResponse> {
+        val apiName = APIServices.GET_FANS
+        val fansData: MutableLiveData<FansResponse> =
+            MutableLiveData()
+        val apiServices: APIServices? = RetrofitService.createService(APIServices::class.java)
+        val fansFollowingRequest = FansFollowingRequest()
+        fansFollowingRequest.user_id = Common.getUserId()
+        printStrRequestJson(fansFollowingRequest, apiName)
+        apiServices?.getBlockUserList(
+            fansFollowingRequest.user_id
+        )?.enqueue(CustomCB(progressShow, object : CustomCB.OnAPIResponse {
+            override fun onResponse(response: Any) {
+                val fansResponse = response as FansResponse
+                printStrJson(fansResponse, apiName)
+                fansData.value = fansResponse
+            }
+        }))
+        return fansData
+    }
+
 
     private fun printStrRequestJson(request: Any, apiName: String) {
         try {

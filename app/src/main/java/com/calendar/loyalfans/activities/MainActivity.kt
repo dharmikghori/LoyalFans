@@ -79,7 +79,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    var fragmentThatWillAddNotReplace: List<Int> = listOf(1, 6, 7, 8, 17,10)
+    var fragmentThatWillAddNotReplace: List<Int> = listOf(1, 6, 7, 8, 17, 10, 14)
     var checkBottomVisibleOrNot: List<Int> = listOf(17, 1, 2, 3, 4, 5)
 
     fun loadFragment(type: Int) {
@@ -407,6 +407,10 @@ class MainActivity : BaseActivity() {
 
     fun onStatements(view: View) {
         loadFragment(24)
+    }
+
+    fun onBlockedUser(view: View) {
+        loadFragment(28)
     }
 
     fun onLogout(view: View) {

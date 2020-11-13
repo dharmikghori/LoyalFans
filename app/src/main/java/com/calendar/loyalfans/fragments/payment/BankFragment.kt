@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +15,6 @@ import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.CustomDropDownAdapter
 import com.calendar.loyalfans.model.SelectedFileData
-import com.calendar.loyalfans.model.request.CityRequest
 import com.calendar.loyalfans.model.response.BaseResponse
 import com.calendar.loyalfans.model.response.StateCityData
 import com.calendar.loyalfans.retrofit.APIServices
@@ -24,6 +22,7 @@ import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_addcard.*
 import kotlinx.android.synthetic.main.fragment_bank_detail.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
@@ -66,8 +65,23 @@ class BankFragment : Fragment(), View.OnClickListener {
         btnSubmitBankDetails.setOnClickListener(this)
         btnDateOfBirth.setOnClickListener(this)
         btnIDExpirationDate.setOnClickListener(this)
-        getStates()
+        getCountryByAPI()
         setUpDocumentTypeSpinner()
+    }
+
+    private fun getCountryByAPI() {
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.countryList(false
+        ).observe(viewLifecycleOwner, {
+            if (it.status) {
+                manageCountrySpinner(it.data)
+            }
+        })
+    }
+
+    private fun manageCountrySpinner(data: java.util.ArrayList<StateCityData>) {
+        spCountryBank.adapter = activity?.let { CustomDropDownAdapter(it, data) }
+
     }
 
     private fun setUpDocumentTypeSpinner() {
@@ -89,55 +103,55 @@ class BankFragment : Fragment(), View.OnClickListener {
         return documentList
     }
 
-    private fun getStates() {
-        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-        baseViewModel.stateList(false
-        ).observe(viewLifecycleOwner, {
-            if (it.status) {
-                manageStateSpinner(it.data)
-            }
-        })
+//    private fun getStates() {
+//        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+//        baseViewModel.countryList(false
+//        ).observe(viewLifecycleOwner, {
+//            if (it.status) {
+//                manageStateSpinner(it.data)
+//            }
+//        })
+//
+//    }
 
-    }
+//    private fun manageStateSpinner(data: ArrayList<StateCityData>) {
+//        spStateBank.adapter = activity?.let { CustomDropDownAdapter(it, data) }
+//        spStateBank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long,
+//            ) {
+//                val filter =
+//                    data.filter { it.name == (spStateBank.selectedItem as StateCityData).name }
+//                if (filter.isNotEmpty()) {
+//                    val stateCityData = filter[0]
+//                    bindCityBasedOnStates(stateCityData.id)
+//                }
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//            }
+//
+//        }
+//    }
 
-    private fun manageStateSpinner(data: ArrayList<StateCityData>) {
-        spStateBank.adapter = activity?.let { CustomDropDownAdapter(it, data) }
-        spStateBank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long,
-            ) {
-                val filter =
-                    data.filter { it.name == (spStateBank.selectedItem as StateCityData).name }
-                if (filter.isNotEmpty()) {
-                    val stateCityData = filter[0]
-                    bindCityBasedOnStates(stateCityData.id)
-                }
-            }
+//    private fun bindCityBasedOnStates(stateID: String) {
+//        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+//        val cityRequest = CityRequest(stateID)
+//        baseViewModel.cityList(cityRequest, false
+//        ).observe(viewLifecycleOwner, {
+//            if (it.status) {
+//                manageCitySpinner(it.data)
+//            }
+//        })
+//
+//    }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-        }
-    }
-
-    private fun bindCityBasedOnStates(stateID: String) {
-        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-        val cityRequest = CityRequest(stateID)
-        baseViewModel.cityList(cityRequest, false
-        ).observe(viewLifecycleOwner, {
-            if (it.status) {
-                manageCitySpinner(it.data)
-            }
-        })
-
-    }
-
-    private fun manageCitySpinner(data: ArrayList<StateCityData>) {
-        spCityBank.adapter = activity?.let { CustomDropDownAdapter(it, data) }
-    }
+//    private fun manageCitySpinner(data: ArrayList<StateCityData>) {
+//        spCityBank.adapter = activity?.let { CustomDropDownAdapter(it, data) }
+//    }
 
     override fun onClick(view: View?) {
         if (view != null) {
@@ -282,18 +296,27 @@ class BankFragment : Fragment(), View.OnClickListener {
                         .addFormDataPart("last_name", etLastNameBank.text.toString())
                         .addFormDataPart("phone", etPhoneBank.text.toString())
                         .addFormDataPart("ssn_num", etTaxIDBank.text.toString())
-                        .addFormDataPart("country", getString(R.string.us))
+                        .addFormDataPart("country",
+                            (spCountryBank.selectedItem as StateCityData).code)
                         .addFormDataPart("street", etStreetBank.text.toString())
-                        .addFormDataPart("state", (spStateBank.selectedItem as StateCityData).name)
+                        .addFormDataPart("state", etStateBank.text.toString())
                         .addFormDataPart("zip_code", etZipCodeBank.text.toString())
                         .addFormDataPart("birthdate", btnDateOfBirth.text.toString())
                         .addFormDataPart("document_type",
                             (spDocumentSelectionBank.selectedItem as StateCityData).name)
                         .addFormDataPart("exp_date", btnIDExpirationDate.text.toString())
                         .addFormDataPart("user_id", Common.getUserId())
-                        .addFormDataPart("city", (spCityBank.selectedItem as StateCityData).name)
-                    body = selectedSelfieImage?.let { manageDocumentData(body, it, "doc_selfi") }!!
-                    body = selectedIDImage?.let { manageDocumentData(body, it, "doc_id_pic") }!!
+                        .addFormDataPart("city", etCityBank.text.toString())
+                    body = selectedSelfieImage?.let {
+                        manageDocumentData(body,
+                            it,
+                            "doc_selfi")
+                    }!!
+                    body = selectedIDImage?.let {
+                        manageDocumentData(body,
+                            it,
+                            "doc_id_pic")
+                    }!!
 
                     val build = body.build()
                     val request: Request = Request.Builder()
@@ -381,22 +404,23 @@ class BankFragment : Fragment(), View.OnClickListener {
                 activity?.let { Common.showToast(it, getString(R.string.taxid_validation)) }
                 return false
             }
-            etCountryNameBank.text.toString().isEmpty() -> {
-                activity?.let { Common.showToast(it, getString(R.string.country_validation)) }
-                return false
-            }
+//            spCountryCard.text.toString().isEmpty() -> {
+//                activity?.let { Common.showToast(it, getString(R.string.country_validation)) }
+//                return false
+//            }
             etStreetBank.text.toString().isEmpty() -> {
                 activity?.let { Common.showToast(it, getString(R.string.street_validation)) }
                 return false
             }
-//            (spStateBank.selectedItem.toString() == "-- Select --") -> {
-//                activity?.let { Common.showToast(it, getString(R.string.state_validation)) }
-//                return false
-//            }
-//            (spCityBank.selectedItem.toString() == "-- Select --") -> {
-//                activity?.let { Common.showToast(it, getString(R.string.city_validation)) }
-//                return false
-//            }
+            etStateBank.text.isEmpty() -> {
+                activity?.let { Common.showToast(it, getString(R.string.state_validation)) }
+                return false
+            }
+            etCityBank.text.isEmpty() -> {
+                activity?.let { Common.showToast(it, getString(R.string.city_validation)) }
+                return false
+            }
+
             etZipCodeBank.text.toString().isEmpty() -> {
                 activity?.let { Common.showToast(it, getString(R.string.zipcode_validation)) }
                 return false

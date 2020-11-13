@@ -1,10 +1,12 @@
 package com.calendar.loyalfans.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -59,6 +61,7 @@ class MyProfilePostAdapter(
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: HomePostViewHolder, position: Int) {
         val postData = getItem(position)
         if (isProfileVisible) {
@@ -154,6 +157,16 @@ class MyProfilePostAdapter(
         holder.imgMoreOption.setOnClickListener {
             openOptionMenu(it, postData, position)
         }
+        if (postData.report_abuse == "1") {
+            if (activity != null) {
+                holder.tvReportWarning.visibility = View.VISIBLE
+                holder.layPostMessageAndVideo.foreground =
+                    activity.resources.getDrawable(R.drawable.transparent_bg)
+            }
+        } else {
+            holder.tvReportWarning.visibility = View.GONE
+            holder.layPostMessageAndVideo.background = null
+        }
     }
 
     class HomePostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -171,6 +184,8 @@ class MyProfilePostAdapter(
         val imgMoreOption: ImageView = view.imgMoreOption
         val layComment: LinearLayout = view.layComment
         val imgPostVisible: ImageView = view.imgPostVisible
+        val layPostMessageAndVideo: RelativeLayout = view.layPostMessageAndVideo
+        val tvReportWarning: TextView = view.tvReportWarning
     }
 
     private fun openOptionMenu(view: View, postData: PostData, position: Int) {

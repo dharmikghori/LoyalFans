@@ -33,8 +33,8 @@
     <string name="akash_2621">akash_2621</string>
     <string name="notifications">Notifications</string>
     <string name="security">Security</string>
-    <string name="your_cards_to_subscribe">Your Cards (to subscribe)</string>
-    <string name="add_bank_to_earn">Add Bank (to earn)</string>
+    <string name="your_cards_to_subscribe">Your Cards</string>
+    <string name="add_bank_to_earn">Add Bank</string>
     <string name="help_amp_support"><![CDATA[Help & Support]]></string>
     <string name="logout">Logout</string>
     <string name="search">Search</string>
@@ -62,6 +62,9 @@
     <string name="till_20_sep_2020" />
     <string name="block">Block</string>
     <string name="unblock">Unblock</string>
+    <string name="unblock_message">Are you sure want to unblock this contact?</string>
+    <string name="block_message">Are you sure want to block this contact?</string>
+    <string name="blocked_users">Blocked users</string>
     <string name="blocked">BLOCKED</string>
     <string name="active">ACTIVE</string>
     <string name="expired">EXPIRED</string>
@@ -80,7 +83,7 @@
     <string name="upload_profile_image">upload profile image</string>
     <string name="upload_cover_image">Upload cover image</string>
     <string name="edit_profile">Edit Profile</string>
-    <string name="subscription_plan">Subscription Plan</string>
+    <string name="subscription_plan">Custom pay</string>
     <string name="email_notifications">Email Notifications</string>
     <string name="push_notifications">Push Notifications</string>
     <string name="receive_site_notifications_about">Receive Site Notifications About</string>
@@ -152,7 +155,7 @@
     <string name="username_Validation">Username is required</string>
     <string name="location_Validation">Location is required</string>
     <string name="website_Validation">Website URL is required</string>
-    <string name="add_edit_subscription">Add/Edit Subscription</string>
+    <string name="add_edit_subscription">Add/Edit Custom pay</string>
     <string name="_1_month">1 month</string>
     <string name="_3_month">3 month</string>
     <string name="_6_month">6 month</string>
@@ -201,8 +204,8 @@
     <string name="taxid_validation">Please enter taxID or SSN</string>
     <string name="country_validation">Please select country</string>
     <string name="street_validation">Please enter street</string>
-    <string name="state_validation">Please select state</string>
-    <string name="city_validation">Please select city</string>
+    <string name="state_validation">Please enter state</string>
+    <string name="city_validation">Please enter city</string>
     <string name="zipcode_validation">Please enter zipcode</string>
     <string name="dob_validation">Please select DOB</string>
     <string name="selfie_image_validation">Please select selfie image</string>
@@ -295,10 +298,17 @@
     <string name="report_abuse">Report abuse</string>
     <string name="report">Report</string>
     <string name="write_a_comment">write a report reason…</string>
-    <string name="report_reason_validation">Please enter report reason</string>
+    <string name="report_reason_validation">Please select report reason</string>
     <string name="please_accept_the_terms_of_service_and_privacy_policy">Please accept the Terms of Service and Privacy Policy.</string>
     <string name="signup_privacy_policy">By Signing up you agree to our Terms of Service and Privacy Policy</string>
     <string name="terms_of_service">Terms of Service</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="custom_pay">Custom pay</string>
+    <string name="abusive_content">Abusive content</string>
+    <string name="objectionable_content">Objectionable content</string>
+    <string name="sexual_or_nudity_content">Sexual or nudity content</string>
+    <string name="others_provide_reason_for_the_report">Others - (Provide Reason for the report</string>
+    <string name="report_abusive_post_message">Your post is removed due to "Abusive or objectionable content reported on this post"</string>
+    <string name="add_post_warning">kindly note, if your post does not follow our term &amp; condition or found objection then the post will be removed and the profile can be blocked within 24 hours</string>
 
 </resources>

@@ -8,7 +8,7 @@ open class StateCityResponse : BaseResponse() {
 open class StateCityData {
     var id: String = ""
     var name: String = ""
-    var state_id: String = ""
+    var code: String = ""
     var status: String = ""
 }
 

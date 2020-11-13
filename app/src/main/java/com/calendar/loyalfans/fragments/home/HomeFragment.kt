@@ -137,14 +137,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun openReportPost(postData: PostData, position: Int) {
-        val reportPostDialog = ReportPostDialog(BaseActivity.getActivity(), postData.id, "1")
-        reportPostDialog.setOnPPVSend(object : ReportPostDialog.OnReportPost {
-            override fun onReport(reportRequest: ReportRequest) {
-                reportPostDialog.dismiss()
-                onReportPostAPI(reportRequest, position)
-            }
-        })
-        reportPostDialog.show()
+        if (activity != null) {
+            val reportPostDialog = ReportPostDialog(activity!!, postData.id, "1")
+            reportPostDialog.setOnPPVSend(object : ReportPostDialog.OnReportPost {
+                override fun onReport(reportRequest: ReportRequest) {
+                    reportPostDialog.dismiss()
+                    onReportPostAPI(reportRequest, position)
+                }
+            })
+            reportPostDialog.show()
+        }
     }
 
     private fun onReportPostAPI(reportRequest: ReportRequest, position: Int) {

@@ -46,8 +46,10 @@ interface APIServices {
         const val ADD_CARD = "auth/addcard"
         const val PAID_SUBSCRIPTION = "auth/createsubscription"
         const val CANCEL_PAID_SUBSCRIPTION = "auth/cancelsubscription"
-        const val STATE_LIST = "auth/statelist"
-        const val CITY_LIST = "auth/citylist"
+
+        //        const val STATE_LIST = "auth/statelist"
+//        const val CITY_LIST = "auth/citylist"
+        const val COUNTRY_LIST = "auth/countrylist"
         const val ADD_BANK = "auth/addbank"
         const val BANK_LIST = "auth/banklist"
         const val W9_FORM_STATUS = "auth/w9formstatus"
@@ -65,6 +67,7 @@ interface APIServices {
         const val POST_DETAILS = "auth/getpostdetails"
         const val BLOCK_USER = "auth/blockuser"
         const val REPORT_POST = "auth/reports"
+        const val BLOCK_USER_LIST = "auth/blockuserlist"
     }
 
     @FormUrlEncoded
@@ -339,17 +342,17 @@ interface APIServices {
     ): Call<BaseResponse>
 
     @FormUrlEncoded
-    @POST(STATE_LIST)
-    fun stateList(
+    @POST(COUNTRY_LIST)
+    fun countryList(
         @Field("user_id") user_id: String,
     ): Call<StateCityResponse>
 
-    @FormUrlEncoded
-    @POST(CITY_LIST)
-    fun cityList(
-        @Field("user_id") user_id: String,
-        @Field("state_id") state_id: String,
-    ): Call<StateCityResponse>
+//    @FormUrlEncoded
+//    @POST(CITY_LIST)
+//    fun cityList(
+//        @Field("user_id") user_id: String,
+//        @Field("state_id") state_id: String,
+//    ): Call<StateCityResponse>
 
     @FormUrlEncoded
     @POST(BANK_LIST)
@@ -477,4 +480,10 @@ interface APIServices {
         @Field("type") type: String,
         @Field("report_comment") report_comment: String,
     ): Call<BaseResponse>
+
+    @FormUrlEncoded
+    @POST(BLOCK_USER_LIST)
+    fun getBlockUserList(
+        @Field("user_id") user_id: String,
+    ): Call<FansResponse>
 }

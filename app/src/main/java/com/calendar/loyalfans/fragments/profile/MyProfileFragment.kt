@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.PopupMenu
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
@@ -55,6 +56,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         super.onActivityCreated(savedInstanceState)
         if (profileId != Common.getUserId()) {
             tvToolBarName.text = getString(R.string.other_profile)
+            btnCustomPay.visibility = View.GONE
             imgEditProfile.visibility = View.GONE
             cbFavouriteProfile.visibility = View.VISIBLE
             cbFavouriteProfile.setOnCheckedChangeListener(this)
@@ -65,6 +67,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
             (activity as MainActivity).manageBottomNavigationVisibility(true)
             cbFavouriteProfile.visibility = View.GONE
             imgEditProfile.visibility = View.VISIBLE
+            btnCustomPay.visibility = View.VISIBLE
             tvToolBarName.text = getString(R.string.myprofile)
             imgBack.visibility = View.GONE
             imgMoreOptionProfile.visibility = View.GONE
@@ -76,6 +79,7 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         imgEditProfile.setOnClickListener(this)
         imgShare.setOnClickListener(this)
         imgMoreOptionProfile.setOnClickListener(this)
+        btnCustomPay.setOnClickListener(this)
         setViewPagerHeight()
         getProfile(false)
     }
@@ -141,7 +145,6 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         if (Common.getUserId() == profileId) {
             activity?.let { SPHelper(it).saveProfileData(data) }
         }
-        cbFavouriteProfile.visibility = View.VISIBLE
         imgShare.visibility = View.VISIBLE
         tvProfileName.text = data.display_name
         tvUserName.text = "@" + data.username
@@ -152,7 +155,11 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         cbFavouriteProfile.setOnCheckedChangeListener(null)
         cbFavouriteProfile.isChecked = data.isfavorite == "1"
         cbFavouriteProfile.setOnCheckedChangeListener(this)
-
+        if (data.tofollow == "1") {
+            imgMoreOptionProfile.visibility = View.VISIBLE
+        } else {
+            imgMoreOptionProfile.visibility = View.GONE
+        }
         activity?.let { Common.loadImageUsingURL(imgProfilePic, data.profile_img, it) }
         activity?.let { Common.loadImageUsingURL(imgCoverPic, data.banner_img, it) }
     }
@@ -183,19 +190,65 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         btnFollowUnFollow.background = resources.getDrawable(R.drawable.cancel_subscription_bg)
         btnFollowUnFollow.text = getString(R.string.unblock)
         btnFollowUnFollow.setOnClickListener {
-            val blockUnblockRequest =
-                BlockUnblockRequest(profileId, "2")
-            val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-            baseViewModel.blockUser(
-                blockUnblockRequest,
-                true
-            )
-                .observe(viewLifecycleOwner,
-                    {
-                        if (it.status) {
-                            getProfile(true)
-                        }
-                    })
+            askUnblockConfirmation()
+        }
+    }
+
+    private fun askUnblockConfirmation() {
+        if (activity != null) {
+            val builder = AlertDialog.Builder(activity!!)
+            builder.setTitle(R.string.unblock)
+            builder.setMessage(R.string.unblock_message)
+            builder.setPositiveButton("Yes") { dialogInterface, which ->
+                val blockUnblockRequest =
+                    BlockUnblockRequest(profileId, "2")
+                val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+                baseViewModel.blockUser(
+                    blockUnblockRequest,
+                    true
+                )
+                    .observe(viewLifecycleOwner,
+                        {
+                            if (it.status) {
+                                getProfile(true)
+                            }
+                        })
+            }
+            builder.setNegativeButton("Cancel") { dialogInterface, which ->
+                dialogInterface.dismiss()
+            }
+            val alertDialog: AlertDialog = builder.create()
+            alertDialog.setCancelable(false)
+            alertDialog.show()
+        }
+    }
+
+    private fun askBlockConfirmation() {
+        if (activity != null) {
+            val builder = AlertDialog.Builder(activity!!)
+            builder.setTitle(R.string.unblock)
+            builder.setMessage(R.string.block_message)
+            builder.setPositiveButton("Yes") { dialogInterface, which ->
+                val blockUnblockRequest =
+                    BlockUnblockRequest(profileId, "1")
+                val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+                baseViewModel.blockUser(
+                    blockUnblockRequest,
+                    true
+                )
+                    .observe(viewLifecycleOwner,
+                        {
+                            if (it.status) {
+                                getProfile(true)
+                            }
+                        })
+            }
+            builder.setNegativeButton("Cancel") { dialogInterface, which ->
+                dialogInterface.dismiss()
+            }
+            val alertDialog: AlertDialog = builder.create()
+            alertDialog.setCancelable(false)
+            alertDialog.show()
         }
     }
 
@@ -458,6 +511,16 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                                 onReportProfileDialog()
                                 return@setOnMenuItemClickListener true
                             }
+                            R.id.block_user -> {
+                                askBlockConfirmation()
+//                                onBlockUnblockFans("1")
+                                return@setOnMenuItemClickListener true
+                            }
+                            R.id.unblock_user -> {
+                                askUnblockConfirmation()
+//                                onBlockUnblockFans("2")
+                                return@setOnMenuItemClickListener true
+                            }
                             else -> return@setOnMenuItemClickListener false
                         }
                     }
@@ -465,6 +528,13 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                     activityActionMenu.menu.findItem(R.id.edit_post).isVisible = false
                     activityActionMenu.menu.findItem(R.id.delete_post).isVisible = false
                     activityActionMenu.menu.findItem(R.id.report_post).isVisible = true
+                    if (profileData.is_block == "0") {
+                        activityActionMenu.menu.findItem(R.id.block_user).isVisible = true
+                        activityActionMenu.menu.findItem(R.id.unblock_user).isVisible = false
+                    } else {
+                        activityActionMenu.menu.findItem(R.id.block_user).isVisible = false
+                        activityActionMenu.menu.findItem(R.id.unblock_user).isVisible = true
+                    }
                     activityActionMenu.show()
                 }
                 R.id.imgEditProfile -> {
@@ -476,10 +546,36 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                         otherProfileActivity.loadFragment(10, otherProfileActivity.otherProfileId)
                     }
                 }
+                R.id.btnCustomPay -> {
+                    if (activity is MainActivity) {
+                        val mainActivity = activity as MainActivity
+                        mainActivity.loadFragment(14)
+                    } else if (activity is OtherProfileActivity) {
+                        val otherProfileActivity = activity as OtherProfileActivity
+                        otherProfileActivity.loadFragment(14, otherProfileActivity.otherProfileId)
+                    }
+                }
                 else -> {
                 }
             }
         }
+    }
+
+    private fun onBlockUnblockFans(blockStatus: String) {
+        val blockUnblockRequest =
+            BlockUnblockRequest(profileId, blockStatus)
+        val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
+        baseViewModel.blockUser(
+            blockUnblockRequest,
+            true
+        )
+            .observe(viewLifecycleOwner,
+                {
+                    if (it.status) {
+                        activity?.let { it1 -> Common.showToast(it1, it.msg) }
+                        getProfile(true)
+                    }
+                })
     }
 
 

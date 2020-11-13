@@ -106,6 +106,9 @@ class FansListAdapter(
         } else if (fansData.block == "1") {
             activityActionMenu.menu.findItem(R.id.block_fans).isVisible = false
             activityActionMenu.menu.findItem(R.id.unblock_fans).isVisible = true
+        } else {
+            activityActionMenu.menu.findItem(R.id.block_fans).isVisible = false
+            activityActionMenu.menu.findItem(R.id.unblock_fans).isVisible = true
         }
         activityActionMenu.show()
     }

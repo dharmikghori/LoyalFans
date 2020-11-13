@@ -19,17 +19,58 @@
             style="@style/BaseTextView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/dialog_top"
-            android:gravity="center_vertical"
+            android:background="@color/add_preview"
+            android:gravity="center"
             android:padding="@dimen/_10sdp"
             android:text="@string/report_abuse"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"
+            android:textColor="@color/theme_black" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/add_preview"
             android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/rbReportReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/rbAbusiveContent"
+                    style="@style/RadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:checked="true"
+                    android:text="@string/abusive_content" />
+
+                <RadioButton
+                    android:id="@+id/rbObjectionableContent"
+                    style="@style/RadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:text="@string/objectionable_content" />
+
+                <RadioButton
+                    android:id="@+id/rbSexualContent"
+                    style="@style/RadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:text="@string/sexual_or_nudity_content" />
+
+                <RadioButton
+                    android:id="@+id/rbOther"
+                    style="@style/RadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:text="@string/others_provide_reason_for_the_report" />
+            </RadioGroup>
+
 
             <EditText
                 android:id="@+id/etReportComment"
@@ -44,19 +85,22 @@
                 android:inputType="textMultiLine"
                 android:lines="4"
                 android:padding="@dimen/_7sdp"
+                android:text="@string/abusive_content"
                 android:textColor="@color/black"
-                android:textColorHint="@color/border_color" />
+                android:textColorHint="@color/border_color"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvReport"
-                style="@style/BaseTextView"
-                android:layout_width="wrap_content"
+                style="@style/BaseColorGradientButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:text="@string/report"
-                android:textColor="@color/colorAccent" />
+                android:layout_marginStart="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_50sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="@string/submit" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

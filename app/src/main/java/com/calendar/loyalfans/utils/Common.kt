@@ -205,6 +205,9 @@ class Common {
                 27 -> {
                     "MessageAnalyticFragment"
                 }
+                28 -> {
+                    "BlockedFansFragment"
+                }
                 else -> ""
             }
         }
@@ -277,6 +280,9 @@ class Common {
                 24 -> {
                     StatementFragment.newInstance()
                 }
+                28 -> {
+                    BlockedFansFragment.newInstance()
+                }
                 else -> null
             }
         }
@@ -319,6 +325,9 @@ class Common {
                 }
                 17 -> {
                     CommentsFragment.newInstance(profileId)
+                }
+                14 -> {
+                    SubscriptionFragment.newInstance()
                 }
                 else -> null
             }

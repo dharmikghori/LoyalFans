@@ -136,19 +136,15 @@
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
-            <EditText
-                android:id="@+id/etCountryNameBank"
-                style="@style/FullBorderEditText"
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spCountryBank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:enabled="false"
-                android:focusable="false"
-                android:hint="@string/country_hint"
-                android:importantForAutofill="no"
-                android:inputType="none"
-                android:text="@string/usa"
-                tools:ignore="LabelFor" />
+                android:background="@drawable/edittext_round_border"
+                android:hint="@string/state_province_hint"
+                android:padding="0dp" />
 
             <TextView
                 style="@style/BaseTextView"
@@ -179,14 +175,17 @@
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spStateBank"
+
+            <EditText
+                android:id="@+id/etStateBank"
+                style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_round_border"
-                android:hint="@string/state_province_hint"
-                android:padding="0dp" />
+                android:hint="@string/state_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
 
             <TextView
                 style="@style/BaseTextView"
@@ -197,15 +196,16 @@
                 android:textAllCaps="true"
                 android:textColor="@color/theme_black" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spCityBank"
+            <EditText
+                android:id="@+id/etCityBank"
+                style="@style/FullBorderEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_round_border"
                 android:hint="@string/city_hint"
-                android:padding="0dp"
-                android:prompt="@layout/custom_spinner_item" />
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
 
             <TextView
                 style="@style/BaseTextView"
