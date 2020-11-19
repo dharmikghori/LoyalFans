@@ -437,11 +437,11 @@ class MainActivity : BaseActivity() {
     fun onBankAdd(view: View) {
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         baseViewModel.bankList(true).observe(this, {
-//            if (it.bank_status) {
-//                loadFragment(19, it.data)
-//            } else {
+            if (it.bank_status) {
+                loadFragment(19, it.data)
+            } else {
             loadFragment(18)
-//            }
+            }
         })
     }
 

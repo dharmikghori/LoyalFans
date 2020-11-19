@@ -15,6 +15,12 @@ open class BankListData {
     var street: String = ""
     var city: String = ""
     var state: String = ""
+    var status: String = ""
+    var country: String = ""
+    var birthdate: String = ""
+    var doc_type: String = ""
+    var exp_date: String = ""
+    var zip_code: String = ""
 }
 
 

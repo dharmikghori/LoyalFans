@@ -292,6 +292,38 @@
                 android:layerType="software"
                 android:src="@drawable/photo_id_rules_id" />
 
+            <LinearLayout
+                android:id="@+id/layOtherDoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/BaseTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/other_doc_text"
+                    android:textAllCaps="true"
+                    android:textColor="@color/red" />
+
+                <Button
+                    android:id="@+id/btnChooseOther"
+                    style="@style/BaseColorGradientButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/choose_file" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_80sdp"
+                    android:contentDescription="@string/app_name"
+                    android:layerType="software"
+                    android:src="@drawable/photo_id_rules_selfie" />
+
+            </LinearLayout>
+
             <TextView
                 style="@style/BaseTextView"
                 android:layout_width="match_parent"

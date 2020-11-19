@@ -85,21 +85,13 @@
                 android:text="@string/subscription_plan"
                 android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tvBlockedUser"
-                style="@style/SideMenuBaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvPassword"
-                android:onClick="onBlockedUser"
-                android:text="@string/blocked_users"/>
 
             <TextView
                 android:id="@+id/tvYourCards"
                 style="@style/SideMenuBaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvBlockedUser"
+                android:layout_below="@+id/tvPassword"
                 android:onClick="onAddCard"
                 android:text="@string/your_cards_to_subscribe" />
 
@@ -131,11 +123,20 @@
                 android:text="@string/request_withdrawal" />
 
             <TextView
-                android:id="@+id/tvHelpAndSupport"
+                android:id="@+id/tvBlockedUser"
                 style="@style/SideMenuBaseTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvStatements"
+                android:onClick="onBlockedUser"
+                android:text="@string/blocked_users" />
+
+            <TextView
+                android:id="@+id/tvHelpAndSupport"
+                style="@style/SideMenuBaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvBlockedUser"
                 android:onClick="onHelpAndSupport"
                 android:text="@string/help_amp_support" />
 

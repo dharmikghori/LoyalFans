@@ -83,6 +83,7 @@ class HomePostAdapter(
         activity?.let {
             holder.photos_viewpager.adapter =
                 PostImageVideoPagerAdapter(it, postData.images)
+
             holder.tabLayout.visibility = View.GONE
         }
 

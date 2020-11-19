@@ -49,6 +49,12 @@ class PostImageVideoPagerAdapter(
             inflater.inflate(R.layout.fragment_post_image_video_pager, container, false)
         val imgPostImageVideoPager = view.findViewById<ImageView>(R.id.imgPostImageVideoPager)
         val imgPlayVideo = view.findViewById<ImageView>(R.id.imgPlayVideo)
+        val imgMultipleImage = view.findViewById<ImageView>(R.id.imgMultipleImage)
+        if (imageData.isEmpty() || imageData.length == 1) {
+            imgMultipleImage.visibility = View.GONE
+        } else {
+            imgMultipleImage.visibility = View.VISIBLE
+        }
         Common.loadImageUsingURL(imgPostImageVideoPager,
             imageData,
             context, true)

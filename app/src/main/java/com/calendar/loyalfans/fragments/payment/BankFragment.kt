@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ import com.calendar.loyalfans.activities.BaseActivity
 import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.adapter.CustomDropDownAdapter
 import com.calendar.loyalfans.model.SelectedFileData
+import com.calendar.loyalfans.model.response.BankListData
 import com.calendar.loyalfans.model.response.BaseResponse
 import com.calendar.loyalfans.model.response.StateCityData
 import com.calendar.loyalfans.retrofit.APIServices
@@ -22,7 +24,6 @@ import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.SPHelper
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_addcard.*
 import kotlinx.android.synthetic.main.fragment_bank_detail.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
@@ -41,10 +42,11 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
-class BankFragment : Fragment(), View.OnClickListener {
+class BankFragment(val bankItem: BankListData?) : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() = BankFragment()
+        fun newInstance() = BankFragment(null)
+        fun newInstance(bankItem: BankListData) = BankFragment(bankItem)
     }
 
     override fun onCreateView(
@@ -56,17 +58,50 @@ class BankFragment : Fragment(), View.OnClickListener {
 
     var selectedSelfieImage: SelectedFileData? = null
     var selectedIDImage: SelectedFileData? = null
+    var selectedOtherIDImage: SelectedFileData? = null
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        tvToolBarName.text = getString(R.string.banking)
+        tvToolBarName.text = getString(R.string.banking_to_earn)
         imgBack.setOnClickListener(this)
         btnChooseID.setOnClickListener(this)
         btnChooseSelfie.setOnClickListener(this)
+        btnChooseOther.setOnClickListener(this)
         btnSubmitBankDetails.setOnClickListener(this)
         btnDateOfBirth.setOnClickListener(this)
         btnIDExpirationDate.setOnClickListener(this)
+        getDocumentList()
         getCountryByAPI()
-        setUpDocumentTypeSpinner()
+
+    }
+
+    var countryList: ArrayList<StateCityData> = ArrayList()
+    var documentDropDownList: ArrayList<StateCityData> = ArrayList()
+    private fun setUpBankEditData(bankItem: BankListData) {
+        etFirstNameBank.setText(bankItem.first_name)
+        etLastNameBank.setText(bankItem.last_name)
+        etPhoneBank.setText(bankItem.phone)
+        etTaxIDBank.setText(bankItem.ssn_num)
+        etStreetBank.setText(bankItem.street)
+        etStateBank.setText(bankItem.state)
+        etCityBank.setText(bankItem.city)
+        etZipCodeBank.setText(bankItem.zip_code)
+        btnDateOfBirth.text = bankItem.birthdate
+        btnIDExpirationDate.text = bankItem.exp_date
+        
+        for (position in 0..documentDropDownList.size) {
+            val docTypeItem = documentDropDownList[position]
+            if (docTypeItem.name == bankItem.doc_type) {
+                spDocumentSelectionBank.setSelection(position)
+                break
+            }
+        }
+        for (position in 0..countryList.size) {
+            val countryItem = countryList[position]
+            if (countryItem.code == bankItem.country) {
+                spCountryBank.setSelection(position)
+                break
+            }
+        }
     }
 
     private fun getCountryByAPI() {
@@ -74,33 +109,55 @@ class BankFragment : Fragment(), View.OnClickListener {
         baseViewModel.countryList(false
         ).observe(viewLifecycleOwner, {
             if (it.status) {
+                countryList = it.data
                 manageCountrySpinner(it.data)
+                setUpDocumentTypeSpinner()
             }
         })
     }
 
-    private fun manageCountrySpinner(data: java.util.ArrayList<StateCityData>) {
+    private fun manageCountrySpinner(data: ArrayList<StateCityData>) {
         spCountryBank.adapter = activity?.let { CustomDropDownAdapter(it, data) }
+        spCountryBank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                if (isOtherIDProof((spCountryBank.selectedItem as StateCityData).name)) {
+                    layOtherDoc.visibility = View.VISIBLE
+                } else {
+                    layOtherDoc.visibility = View.GONE
+                }
+            }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
     }
 
     private fun setUpDocumentTypeSpinner() {
         spDocumentSelectionBank.adapter =
-            activity?.let { CustomDropDownAdapter(it, getDocumentList()) }
+            activity?.let { CustomDropDownAdapter(it, documentDropDownList) }
+        if (bankItem != null) {
+            setUpBankEditData(bankItem)
+        }
     }
 
-    private fun getDocumentList(): ArrayList<StateCityData> {
-        val documentList = ArrayList<StateCityData>()
+    private fun getDocumentList() {
+        documentDropDownList.clear()
         val stateCityItem = StateCityData()
         stateCityItem.name = getString(R.string.passport)
-        documentList.add(stateCityItem)
+        documentDropDownList.add(stateCityItem)
         val stateCityItem1 = StateCityData()
         stateCityItem1.name = getString(R.string.driver_licence)
-        documentList.add(stateCityItem1)
+        documentDropDownList.add(stateCityItem1)
         val stateCityItem2 = StateCityData()
         stateCityItem2.name = getString(R.string.state_id_card)
-        documentList.add(stateCityItem2)
-        return documentList
+        documentDropDownList.add(stateCityItem2)
     }
 
 //    private fun getStates() {
@@ -202,6 +259,28 @@ class BankFragment : Fragment(), View.OnClickListener {
                         })
                     }
                 }
+                R.id.btnChooseOther -> {
+                    if (activity is MainActivity) {
+                        val mainActivity = activity as MainActivity
+                        mainActivity.imageSelection()
+                        mainActivity.setOnImageSelection(object : BaseActivity.OnImageSelection {
+                            override fun onSuccess(
+                                bitmap: Bitmap?,
+                                imagePath: String?,
+                                imageUri: Uri?,
+                            ) {
+                                selectedOtherIDImage = SelectedFileData()
+                                selectedOtherIDImage!!.imageUri = imageUri
+                                if (imagePath != null) {
+                                    selectedOtherIDImage!!.filePath = imagePath
+                                    btnChooseID.text =
+                                        getString(R.string.choose_file) + " - " + File(imagePath).name
+                                }
+                            }
+                        })
+                    }
+                }
+
                 R.id.btnSubmitBankDetails -> {
                     makeAddBankDetailsCall()
                 }
@@ -317,7 +396,13 @@ class BankFragment : Fragment(), View.OnClickListener {
                             it,
                             "doc_id_pic")
                     }!!
-
+                    if (isOtherIDProof((spCountryBank.selectedItem as StateCityData).name)) {
+                        body = selectedOtherIDImage?.let {
+                            manageDocumentData(body,
+                                it,
+                                "additional_doc")
+                        }!!
+                    }
                     val build = body.build()
                     val request: Request = Request.Builder()
                         .url(APIServices.SERVICE_URL + APIServices.ADD_BANK)
@@ -449,6 +534,11 @@ class BankFragment : Fragment(), View.OnClickListener {
             }
         }
         return true
+    }
+
+    private fun isOtherIDProof(selectedCountryName: String): Boolean {
+        val lowerCountryName = selectedCountryName.toLowerCase()
+        return lowerCountryName == getString(R.string.portugal) || lowerCountryName == getString(R.string.UK)
     }
 
 

@@ -15,16 +15,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.calendar.loyalfans.R
 import com.calendar.loyalfans.activities.MainActivity
 import com.calendar.loyalfans.activities.WebViewActivity
+import com.calendar.loyalfans.model.response.BankListData
 import com.calendar.loyalfans.retrofit.APIServices
 import com.calendar.loyalfans.retrofit.BaseViewModel
 import com.calendar.loyalfans.utils.Common
 import com.calendar.loyalfans.utils.RequestParams
+import kotlinx.android.synthetic.main.fragment_bank_detail.*
 import kotlinx.android.synthetic.main.fragment_w9.*
 import kotlinx.android.synthetic.main.layout_toolbar_back.*
 import kotlinx.android.synthetic.main.layout_toolbar_textview.tvToolBarName
 
 
-class BankW9Fragment : Fragment(), View.OnClickListener {
+class BankW9Fragment() : Fragment(), View.OnClickListener {
 
     companion object {
         fun newInstance() = BankW9Fragment()
@@ -43,7 +45,10 @@ class BankW9Fragment : Fragment(), View.OnClickListener {
         imgBack.setOnClickListener(this)
         setUpClickHere()
         checkStatusOfW9Form()
+
     }
+
+
 
     private fun checkStatusOfW9Form() {
         val baseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
@@ -58,7 +63,7 @@ class BankW9Fragment : Fragment(), View.OnClickListener {
 
     private fun setUpClickHere() {
         val sequence: CharSequence =
-            Html.fromHtml("Please Fill out W9 Form First to be able to request a Payout. <a href='clickhere'>Click Here</a> to fill a W9 Form")
+            Html.fromHtml("Please Fill out W9 Form First to be able to request a Payout. <a href='clickhere'>Click Here</a> to fill out a W9 Form")
         val strBuilder = SpannableStringBuilder(sequence)
         val urls: Array<URLSpan> = strBuilder.getSpans(0, sequence.length, URLSpan::class.java)
         for (span in urls) {

@@ -23,6 +23,7 @@ open class ProfileData {
     var bank_status = "1"
     var card_status = "0"
     var is_block = "0"
+    var btnCancel = "0"
     var s_block = "0"
     var subscription_plans: ArrayList<ProfileSubscriptionData>? = null
 }
@@ -34,4 +35,5 @@ open class ProfileSubscriptionData {
     var id = ""
     var is_subscribe = ""
     var subscription_id = ""
+    var iscancel = "0"
 }

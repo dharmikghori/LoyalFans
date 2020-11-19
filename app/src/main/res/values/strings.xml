@@ -123,6 +123,7 @@
     <string name="add_card">Add Card</string>
 
     <string name="banking">Banking</string>
+    <string name="banking_to_earn">Add Bank [To Earn]</string>
     <string name="personal_info">Personal Information</string>
     <string name="fill_detail">Fill in your legal name, Address and attach your government issued Picture ID.</string>
     <string name="first_name">First Name*</string>
@@ -185,6 +186,7 @@
     <string name="no_data">No Data</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
+    <string name="request_cancel_subscribe">Requsted for cancel subscribe</string>
     <string name="phone">Phone*</string>
     <string name="phone_hint">PHONE</string>
     <string name="tax_id_or_social_security_number">Tax ID or Social Security Number*</string>
@@ -211,6 +213,7 @@
     <string name="selfie_image_validation">Please select selfie image</string>
     <string name="id_image_validation">Please select ID image</string>
     <string name="id_expiration_date">Id Expiration Date</string>
+    <string name="other_doc_text">Provide additional ID proof other than the one submitted above</string>
     <string name="id_expiration_validation">Please select id expiration date</string>
     <string name="passport">Passport</string>
     <string name="driver_licence">Driver Licence</string>
@@ -310,5 +313,11 @@
     <string name="others_provide_reason_for_the_report">Others - (Provide Reason for the report</string>
     <string name="report_abusive_post_message">Your post is removed due to "Abusive or objectionable content reported on this post"</string>
     <string name="add_post_warning">kindly note, if your post does not follow our term &amp; condition or found objection then the post will be removed and the profile can be blocked within 24 hours</string>
+
+    <string name="portugal">portugal</string>
+    <string name="UK">united kingdom</string>
+    <string name="verification_declined">Your verification was declined, kindly edit and resubmit</string>
+    <string name="verification_pending">Your account is pending for verification.</string>
+    <string name="edit_bank_details">Edit Bank Details</string>
 
 </resources>

@@ -33,7 +33,7 @@ class StatementFragment : Fragment(), View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
         setTabLayoutAdapter()
         setViewPagerHeight()
-        tvToolBarName.text = getString(R.string.statements)
+        tvToolBarName.text = getString(R.string.request_withdrawal)
         imgBack.setOnClickListener(this)
         btnRequestWithdrawal.setOnClickListener(this)
         BaseActivity.currentBalance.value = ""

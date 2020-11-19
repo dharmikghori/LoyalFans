@@ -172,6 +172,9 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         } else {
             layProfileSubscription.visibility = View.VISIBLE
             when {
+                profileData.btnCancel == "1" -> {
+                    manageCancel()
+                }
                 profileData.is_block == "1" -> {
                     manageBlockedProfile()
                 }
@@ -183,6 +186,19 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
                 }
             }
         }
+    }
+
+    private fun manageCancel() {
+        btnFollowUnFollow.visibility = View.GONE
+        laySubscriptionPlan.removeAllViews()
+        val subscriptionButton = Button(activity)
+        subscriptionButton.background = resources.getDrawable(R.drawable.cancel_subscription_bg)
+        subscriptionButton.text = getString(R.string.request_cancel_subscribe)
+        subscriptionButton.setTextColor(resources.getColor(R.color.white))
+        val font =
+            Typeface.createFromAsset(resources.assets, "cambria.ttf")
+        subscriptionButton.typeface = font
+        laySubscriptionPlan.addView(subscriptionButton)
     }
 
     private fun manageBlockedProfile() {
@@ -256,15 +272,21 @@ class MyProfileFragment(private val profileId: String) : Fragment(), View.OnClic
         btnFollowUnFollow.visibility = View.GONE
         laySubscriptionPlan.removeAllViews()
         if (profileData.subscription_plans != null) {
-            val filter = profileData.subscription_plans?.filter { it.is_subscribe == "1" }
-            if (!filter?.isEmpty()!!) {
-                val profileSubscriptionData = filter[0]
-                layFansFollowing.visibility = View.VISIBLE
-                manageCancelSubscribeButtonUI(profileSubscriptionData)
+            val subscriptionCancelCount =
+                profileData.subscription_plans?.filter { it.iscancel == "1" }
+            if (subscriptionCancelCount != null && subscriptionCancelCount.isNotEmpty()) {
+                manageCancel()
             } else {
-                layFansFollowing.visibility = View.GONE
-                for (subscriptionPlanData in profileData.subscription_plans!!) {
-                    manageSubscribeButtonUI(subscriptionPlanData)
+                val filter = profileData.subscription_plans?.filter { it.is_subscribe == "1" }
+                if (!filter?.isEmpty()!!) {
+                    val profileSubscriptionData = filter[0]
+                    layFansFollowing.visibility = View.VISIBLE
+                    manageCancelSubscribeButtonUI(profileSubscriptionData)
+                } else {
+                    layFansFollowing.visibility = View.GONE
+                    for (subscriptionPlanData in profileData.subscription_plans!!) {
+                        manageSubscribeButtonUI(subscriptionPlanData)
+                    }
                 }
             }
         }

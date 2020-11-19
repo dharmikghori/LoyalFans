@@ -175,6 +175,28 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tvBankStatus"
+                style="@style/BaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/red"
+                android:padding="@dimen/_5sdp"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnEditBankDetails"
+                style="@style/BaseColorGradientButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/edit_bank_details" />
+
+            <TextView
                 android:id="@+id/tvW9Form"
                 style="@style/BaseTextView"
                 android:layout_width="match_parent"

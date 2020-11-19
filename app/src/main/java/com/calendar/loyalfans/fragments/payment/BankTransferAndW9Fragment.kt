@@ -31,8 +31,6 @@ class BankTransferAndW9Fragment(private val bankItem: BankListData) : Fragment()
         super.onActivityCreated(savedInstanceState)
         tvToolBarName.text = getString(R.string.banking)
         imgBack.setOnClickListener(this)
-        tvW9Form.setOnClickListener(this)
-        tvBankTransfer.setOnClickListener(this)
         setUpBankList()
     }
 
@@ -43,6 +41,23 @@ class BankTransferAndW9Fragment(private val bankItem: BankListData) : Fragment()
         tvStreetBank.text = bankItem.street
         tvCityBank.text = bankItem.city
         tvStateBank.text = bankItem.state
+        btnEditBankDetails.visibility = View.GONE
+        if (bankItem.status == "1") {
+            tvW9Form.setOnClickListener(this)
+            tvBankTransfer.setOnClickListener(this)
+            tvBankStatus.visibility = View.GONE
+        } else {
+            tvBankStatus.visibility = View.VISIBLE
+            if (bankItem.status == "0") {
+                tvBankStatus.text = getString(R.string.verification_pending)
+                tvBankStatus.setBackgroundColor(resources.getColor(R.color.pending))
+            } else if (bankItem.status == "2") {
+                tvBankStatus.text = getString(R.string.verification_declined)
+                tvBankStatus.setBackgroundColor(resources.getColor(R.color.canceled))
+                btnEditBankDetails.visibility = View.VISIBLE
+                btnEditBankDetails.setOnClickListener(this)
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -56,6 +71,9 @@ class BankTransferAndW9Fragment(private val bankItem: BankListData) : Fragment()
                 }
                 R.id.tvBankTransfer -> {
                     (activity as MainActivity).loadFragment(21)
+                }
+                R.id.btnEditBankDetails -> {
+                    (activity as MainActivity).loadFragment(BankFragment(bankItem), 18)
                 }
             }
         }
